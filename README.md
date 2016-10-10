@@ -81,8 +81,8 @@ $ mkdir -p /tmp/${USER}/bxprotobuftools/_build.d/
 $ cd  /tmp/${USER}/bxprotobuftools/_build.d/
 $ cmake \
     -DCMAKE_INSTALL_PREFIX=${HOME}/sw/bxprotobuftools/install-0.1.0 \
-    -DPROTOBUF_ROOT:PATH="{path to the installation of protobuf version 3.0}" \
-    -DBoost_DIR=""{path to the installation of Boost version 1.60}" \
+    -DPROTOBUF_ROOT:PATH="installation/path/of/protobuf/version/3.0" \
+    -DBoost_DIR="installation/of/Boost/version/1.60" \
   /tmp/${USER}/bxprotobuftools/_source.d/bxprotobuftools/
 $ make
 $ make test
@@ -91,8 +91,9 @@ $ make install
 
 ### Enjoy bxprotobuftools from its installation directory:
 ```sh
-$ LANG="C" tree ${HOME}/sw/bxprotobuftools/install-0.1.0
-/home/{userlogin}/sw/bxprotobuftools/install-0.1.0
+$ cd ${HOME}/sw/bxprotobuftools/install-0.1.0
+$ LANG="C" tree .
+.
 |-- bin
 |   `-- bxprotobuftools-query
 |-- include
