@@ -51,8 +51,9 @@ file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR "${CMAKE_INSTALL_FULL_
 # message( STATUS "CMAKE_INSTALL_CMAKEDIR='${CMAKE_INSTALL_CMAKEDIR}'")
 # message( STATUS "CMAKE_INSTALL_DATAROOTDIR='${CMAKE_INSTALL_DATAROOTDIR}'")
 
-option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
-mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
+set(BXPROTOBUFTOOLS_WITH_BOOST ON)
+# option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
+# mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
 
 # - Publish headers
 configure_file(source/protobuftools/version.h.in ${PROJECT_BINARY_DIR}/source/protobuftools/version.h @ONLY)
@@ -111,14 +112,14 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/std_set_converter.h
   source/protobuftools/std_array_converter.h
   source/protobuftools/std_type_converters.h
- # source/protobuftools/protobufable_converter.h
+  source/protobuftools/protobufable_converter.h
   source/protobuftools/io.h
   source/protobuftools/io-inl.h
   source/protobuftools/iofile.h
   source/protobuftools/iofile-inl.h
   source/protobuftools/protobuf_utils.h
   source/protobuftools/protobuf_factory.h
-  # source/protobuftools/protobuftools.h
+  source/protobuftools/protobuftools.h
   )
 
 set(BxProtobuftools_SOURCES

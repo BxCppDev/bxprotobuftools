@@ -14,8 +14,10 @@
 #include <protobuftools/base_type_converters.h>
 #include <protobuftools/enum_converter.h>
 #include <protobuftools/std_type_converters.h>
+#include <protobuftools/protobufable_converter.h>
 #include <protobuftools/protobuf_factory.h>
 #include <protobuftools/protobuf_utils.h>
+#include <protobuftools/protobufable_converter.h>
 #include <protobuftools/io.h>
 #include <protobuftools/iofile.h>
 // #if BXPROTOBUFTOOLS_WITH_BOOST == 1

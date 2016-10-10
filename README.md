@@ -42,8 +42,107 @@ See the ``LICENSE.txt`` file.
 
 ## Build and install:
 
-TODO
+The  following  instructions  illustrate  how  to  build  and  install
+bxprotobuftools on a Linux system (Ubuntu  16.04 LTS). It should be easy
+to adapt for a MacOS X system.
 
+CMake options:
+
+* ``BXPROTOBUFTOOLS_ENABLE_TESTING`` (default: ``ON``) : builds the test program(s).
+
+
+
+### Download the source code from GitHub:
+```sh
+$ mkdir -p /tmp/${USER}/bxprotobuftools/_source.d/
+$ cd /tmp/${USER}/bxprotobuftools/_source.d/
+$ git clone https://github.com/fmauger/bxprotobuftools.git
+```
+### Build the library from a dedicated directory:
+
+For  SuperNEMO users  only:
+
+The SuperNEMO experiment data  processing and simulation software uses
+Cadfaelbrew    (https://github.com/SuperNEMO-DBD/cadfaelbrew)    which
+provides some core software tools  and libraries (C++ compiler, Boost, GSL,
+ROOT libraries...).  Before to build and install BxProtobuftools, you must
+switch to a brew shell before:
+```sh
+$ brew sh
+```
+
+Then:
+```sh
+$ mkdir -p /tmp/${USER}/bxprotobuftools/_build.d/
+$ cd  /tmp/${USER}/bxprotobuftools/_build.d/
+$ cmake \
+  -DCMAKE_INSTALL_PREFIX=${HOME}/sw/bxprotobuftools/install-0.1.0 \
+  /tmp/${USER}/bxprotobuftools/_source.d/bxprotobuftools/
+$ make
+$ make test
+$ make install
+```
+
+### Enjoy bxprotobuftools from its installation directory:
+```sh
+$ LANG="C" tree ${HOME}/sw/bxprotobuftools/install-0.1.0
+/home/{userlogin}/sw/bxprotobuftools/install-0.1.0
+|-- bin
+|   `-- bxprotobuftools-query
+|-- include
+|   `-- bayeux
+|       `-- protobuftools
+|           |-- base_type_converters.h
+|           |-- bool_converter.h
+|           |-- config.h
+|           |-- core.h
+|           |-- double_converter.h
+|           |-- enum_converter.h
+|           |-- exception.h
+|           |-- float_converter.h
+|           |-- i_protobufable.h
+|           |-- int16_converter.h
+|           |-- int32_converter.h
+|           |-- int64_converter.h
+|           |-- int8_converter.h
+|           |-- io-inl.h
+|           |-- io.h
+|           |-- iofile-inl.h
+|           |-- iofile.h
+|           |-- logger.h
+|           |-- logger_macros.h
+|           |-- node-inl.h
+|           |-- node.h
+|           |-- protobuf_factory.h
+|           |-- protobuf_utils.h
+|           |-- protobufable_converter.h
+|           |-- protobuftools.h
+|           |-- std_array_converter.h
+|           |-- std_list_converter.h
+|           |-- std_set_converter.h
+|           |-- std_string_converter.h
+|           |-- std_type_converters.h
+|           |-- std_vector_converter.h
+|           |-- uint16_converter.h
+|           |-- uint32_converter.h
+|           |-- uint64_converter.h
+|           |-- uint8_converter.h
+|           `-- version.h
+|-- lib
+|   |-- cmake
+|   |   `-- BxProtobuftools-0.1.0
+|   |       |-- BxProtobuftoolsConfig.cmake
+|   |       |-- BxProtobuftoolsConfigVersion.cmake
+|   |       |-- BxProtobuftoolsTargets-noconfig.cmake
+|   |       `-- BxProtobuftoolsTargets.cmake
+|   `-- libBayeux_protobuftools.so
+`-- share
+    `-- BxProtobuftools-0.1.0
+        |-- LICENSE.txt
+        `-- examples
+            `-- ex01
+                `-- README.md
+```
 
 ## Using bxprotobuftools:
 
