@@ -83,7 +83,7 @@ $ cmake \
     -DCMAKE_INSTALL_PREFIX=${HOME}/sw/bxprotobuftools/install-0.1.0 \
     -DPROTOBUF_ROOT:PATH="installation/path/of/protobuf/version/3.0" \
     -DBoost_DIR="installation/of/Boost/version/1.60" \
-  /tmp/${USER}/bxprotobuftools/_source.d/bxprotobuftools/
+    /tmp/${USER}/bxprotobuftools/_source.d/bxprotobuftools/
 $ make
 $ make test
 $ make install
@@ -170,3 +170,10 @@ $ bxprotobuftools-query --help
 $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 ```
 * There is  a simple example  ``ex01`` that illustrates a  very simple usecase.
+
+
+
+## TODO:
+
+* Add ``converter`` template class for ``std::map`` container.
+* Add ``converter`` template class for a few ``boost::data_time`` classes.
