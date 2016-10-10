@@ -10,6 +10,9 @@ library (the foundation library  of the SuperNEMO physics experiment's
 software).
 
 
+This is a very preliminary work, not ready for production yet...
+Some documentation and examples are still needed too.
+
 For SuperNEMO users only:
 
 Protobuf based serialization will be used  by the Vire C++ library for
@@ -22,7 +25,7 @@ server) for the SuperNEMO experiment.
 
 bxprotobuftools depends on the Google Protocol Buffers library:
 * the Google Protocol Buffers library (https://developers.google.com/protocol-buffers/)
-* the Boost C++ library
+* the Boost C++ library (http://www.boost.org/)
 
 It is inspired by a former related work:
 * ``Bayeux/Jsontools`` (https://github.com/fmauger/bxjsontools)
