@@ -1,0 +1,55 @@
+syntax = "proto3";
+package protobuftools.testing;
+
+enum CodeType {
+  CodeZero  = 0;
+  CodeOne   = 1;
+  CodeTwo   = 2;
+  CodeThree = 3;
+  CodeFour  = 4;
+  CodeMany  = 100;
+}
+
+message Zoo {
+
+  bool  open   = 100;
+  int32 number = 101;
+  float price  = 102;
+
+}
+
+message Foo {
+
+  enum StatusType {
+    ErrOk      = 0;
+    ErrGeneric = 1;
+    ErrMore    = 2;
+  }
+
+  message Bar {
+
+    string name  = 100;
+    int32  value = 101;
+    Zoo    z     = 102;
+
+  }
+
+  bool     flag     = 100;
+  uint32   u16      = 101;
+  int32    i32      = 102;
+  float    f        = 103;
+  double   d        = 104;
+  StatusType status = 105;
+  CodeType code     = 106;
+  string   word     = 107;
+  repeated int32 vi32 = 120;
+  repeated float lf   = 121;
+  repeated int32 si16 = 130;
+  repeated double ad  = 131;
+  Bar      dummy      = 200;
+  repeated Zoo vz     = 300;
+  repeated Zoo lz     = 301;
+  repeated Zoo sz     = 302;
+  repeated Zoo az     = 303;
+
+}

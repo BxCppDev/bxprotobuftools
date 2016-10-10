@@ -1,0 +1,9 @@
+// -*- mode: c++; -*-
+
+#ifndef BXPROTOBUFTOOLS_VERSION_H
+#define BXPROTOBUFTOOLS_VERSION_H
+
+//! String encoded full version number, e.g. "1.2.3", available at compile time
+#define BXPROTOBUFTOOLS_LIB_VERSION "@BxProtobuftools_VERSION_MAJOR@.@BxProtobuftools_VERSION_MINOR@.@BxProtobuftools_VERSION_PATCH@"
+
+#endif // BXPROTOBUFTOOLS_VERSION_H

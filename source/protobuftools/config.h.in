@@ -1,0 +1,8 @@
+// -*- mode: c++; -*-
+
+#ifndef BXPROTOBUFTOOLS_CONFIG_H
+#define BXPROTOBUFTOOLS_CONFIG_H
+
+#cmakedefine01 BXPROTOBUFTOOLS_WITH_BOOST
+
+#endif // BXPROTOBUFTOOLS_CONFIG_H
