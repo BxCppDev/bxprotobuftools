@@ -1,6 +1,8 @@
 syntax = "proto3";
 package protobuftools.testing;
 
+import "google/protobuf/timestamp.proto";
+
 enum CodeType {
   CodeZero  = 0;
   CodeOne   = 1;
@@ -51,5 +53,6 @@ message Foo {
   repeated Zoo lz     = 301;
   repeated Zoo sz     = 302;
   repeated Zoo az     = 303;
+  google.protobuf.Timestamp time = 400;
 
 }

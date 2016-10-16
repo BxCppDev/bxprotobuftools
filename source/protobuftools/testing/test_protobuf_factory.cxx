@@ -162,6 +162,9 @@ void test0()
       z3.price = 15.718F;
       f0.az[2] = z3;
     }
+    f0.time = boost::posix_time::microsec_clock::universal_time();
+
+
     f0.print(std::clog, "Modified object 'f0' : ");
     std::clog << std::endl;
     {

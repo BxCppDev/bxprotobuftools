@@ -1,10 +1,15 @@
 #include "foo.h"
 
+// Third party:
+// - Boost/date_time:
+#include <boost/date_time/posix_time/time_formatters.hpp>
+
 // This project:
 #include <protobuftools/base_type_converters.h>
 #include <protobuftools/enum_converter.h>
 #include <protobuftools/protobufable_converter.h>
 #include <protobuftools/std_type_converters.h>
+#include <protobuftools/boost_datetime_converters.h>
 
 namespace protobuftools {
 
@@ -182,6 +187,8 @@ namespace protobuftools {
         }
       }
 
+      out_ << indent_ << "|-- time   = [" << boost::posix_time::to_iso_string(time) << ']' << std::endl;
+
       out_ << indent_ << "`-- The end." << std::endl;
 
       return;
@@ -210,6 +217,7 @@ namespace protobuftools {
       node_["lz"]     % lz;
       node_["sz"]     % sz;
       node_["az"]     % az;
+      node_["time"]   % time;
       return;
     }
 

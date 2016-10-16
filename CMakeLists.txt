@@ -112,6 +112,8 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/std_set_converter.h
   source/protobuftools/std_array_converter.h
   source/protobuftools/std_type_converters.h
+  source/protobuftools/boost_datetime_converters.h
+  source/protobuftools/boost_converters.h
   source/protobuftools/protobufable_converter.h
   source/protobuftools/io.h
   source/protobuftools/io-inl.h
@@ -255,7 +257,7 @@ set(BxProtobuftools_TESTS
 
 if(PROTOBUFTOOLS_ENABLE_TESTING)
 
-  message( STATUS "Generating C++ source stub from protobuf files...")
+  message( STATUS "Generating C++ testing source stub from protobuf files...")
   execute_process(COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
     --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/source
     --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/source
@@ -264,10 +266,10 @@ if(PROTOBUFTOOLS_ENABLE_TESTING)
     OUTPUT_VARIABLE _gen_pb_out
     ERROR_VARIABLE  _gen_pb_err
     )
+  message( STATUS "Protobuf generation error code ='${_gen_pb_code}'")
+  message( STATUS "Protobuf generation error msg  ='${_gen_pb_err}'")
+  message( STATUS "Protobuf generation error out  ='${_gen_pb_out}'")
   message( STATUS "Done.")
-  message( STATUS "_gen_pb_code='${_gen_pb_code}'")
-  message( STATUS "_gen_pb_err='${_gen_pb_err}'")
-  message( STATUS "_gen_pb_out='${_gen_pb_out}'")
 
   set(BxProtobuftools_TESTING_HEADERS
     source/protobuftools/testing/foo.h
@@ -301,10 +303,7 @@ if(PROTOBUFTOOLS_ENABLE_TESTING)
       )
     get_filename_component(_testname "${_testsource}" NAME_WE)
     set(_testname "bxprotobuftools-${_testname}")
-    add_executable(${_testname} ${_testsource}
-      # source/protobuftools/testing/test.h
-      # source/protobuftools/testing/test.cc
-      )
+    add_executable(${_testname} ${_testsource})
     target_link_libraries(${_testname}
       Bayeux_protobuftools_testing
       Bayeux_protobuftools

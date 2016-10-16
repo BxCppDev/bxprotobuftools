@@ -11,6 +11,10 @@
 #include <set>
 #include <array>
 
+// Third party:
+// - Boost/date_time:
+#include <boost/date_time/posix_time/posix_time_types.hpp>
+
 // This project
 #include <protobuftools/i_protobufable.h>
 
@@ -98,6 +102,7 @@ namespace protobuftools {
       std::list<zoo>       lz;
       std::set<zoo>        sz;
       std::array<zoo,3>    az;
+      boost::posix_time::ptime time;
 
     };
 
