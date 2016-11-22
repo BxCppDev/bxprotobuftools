@@ -91,6 +91,9 @@ $ make
 $ make test
 $ make install
 ```
+Note the use of the ``PROTOBUF_ROOT`` and ``Boost_DIR`` variables to
+help CMake to find the Protobuf and Boost dependee libraries.
+
 
 ### Enjoy bxprotobuftools from its installation directory:
 ```sh
