@@ -148,10 +148,11 @@ endif()
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 
 if(BXPROTOBUFTOOLS_WITH_BOOST)
+  set(Boost_NO_BOOST_CMAKE ON)
   find_package(Boost 1.60.0
     REQUIRED
     date_time
-    CONFIG
+    # CONFIG
     )
   message( STATUS "Boost found at '${Boost_INCLUDE_DIRS}'")
   message( STATUS "Boost version = '${Boost_VERSION}'")

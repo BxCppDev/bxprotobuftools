@@ -46,7 +46,7 @@ set(BxProtobuftools_INCLUDE_DIRS
   "${BxProtobuftools_INCLUDE_DIR}/bayeux/proto")
 
 list(APPEND BxProtobuftools_INCLUDE_DIRS
-  ${Boost_INCLUDE_DIRS}
+  ${PROTOBUF_INCLUDE_DIRS}
   )
 
 #-----------------------------------------------------------------------
@@ -59,18 +59,19 @@ set(BxProtobuftools_DEFINITIONS -std=c++11)
 # Handle paths/targets for third party deps here...
 
 # - Protobuf
-find_package(Protobuf 3.0 REQUIRED)
+find_package(Protobuf ${PROTOBUF_VERSION_STRING} REQUIRED)
 
 # - Boost
 if (BxProtobuftools_WITH_BOOST)
-  find_package(Boost 1.60.0
-    REQUIRED
-    date_time
-    CONFIG
-    # NO_MODULE
-    PATHS @Boost_DIR@
-    # NO_DEFAULT_PATH
-    )
+  # set(Boost_NO_BOOST_CMAKE ON)
+  # find_package(Boost 1.60
+  #   REQUIRED
+  #   date_time
+  #   CONFIG
+  #   # NO_MODULE
+  #   PATHS @Boost_DIR@
+  #   # NO_DEFAULT_PATH
+  #   )
 endif()
 
 #-----------------------------------------------------------------------
@@ -79,7 +80,7 @@ endif()
 #
 if (BxProtobuftools_WITH_BOOST)
   list(APPEND BxProtobuftools_INCLUDE_DIRS
-    ${PROTOBUF_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     )
 endif()
 
@@ -96,7 +97,7 @@ endif()
 set(BxProtobuftools_LIBRARY Bayeux_protobuftools CACHE FILE "BxProtobuftools library (imported)")
 set(BxProtobuftools_LIBRARIES
   ${BxProtobuftools_LIBRARY}
-  # ${PROTOBUF_LIBRARIES}
+  ${PROTOBUF_LIBRARIES}
   )
 if (BxProtobuftools_WITH_BOOST)
   list(APPEND BxProtobuftools_LIBRARIES
