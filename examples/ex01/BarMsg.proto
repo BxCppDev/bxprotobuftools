@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message BarMsg {
+
+  bool   bval = 100;
+  string sval = 101;
+
+}

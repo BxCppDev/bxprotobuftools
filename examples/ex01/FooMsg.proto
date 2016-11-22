@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "protobuftools/SimpleOptional.proto";
+
+message FooMsg {
+
+  sint32                       ival = 100;
+  protobuftools.SimpleOptional dopt = 101;
+  protobuftools.SimpleOptional bopt = 102;
+
+}
