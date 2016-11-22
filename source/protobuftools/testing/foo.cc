@@ -217,6 +217,37 @@ namespace protobuftools {
         out_ << "<none>";
       }
       out_ << std::endl;
+
+      /*
+      out_ << indent_ << "|-- v4     = ";
+      {
+        const bool * value = boost::get<bool>(&v4);
+        if (value) {
+          out_ << "[" << *value << ']';
+        }
+      }
+      {
+        const int32_t * value = boost::get<int32_t>(&v4);
+        if (value) {
+          out_ << "[" << *value << ']';
+        }
+      }
+      {
+        const std::string * value = boost::get<std::string>(&v4);
+        if (value) {
+          out_ << "[" << *value << ']';
+        }
+      }
+      {
+        const zoo * value = boost::get<zoo>(&v4);
+        if (value) {
+          out_ << "[" << *value << ']';
+        }
+      }
+      */
+      out_ << std::endl;
+
+
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
       out_ << indent_ << "`-- The end." << std::endl;
@@ -251,6 +282,7 @@ namespace protobuftools {
       node_["time"]   % time;
       node_["ou16"]   % ou16;
       node_["oz"]     % oz;
+      //node_["v4"]     % v4;
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
       return;
     }

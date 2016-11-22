@@ -9,6 +9,7 @@ set(protofiles
 if(BXPROTOBUFTOOLS_WITH_BOOST)
   list(APPEND protofiles
     protobuftools/boost/Optional.proto
+    #protobuftools/boost/Variant.proto
     protobuftools/boost/posix_time/TimePeriod.proto
     )
 endif()

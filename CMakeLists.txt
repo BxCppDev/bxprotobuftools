@@ -112,8 +112,6 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/std_set_converter.h
   source/protobuftools/std_array_converter.h
   source/protobuftools/std_type_converters.h
-  source/protobuftools/boost_datetime_converters.h
-  source/protobuftools/boost_converters.h
   source/protobuftools/protobufable_converter.h
   source/protobuftools/io.h
   source/protobuftools/io-inl.h
@@ -123,6 +121,14 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/protobuf_factory.h
   source/protobuftools/protobuftools.h
   )
+
+# if (BXPROTOBUFTOOLS_WITH_BOOST)
+#   list(APPEND BxProtobuftools_HEADERS
+#     source/protobuftools/boost_datetime_converters.h
+#     source/protobuftools/boost_optional_converter.h
+#     source/protobuftools/boost_converters.h
+#     )
+# endif()
 
 set(BxProtobuftools_SOURCES
   source/protobuftools/logger.cc
@@ -201,7 +207,9 @@ foreach(_protofile ${_BxProtobuftools_PROTOSTUB_HEADERS})
 endforeach()
 
 # - Utilities
-configure_file(source/utilities/bxprotobuftools-query.in ${PROJECT_BINARY_DIR}/source/utilities/bxprotobuftools-query  @ONLY)
+configure_file(source/utilities/bxprotobuftools-query.in
+  ${PROJECT_BINARY_DIR}/source/utilities/bxprotobuftools-query
+  @ONLY)
 
 set(BxProtobuftools_PRIVATE_HEADERS
   )
