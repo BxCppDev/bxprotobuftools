@@ -99,9 +99,18 @@ $ LANG="C" tree .
 |   `-- bxprotobuftools-query
 |-- include
 |   `-- bayeux
+|       |-- proto
+|       |   `-- protobuftools
+|       |       |-- SimpleOptional.pb.h
+|       |       |-- SimpleOptional.proto
+|       |       |-- TimePeriod.pb.h
+|       |       `-- TimePeriod.proto
 |       `-- protobuftools
 |           |-- base_type_converters.h
 |           |-- bool_converter.h
+|           |-- boost_converters.h
+|           |-- boost_datetime_converters.h
+|           |-- boost_optional_converter.h
 |           |-- config.h
 |           |-- core.h
 |           |-- double_converter.h
@@ -125,6 +134,7 @@ $ LANG="C" tree .
 |           |-- protobuf_utils.h
 |           |-- protobufable_converter.h
 |           |-- protobuftools.h
+|           |-- protobuftools_stubs.h
 |           |-- std_array_converter.h
 |           |-- std_list_converter.h
 |           |-- std_set_converter.h
@@ -149,7 +159,16 @@ $ LANG="C" tree .
         |-- LICENSE.txt
         `-- examples
             `-- ex01
-                `-- README.md
+                |-- BarMsg.proto
+                |-- CMakeLists.txt
+                |-- FooMsg.proto
+                |-- README.md
+                |-- bar.cc
+                |-- bar.h
+                |-- ex01.cxx
+                |-- ex01.sh
+                |-- foo.cc
+                `-- foo.h
 ```
 
 ## Using bxprotobuftools:
