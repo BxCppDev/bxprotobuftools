@@ -14,6 +14,11 @@
 // - Protobuf:
 #include <google/protobuf/timestamp.pb.h>
 
+// This project:
+#include <protobuftools/core.h>
+#include <protobuftools/node.h>
+#include <protobuftools/exception.h>
+
 namespace protobuftools {
 
   template<>

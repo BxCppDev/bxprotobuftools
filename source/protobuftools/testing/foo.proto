@@ -2,6 +2,7 @@ syntax = "proto3";
 package protobuftools.testing;
 
 import "google/protobuf/timestamp.proto";
+import "protobuftools/boost/Optional.proto";
 
 enum CodeType {
   CodeZero  = 0;
@@ -14,9 +15,9 @@ enum CodeType {
 
 message Zoo {
 
-  bool  open   = 100;
-  int32 number = 101;
-  float price  = 102;
+  bool   open   = 100;
+  sint32 number = 101;
+  float  price  = 102;
 
 }
 
@@ -31,28 +32,30 @@ message Foo {
   message Bar {
 
     string name  = 100;
-    int32  value = 101;
+    sint32 value = 101;
     Zoo    z     = 102;
 
   }
 
   bool     flag     = 100;
   uint32   u16      = 101;
-  int32    i32      = 102;
+  sint32   i32      = 102;
   float    f        = 103;
   double   d        = 104;
   StatusType status = 105;
   CodeType code     = 106;
   string   word     = 107;
-  repeated int32 vi32 = 120;
-  repeated float lf   = 121;
-  repeated int32 si16 = 130;
-  repeated double ad  = 131;
-  Bar      dummy      = 200;
-  repeated Zoo vz     = 300;
-  repeated Zoo lz     = 301;
-  repeated Zoo sz     = 302;
-  repeated Zoo az     = 303;
-  google.protobuf.Timestamp time = 400;
+  repeated sint32 vi32 = 120;
+  repeated float  lf   = 121;
+  repeated sint32 si16 = 130;
+  repeated double ad   = 131;
+  Bar      dummy       = 200;
+  repeated Zoo vz      = 300;
+  repeated Zoo lz      = 301;
+  repeated Zoo sz      = 302;
+  repeated Zoo az      = 303;
+  google.protobuf.Timestamp    time = 400;
+  protobuftools.boost.Optional ou16 = 410;
+  protobuftools.boost.Optional oz   = 420;
 
 }

@@ -11,9 +11,16 @@
 #include <set>
 #include <array>
 
+// This project
+#include <protobuftools/config.h>
+#include <protobuftools/protobuf_utils.h>
+
 // Third party:
-// - Boost/date_time:
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
+// - Boost:
+#include <boost/optional.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
 // This project
 #include <protobuftools/i_protobufable.h>
@@ -46,6 +53,8 @@ namespace protobuftools {
       bool operator==(const zoo &) const;
 
       bool operator<(const zoo &) const;
+
+      friend std::ostream & operator<<(std::ostream & out_, const zoo & z_);
 
       bool    open   = false;
       int32_t number = 7;
@@ -102,12 +111,23 @@ namespace protobuftools {
       std::list<zoo>       lz;
       std::set<zoo>        sz;
       std::array<zoo,3>    az;
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
       boost::posix_time::ptime time;
-
+      boost::optional<uint16_t> ou16;
+      boost::optional<zoo> oz;
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
     };
 
   } // namespace testing
 
 } // namespace protobuftools
+
+// BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo,
+//                                                   "protobuftools::testing::foo")
+BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::zoo, "protobuftools.testing.Zoo")
+
+BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo, "protobuftools.testing.Foo")
+
+BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo::bar, "protobuftools.testing.Foo.Bar")
 
 #endif // BXPROTOBUFTOOLS_TESTING_FOO_H

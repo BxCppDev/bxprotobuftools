@@ -30,36 +30,39 @@ namespace protobuftools {
     for (int i = 0; i < filedesc_.dependency_count(); i++) {
       const google::protobuf::FileDescriptor * fd = filedesc_.dependency(i);
       std::ostringstream indent2;
-      indent2 << indent_;
+      indent2 << indent_ << skip_tag;
       if (i == filedesc_.dependency_count() - 1) {
-        indent2 << last_tag;
+        indent2 << tag;
       } else {
         indent2 << tag;
       }
+      out_ << indent2.str();
       out_ << "Dependency: '" << fd->name() << "'" << std::endl;
     }
     out_ << indent_ << skip_tag << tag << "Public dependencies : " << filedesc_.public_dependency_count() << "\n";
     for (int i = 0; i < filedesc_.public_dependency_count(); i++) {
       const google::protobuf::FileDescriptor * fd = filedesc_.public_dependency(i);
       std::ostringstream indent2;
-      indent2 << indent_ << skip_tag;
+      indent2 << indent_ << skip_tag << skip_tag;
       if (i == filedesc_.public_dependency_count() - 1) {
         indent2 << last_tag;
       } else {
         indent2 << tag;
       }
+      out_ << indent2.str();
       out_ << "Public dependency: '" << fd->name() << "'" << std::endl;
     }
     out_ << indent_ << skip_tag << last_tag << "Weak dependencies : " << filedesc_.weak_dependency_count() << "\n";
     for (int i = 0; i < filedesc_.weak_dependency_count(); i++) {
       const google::protobuf::FileDescriptor * fd = filedesc_.weak_dependency(i);
       std::ostringstream indent2;
-      indent2 << indent_ << last_skip_tag;
+      indent2 << indent_ << last_skip_tag << skip_tag;
       if (i == filedesc_.weak_dependency_count() - 1) {
         indent2 << last_tag;
       } else {
         indent2 << tag;
       }
+      out_ << indent2.str();
       out_ << "Weak dependency: '" << fd->name() << "'" << std::endl;
     }
 
@@ -158,6 +161,48 @@ namespace protobuftools {
     if (!title_.empty()) {
       out_ << indent_ << title_ << std::endl;
     }
+
+    return;
+  }
+
+  void tree_print(const google::protobuf::OneofDescriptor & desc_,
+                  std::ostream & out_,
+                  const std::string & title_,
+                  const std::string & indent_)
+  {
+    if (!title_.empty()) {
+      out_ << indent_ << title_ << std::endl;
+    }
+
+    out_ << indent_ << tag << "Name      : '" << desc_.name() << "'\n";
+    out_ << indent_ << tag << "Full name : '" << desc_.full_name() << "'\n";
+    out_ << indent_ << tag << "Index     : " << desc_.index() << " \n";
+
+    if (desc_.containing_type() != nullptr) {
+      out_ << indent_ << tag << "Containing type : '"
+           << desc_.containing_type()->full_name()<< "'\n";
+    } else {
+      out_ << indent_ << tag << "Containing type : <none>\n";
+    }
+
+    out_ << indent_ << tag << "Field count : " << desc_.field_count() << "\n";
+    for (int i = 0; i < desc_.field_count(); i++) {
+      const google::protobuf::FieldDescriptor * fdesc = desc_.field(i);
+      std::ostringstream indent2;
+      indent2 << indent_ << skip_tag;
+      out_ << indent_ << skip_tag;
+      if (i == desc_.field_count() - 1) {
+        indent2 << last_skip_tag;
+        out_ << last_tag;
+      } else {
+        indent2 << skip_tag;
+        out_ << tag;
+      }
+      out_ << "Field descriptor #" << i << " : \n";
+      tree_print(*fdesc, out_, "", indent2.str());
+    }
+
+    out_ << indent_ << last_tag << "Debug string: [" << desc_.DebugString() << "]"  << "\n";
 
     return;
   }
@@ -299,17 +344,17 @@ namespace protobuftools {
     for (int i = 0; i < desc_.oneof_decl_count(); i++) {
       const google::protobuf::OneofDescriptor * fdesc = desc_.oneof_decl(i);
       std::ostringstream indent2;
-      indent2 << indent_;
+      indent2 << indent_ << skip_tag;
       out_ << indent_ << skip_tag;
       if (i == desc_.oneof_decl_count() - 1) {
-        indent2 << last_tag;
+        indent2 << last_skip_tag;
         out_ << last_tag;
       } else {
-        indent2 << tag;
+        indent2 << skip_tag;
         out_ << tag;
       }
-      out_ << "Oneof" << std::endl;
-      // tree_print(*fdesc, out_, "", indent2.str());
+      out_ << "Oneof #" << i << " : \n";
+      tree_print(*fdesc, out_, "", indent2.str());
     }
 
     out_ << indent_ << tag << "Nested type : " << desc_.nested_type_count() << "\n";
@@ -377,6 +422,24 @@ namespace protobuftools {
     return;
   }
 
+  void tree_print_short(const google::protobuf::Message & msg_,
+                        std::ostream & out_,
+                        const std::string & title_,
+                        const std::string & indent_)
+  {
+    if (!title_.empty()) {
+      out_ << indent_ << title_ << std::endl;
+    }
+
+    out_ << indent_ << tag << "Type name   : '" << msg_.GetTypeName() << "'\n";
+    out_ << indent_ << tag << "Initialized : " << msg_.IsInitialized() << "\n";
+    out_ << indent_ << tag << "Byte size   : " << msg_.ByteSize() << "\n";
+    out_ << indent_ << tag << "Descriptor  : '" <<  msg_.GetDescriptor()->full_name() << "'\n";
+    out_ << indent_ << last_tag << "Debug string : [" << msg_.ShortDebugString() << "]\n";
+
+    return;
+  }
+
   void tree_print(const google::protobuf::Message & msg_,
                   std::ostream & out_,
                   const std::string & title_,
@@ -386,19 +449,66 @@ namespace protobuftools {
       out_ << indent_ << title_ << std::endl;
     }
 
-    out_ << tag << "Type name   : '" << msg_.GetTypeName() << "'\n";
-    out_ << tag << "Initialized : " << msg_.IsInitialized() << "\n";
-    out_ << tag << "Byte size   : " << msg_.ByteSize() << "\n";
+    out_ << indent_ << tag << "Type name   : '" << msg_.GetTypeName() << "'\n";
+    out_ << indent_ << tag << "Initialized : " << msg_.IsInitialized() << "\n";
+    out_ << indent_ << tag << "Byte size   : " << msg_.ByteSize() << "\n";
 
     const google::protobuf::Descriptor * desc = msg_.GetDescriptor();
-    out_ << last_tag << "Descriptor : \n";
+    out_ << indent_ << last_tag << "Descriptor : \n";
     {
       std::ostringstream indent2;
       indent2 << indent_ << last_skip_tag;
       tree_print(*desc, out_, "", indent2.str());
     }
 
+    out_ << indent_ << last_tag << "Debug string : [" << msg_.ShortDebugString() << "]\n";
+
     return;
+  }
+
+  bool cpp_type_match_base_protobuf_type(const std::string cpp_type_id_)
+  {
+    if (cpp_type_id_ == "bool") return true;
+    if (cpp_type_id_ == "int8") return true;
+    if (cpp_type_id_ == "uint8") return true;
+    if (cpp_type_id_ == "int16") return true;
+    if (cpp_type_id_ == "uint16") return true;
+    if (cpp_type_id_ == "int32") return true;
+    if (cpp_type_id_ == "uint32") return true;
+    if (cpp_type_id_ == "int64") return true;
+    if (cpp_type_id_ == "uint64") return true;
+    if (cpp_type_id_ == "float") return true;
+    if (cpp_type_id_ == "double") return true;
+    if (cpp_type_id_ == "string") return true;
+    return false;
+  }
+
+  std::string cpp_integral_type_as_protobuf_type(const std::string cpp_type_id_)
+  {
+    std::string tmp;
+    if (cpp_type_id_ == "int8" ||
+        cpp_type_id_ == "int16" ||
+        cpp_type_id_ == "int32") {
+      tmp = "sint32";
+    } else if (cpp_type_id_ == "uint8" ||
+               cpp_type_id_ == "uint16" ||
+               cpp_type_id_ == "uint32") {
+      tmp ="uint32";
+    } else if (cpp_type_id_ == "int64") {
+      tmp ="sint64";
+    } else if (cpp_type_id_ == "uint64") {
+      tmp ="uint64";
+    }
+    return tmp;
+  }
+
+  std::string cpp_type_as_protobuf_type(const std::string cpp_type_id_)
+  {
+    std::string tmp = cpp_integral_type_as_protobuf_type(cpp_type_id_);
+    if (tmp.empty()) {
+      tmp = cpp_type_id_;
+    }
+    return tmp;
   }
 
   bool has_field(const google::protobuf::Descriptor & desc_,

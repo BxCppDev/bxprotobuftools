@@ -279,7 +279,7 @@ namespace protobuftools {
                                  message_exception,
                                  _message,
                                  "Could not find an attribute named '" << s_
-                                 << "' in message named : '"  << descriptor->full_name() << "' " << "'!");
+                                 << "' in message named : '"  << descriptor->full_name() << "' !");
     // const google::protobuf::Reflection * reflection = _value.GetReflection();
     // bool defaultValueNeeded = not reflection->HasField(_value, field_desc);
     // google::protobuf::Message * fieldMsg = reflection->MutableMessage(&_value, field_desc);

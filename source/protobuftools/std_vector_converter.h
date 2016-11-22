@@ -35,7 +35,7 @@ namespace protobuftools {
                                          message_field_exception,
                                          node_.get_message(),
                                          *field_descriptor,
-                                   "expected repeated");
+                                         "expected repeated");
       const google::protobuf::Reflection * reflection = node_.get_message().GetReflection();
       for (std::size_t ielem = 0; ielem < x_.size(); ielem++) {
         BX_LOG_DEBUG(node_.get_logging(),

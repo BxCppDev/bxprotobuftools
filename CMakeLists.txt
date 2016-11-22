@@ -72,13 +72,13 @@ function(make_base_numeric_converter cpptype_ GUARDTAG_ pbtype_ PBTYPE_ Pbtype_ 
     ${PROJECT_BINARY_DIR}/source/protobuftools/${outfile_} @ONLY)
 endfunction()
 make_base_numeric_converter(bool     BOOL   bool   BOOL   Bool   bool_converter.h)
-make_base_numeric_converter(int8_t   INT8   int32  INT32  Int32  int8_converter.h)
+make_base_numeric_converter(int8_t   INT8   sint32 SINT32 Int32  int8_converter.h)
 make_base_numeric_converter(uint8_t  UINT8  uint32 UINT32 UInt32 uint8_converter.h)
-make_base_numeric_converter(int16_t  INT16  int32  INT32  Int32  int16_converter.h)
+make_base_numeric_converter(int16_t  INT16  sint32 SINT32 Int32  int16_converter.h)
 make_base_numeric_converter(uint16_t UINT16 uint32 UINT32 UInt32 uint16_converter.h)
-make_base_numeric_converter(int32_t  INT32  int32  INT32  Int32  int32_converter.h)
+make_base_numeric_converter(int32_t  INT32  sint32 SINT32 Int32  int32_converter.h)
 make_base_numeric_converter(uint32_t UINT32 uint32 UINT32 UInt32 uint32_converter.h)
-make_base_numeric_converter(int64_t  INT64  int64  INT64  Int64  int64_converter.h)
+make_base_numeric_converter(int64_t  INT64  sint64 SINT64 Int64  int64_converter.h)
 make_base_numeric_converter(uint64_t UINT64 uint64 UINT64 UInt64 uint64_converter.h)
 make_base_numeric_converter(float    FLOAT  float  FLOAT  Float  float_converter.h)
 make_base_numeric_converter(double   DOUBLE double DOUBLE Double double_converter.h)
@@ -149,7 +149,7 @@ endif()
 
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 
-#if(BXPROTOBUFTOOLS_WITH_BOOST)
+if(BXPROTOBUFTOOLS_WITH_BOOST)
   find_package(Boost 1.60.0
     REQUIRED
     date_time
@@ -159,7 +159,9 @@ set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
   include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
   list(APPEND
     BxProtobuftools_HEADERS
-    # source/protobuftools/boost_type_converters.h
+    source/protobuftools/boost_datetime_converters.h
+    source/protobuftools/boost_optional_converter.h
+    source/protobuftools/boost_converters.h
     )
   message( STATUS "Boost_LIBRARIES='${Boost_LIBRARIES}'")
   list(APPEND BxProtobuftools_OTHER_LIBS
@@ -167,8 +169,36 @@ set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
     )
   message( STATUS "Boost_DIR='${Boost_DIR}'")
   message( STATUS "BxProtobuftools_OTHER_LIBS='${BxProtobuftools_OTHER_LIBS}'")
-#endif()
+endif()
 
+# - Add specific protobuf support
+add_subdirectory(source/proto)
+get_directory_property(_BxProtobuftools_PROTOSTUB_HEADERS
+  DIRECTORY source/proto
+  DEFINITION BxProtobuftools_PROTOSTUB_HEADERS)
+get_directory_property(_BxProtobuftools_PROTOSTUB_SOURCES
+  DIRECTORY source/proto
+  DEFINITION BxProtobuftools_PROTOSTUB_SOURCES)
+message(STATUS "_BxProtobuftools_PROTOSTUB_HEADERS='${_BxProtobuftools_PROTOSTUB_HEADERS}'")
+message(STATUS "_BxProtobuftools_PROTOSTUB_SOURCES='${_BxProtobuftools_PROTOSTUB_SOURCES}'")
+message(STATUS "CMAKE_BINARY_DIR='${CMAKE_BINARY_DIR}'")
+message(STATUS "Listing protobuf stub files...")
+set(BxProtobuftools_PROTOSTUB_HEADERS)
+set(BxProtobuftools_PROTOSTUB_SOURCES)
+foreach(_protofile ${_BxProtobuftools_PROTOSTUB_HEADERS})
+  get_filename_component(_pb_dir ${_protofile} DIRECTORY)
+  get_filename_component(_pb_basename ${_protofile} NAME_WE)
+  set(_pb_stub_header ${CMAKE_BINARY_DIR}/source/proto/cpp_stubs/${_pb_dir}/${_pb_basename}.pb.h)
+  set(_pb_stub_source ${CMAKE_BINARY_DIR}/source/proto/cpp_stubs/${_pb_dir}/${_pb_basename}.pb.cc)
+  list(APPEND
+    BxProtobuftools_PROTOSTUB_HEADERS
+    ${_pb_stub_header}
+    )
+  list(APPEND
+    BxProtobuftools_PROTOSTUB_SOURCES
+    ${_pb_stub_source}
+    )
+endforeach()
 
 # - Utilities
 configure_file(source/utilities/bxprotobuftools-query.in ${PROJECT_BINARY_DIR}/source/utilities/bxprotobuftools-query  @ONLY)
@@ -179,16 +209,25 @@ set(BxProtobuftools_PRIVATE_HEADERS
 if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS -std=c++11)
 endif()
-# add_definitions(-std=c++11)
 
 include_directories(${PROJECT_SOURCE_DIR}/source)
 include_directories(${PROJECT_BINARY_DIR}/source)
+include_directories(${PROJECT_BINARY_DIR}/source/proto/cpp_stubs)
 include_directories(${PROTOBUF_INCLUDE_DIRS})
+
+foreach(_header ${BxProtobuftools_HEADERS})
+  message(STATUS " Header = '${_header}'")
+endforeach()
+foreach(_source ${BxProtobuftools_SOURCES})
+  message(STATUS " Source = '${_source}'")
+endforeach()
 
 add_library(Bayeux_protobuftools SHARED
   ${BxProtobuftools_HEADERS}
   ${BxProtobuftools_PRIVATE_HEADERS}
   ${BxProtobuftools_SOURCES}
+  ${BxProtobuftools_PROTOSTUB_HEADERS}
+  ${BxProtobuftools_PROTOSTUB_SOURCES}
   )
 
 target_link_libraries(Bayeux_protobuftools ${BxProtobuftools_OTHER_LIBS})
@@ -208,6 +247,30 @@ install( FILES
   PERMISSIONS OWNER_READ OWNER_WRITE
   GROUP_READ
   WORLD_READ
+  )
+
+install( DIRECTORY
+  ${PROJECT_SOURCE_DIR}/source/proto/protobuftools
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/bayeux/proto
+  FILE_PERMISSIONS OWNER_READ
+  GROUP_READ
+  WORLD_READ
+  DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+  GROUP_READ GROUP_EXECUTE
+  WORLD_READ WORLD_EXECUTE
+  FILES_MATCHING PATTERN "*.proto"
+  )
+
+install( DIRECTORY
+  ${CMAKE_BINARY_DIR}/source/proto/cpp_stubs/protobuftools
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/bayeux/proto
+  FILE_PERMISSIONS OWNER_READ
+  GROUP_READ
+  WORLD_READ
+  DIRECTORY_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+  GROUP_READ GROUP_EXECUTE
+  WORLD_READ WORLD_EXECUTE
+  FILES_MATCHING PATTERN "*.pb.h"
   )
 
 install( FILES
@@ -260,6 +323,8 @@ if(PROTOBUFTOOLS_ENABLE_TESTING)
   message( STATUS "Generating C++ testing source stub from protobuf files...")
   execute_process(COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
     --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/source
+    --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/source/proto
+    --proto_path=${PROJECT_BINARY_DIR}/source/proto/cpp_stubs
     --cpp_out=${CMAKE_CURRENT_BINARY_DIR}/source
     ${CMAKE_CURRENT_SOURCE_DIR}/source/protobuftools/testing/foo.proto
     RESULT_VARIABLE _gen_pb_error_code

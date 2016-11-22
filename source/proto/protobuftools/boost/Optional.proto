@@ -1,0 +1,21 @@
+syntax = "proto3";
+package protobuftools.boost;
+
+import "google/protobuf/any.proto";
+
+message Optional {
+
+  string type_id    = 100;
+  oneof value_oneof {
+  	bool       bool_value = 110;
+	sint32   sint32_value = 120;
+	uint32   uint32_value = 121;
+	sint64   sint64_value = 130;
+	uint64   uint64_value = 131;
+	float     float_value = 140;
+	double   double_value = 150;
+	string   string_value = 160;
+	google.protobuf.Any any_value = 200;
+  }
+
+}

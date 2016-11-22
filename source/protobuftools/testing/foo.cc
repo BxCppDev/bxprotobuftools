@@ -1,15 +1,20 @@
 #include "foo.h"
 
 // Third party:
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
 // - Boost/date_time:
 #include <boost/date_time/posix_time/time_formatters.hpp>
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
 // This project:
 #include <protobuftools/base_type_converters.h>
 #include <protobuftools/enum_converter.h>
 #include <protobuftools/protobufable_converter.h>
 #include <protobuftools/std_type_converters.h>
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
 #include <protobuftools/boost_datetime_converters.h>
+#include <protobuftools/boost_optional_converter.h>
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
 namespace protobuftools {
 
@@ -26,6 +31,13 @@ namespace protobuftools {
       out_ << indent_ << "|-- number = " << number << std::endl;
       out_ << indent_ << "`-- price  = " << price << std::endl;
       return;
+    }
+
+    std::ostream & operator<<(std::ostream & out_, const zoo & z_)
+    {
+      out_ << "zoo{open=" << z_.open << ";number=" << z_.number << ";price="
+           << z_.price << '}';
+      return out_;
     }
 
     void zoo::protobufize(protobuftools::message_node & node_,
@@ -187,7 +199,25 @@ namespace protobuftools {
         }
       }
 
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
       out_ << indent_ << "|-- time   = [" << boost::posix_time::to_iso_string(time) << ']' << std::endl;
+
+      out_ << indent_ << "|-- ou16   = ";
+      if (ou16) {
+        out_ << "[" << ou16.get() << ']';
+      } else {
+        out_ << "<none>";
+      }
+      out_ << std::endl;
+
+      out_ << indent_ << "|-- oz     = ";
+      if (oz) {
+        out_ << "[" << oz.get() << ']';
+      } else {
+        out_ << "<none>";
+      }
+      out_ << std::endl;
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
       out_ << indent_ << "`-- The end." << std::endl;
 
@@ -198,7 +228,7 @@ namespace protobuftools {
                           unsigned long int version_)
     {
       if (node_.is_debug()) {
-        node_.print(std::cerr, "foo::protobufize: message node: ", "DEBUG: " );
+        node_.print(std::cerr, "foo::protobufize: message node: ", "[debug] " );
       }
       node_["flag"]   % flag;
       node_["u16"]    % u16;
@@ -217,7 +247,11 @@ namespace protobuftools {
       node_["lz"]     % lz;
       node_["sz"]     % sz;
       node_["az"]     % az;
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
       node_["time"]   % time;
+      node_["ou16"]   % ou16;
+      node_["oz"]     % oz;
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
       return;
     }
 

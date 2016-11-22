@@ -1,0 +1,11 @@
+syntax = "proto3";
+package protobuftools.boost.posix_time;
+
+import "google/protobuf/timestamp.proto";
+
+message TimePeriod {
+
+  google.protobuf.Timestamp begin = 100;
+  google.protobuf.Timestamp end   = 101;
+
+}

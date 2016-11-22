@@ -12,6 +12,10 @@
 #include <protobuftools/io.h>
 #include <protobuftools/protobufable_converter.h>
 
+BXPROTOBUFTOOLS_REGISTER_CLASS_LABELED("protobuftools.testing.Zoo",
+                                       protobuftools::testing::Zoo,
+                                       ZooPbRegistrar)
+
 BXPROTOBUFTOOLS_REGISTER_CLASS_LABELED("protobuftools.testing.Foo",
                                        protobuftools::testing::Foo,
                                        FooPbRegistrar)
@@ -20,9 +24,9 @@ BXPROTOBUFTOOLS_REGISTER_CLASS_LABELED("protobuftools.testing.Foo.Bar",
                                        protobuftools::testing::Foo::Bar,
                                        FooBarPbRegistrar)
 
-BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo, "protobuftools.testing.Foo")
+// BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo, "protobuftools.testing.Foo")
 
-BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo::bar, "protobuftools.testing.Foo.Bar")
+// BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo::bar, "protobuftools.testing.Foo.Bar")
 
 void test0();
 
@@ -162,8 +166,23 @@ void test0()
       z3.price = 15.718F;
       f0.az[2] = z3;
     }
+
+#if BXPROTOBUFTOOLS_WITH_BOOST == 1
+
     f0.time = boost::posix_time::microsec_clock::universal_time();
 
+    {
+      f0.ou16 = 10001;
+    }
+
+    {
+      protobuftools::testing::zoo z1000;
+      z1000.open = true;
+      z1000.number = 1000;
+      z1000.price = 42.;
+      f0.oz = z1000;
+    }
+#endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
     f0.print(std::clog, "Modified object 'f0' : ");
     std::clog << std::endl;
@@ -171,6 +190,7 @@ void test0()
       // Protobufization:
       std::clog << "Protobufization...\n";
       std::ostringstream obuffer;
+      // protobuftools::store(obuffer, f0);
       protobuftools::store(obuffer, f0, protobuftools::IO_DEBUG);
       // std::clog << "Output buffer: " << obuffer.str().length() << "\n";
       // std::clog << obuffer.str();

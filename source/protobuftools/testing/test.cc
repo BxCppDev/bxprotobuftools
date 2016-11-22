@@ -23,7 +23,7 @@
 
 namespace bar {
 
-  /// A foreign class with no embedded JSON-serialization method
+  /// A foreign class with no embedded Protobuf-serialization method
   class Foreign
   {
   public:
@@ -52,13 +52,13 @@ namespace bar {
 
 namespace protobuftools {
 
-  /// A JSON converter dedicated to the foreign class
+  /// A Protobuf converter dedicated to the foreign class
   template<>
   class converter<bar::Foreign>
   {
   public:
 
-    static void serialize(node & node_, bar::Foreign & f_)
+    static void protobufize((message_node & node_, bar::Foreign & f_)
     {
       node_.grab_value() = Json::objectValue;
       {
@@ -74,7 +74,7 @@ namespace protobuftools {
       return;
     }
 
-    static void deserialize(node & node_, bar::Foreign & f_)
+    static void deprotobufize((message_node & node_, bar::Foreign & f_)
     {
       if (not node_.get_value().isObject()) {
         throw wrong_type(node_.get_value(), "expected object!");
@@ -156,7 +156,8 @@ namespace protobuftools {
         return;
       }
 
-      void serialize(protobuftools::node & node_, unsigned long int version_ = 0)
+      void protobufize(protobuftools::message_node & node_,
+                       unsigned long int version_ = 0)
       {
         node_["name"]   % _name_;
         node_["x"]      % _x_;
@@ -173,7 +174,7 @@ namespace protobuftools {
       std::string _name_;
       uint32_t _x_;
       std::vector<double> _values_;
-      std::map<std::string, int> _dict_;
+      // std::map<std::string, int> _dict_;
 #if BXPROTOBUFTOOLS_WITH_BOOST == 1
       boost::optional<int32_t> _maybe_;
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
@@ -195,7 +196,7 @@ namespace protobuftools {
         return;
       }
 
-      void serialize(protobuftools::node & node_, unsigned long int version_ = 0)
+      void protobufize(protobuftools::node & node_, unsigned long int version_ = 0)
       {
         node_["many"] % _many_;
         return;
