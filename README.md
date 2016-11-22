@@ -200,6 +200,6 @@ $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 
 ## TODO:
 
-* Add support for *oneof* fields.
-* Add ``converter`` template class for ``std::map`` container.
+* Add support for ``boost::variant`` template class mapped to some *oneof* fields (is it possible?).
+* Add ``converter`` template class for ``std::map`` container with simple layout.
 * Add ``converter`` template class for a few ``boost::date_time`` classes.
