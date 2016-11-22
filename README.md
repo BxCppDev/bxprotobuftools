@@ -48,6 +48,8 @@ to adapt for a MacOS X system.
 
 CMake options:
 
+* ``BXPROTOBUFTOOLS_WITH_BOOST`` (default: ``ON``) : interface with some part(s)
+  of the Boost C++ library.
 * ``BXPROTOBUFTOOLS_ENABLE_TESTING`` (default: ``ON``) : builds the test program(s).
 
 
