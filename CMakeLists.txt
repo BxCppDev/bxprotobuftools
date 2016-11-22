@@ -51,7 +51,6 @@ file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR "${CMAKE_INSTALL_FULL_
 # message( STATUS "CMAKE_INSTALL_CMAKEDIR='${CMAKE_INSTALL_CMAKEDIR}'")
 # message( STATUS "CMAKE_INSTALL_DATAROOTDIR='${CMAKE_INSTALL_DATAROOTDIR}'")
 
-# set(BXPROTOBUFTOOLS_WITH_BOOST ON)
 option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
 mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
 
@@ -68,6 +67,7 @@ function(make_base_numeric_converter cpptype_ GUARDTAG_ pbtype_ PBTYPE_ Pbtype_ 
   set(_pbtype   ${pbtype_})
   set(_PBTYPE   ${PBTYPE_})
   set(_Pbtype   ${Pbtype_})
+  message( STATUS "Generating converter header for C++ type ${cpptype_}...")
   configure_file(source/protobuftools/_base_numeric_converter.h.in
     ${PROJECT_BINARY_DIR}/source/protobuftools/${outfile_} @ONLY)
 endfunction()
@@ -121,14 +121,6 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/protobuf_factory.h
   source/protobuftools/protobuftools.h
   )
-
-# if (BXPROTOBUFTOOLS_WITH_BOOST)
-#   list(APPEND BxProtobuftools_HEADERS
-#     source/protobuftools/boost_datetime_converters.h
-#     source/protobuftools/boost_optional_converter.h
-#     source/protobuftools/boost_converters.h
-#     )
-# endif()
 
 set(BxProtobuftools_SOURCES
   source/protobuftools/logger.cc

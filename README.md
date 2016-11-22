@@ -25,7 +25,7 @@ server) for the SuperNEMO experiment.
 
 bxprotobuftools depends on the Google Protocol Buffers library:
 * the Google Protocol Buffers library (https://developers.google.com/protocol-buffers/)
-* the Boost C++ library (http://www.boost.org/)
+* the Boost C++ library (http://www.boost.org/) (optional)
 
 It is inspired by a former related work:
 * ``Bayeux/Jsontools`` (https://github.com/fmauger/bxjsontools)
