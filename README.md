@@ -202,4 +202,5 @@ $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 
 * Add support for ``boost::variant`` template class mapped to some *oneof* fields (is it possible?).
 * Add ``converter`` template class for ``std::map`` container with simple layout.
-* Add ``converter`` template class for a few ``boost::date_time`` classes.
+* Add ``converter`` template class for a few useful ``boost::date_time`` classes mapped using the
+   ``google.protobuf.Timestamp`` message.
