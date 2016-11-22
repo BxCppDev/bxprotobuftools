@@ -51,9 +51,9 @@ file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR "${CMAKE_INSTALL_FULL_
 # message( STATUS "CMAKE_INSTALL_CMAKEDIR='${CMAKE_INSTALL_CMAKEDIR}'")
 # message( STATUS "CMAKE_INSTALL_DATAROOTDIR='${CMAKE_INSTALL_DATAROOTDIR}'")
 
-set(BXPROTOBUFTOOLS_WITH_BOOST ON)
-# option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
-# mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
+# set(BXPROTOBUFTOOLS_WITH_BOOST ON)
+option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
+mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
 
 # - Publish headers
 configure_file(source/protobuftools/version.h.in ${PROJECT_BINARY_DIR}/source/protobuftools/version.h @ONLY)

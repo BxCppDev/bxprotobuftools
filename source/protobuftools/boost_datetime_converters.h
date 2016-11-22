@@ -102,6 +102,42 @@ namespace protobuftools {
 
   };
 
+  /*
+  template<>
+  class converter<boost::posix_time::time_period>
+  {
+  public:
+
+    static void protobufize(::protobuftools::message_node & node_, boost::posix_time::time_period & p_)
+    {
+      BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != "protobuftools.TimePeriod",
+                                   message_exception,
+                                   node_.get_message(), "Not a 'protobuftools.TimePeriod' descriptor!");
+      protobuftools::TimePeriod & tp = dynamic_cast<protobuftools::TimePeriod&>(node_.grab_message());
+      tp.clear_begin();
+      tp.clear_end();
+      if (!p_.is_null()) {
+        boost::posix_time::ptime tp_begin = p_.begin();
+        boost::posix_time::ptime tp_end = p_.end();
+        node_["begin"] % tp_begin;
+        node_["end"]   % tp_end;
+      }
+      return;
+    }
+
+    static void deprotobufize(::protobuftools::message_node & node_, boost::posix_time::time_period & p_)
+    {
+      BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != "protobuftools.TimePeriod",
+                                   message_exception,
+                                   node_.get_message(), "Not a 'protobuftools.TimePeriod' descriptor!");
+      const protobuftools::TimePeriod & tp = dynamic_cast<protobuftools::TimePeriod&>(node_.get_message());
+
+      return;
+    }
+
+  };
+  */
+
 }
 
 #endif // BXPROTOBUFTOOLS_BOOST_DATETIME_CONVERTERS_H

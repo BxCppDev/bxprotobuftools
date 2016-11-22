@@ -2,7 +2,7 @@ syntax = "proto3";
 package protobuftools.testing;
 
 import "google/protobuf/timestamp.proto";
-import "protobuftools/boost/Optional.proto";
+import "protobuftools/SimpleOptional.proto";
 
 enum CodeType {
   CodeZero  = 0;
@@ -55,7 +55,7 @@ message Foo {
   repeated Zoo sz      = 302;
   repeated Zoo az      = 303;
   google.protobuf.Timestamp    time = 400;
-  protobuftools.boost.Optional ou16 = 410;
-  protobuftools.boost.Optional oz   = 420;
+  protobuftools.SimpleOptional ou16 = 410;
+  protobuftools.SimpleOptional oz   = 420;
 
 }

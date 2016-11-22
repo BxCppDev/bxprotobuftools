@@ -19,7 +19,6 @@
 #if BXPROTOBUFTOOLS_WITH_BOOST == 1
 // - Boost:
 #include <boost/optional.hpp>
-// #include <boost/variant.hpp>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
@@ -118,7 +117,6 @@ namespace protobuftools {
       boost::optional<zoo> oz;
       // typedef boost::variant<bool, int32_t, std::string, zoo> variant_type;
       // variant_type v4;
-
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
     };
 

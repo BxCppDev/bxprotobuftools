@@ -1,5 +1,5 @@
 syntax = "proto3";
-package protobuftools.boost.posix_time;
+package protobuftools;
 
 import "google/protobuf/timestamp.proto";
 
