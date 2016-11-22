@@ -41,7 +41,7 @@ namespace protobuftools {
     }
 
     void zoo::protobufize(protobuftools::message_node & node_,
-                          unsigned long int version_)
+                          const unsigned long int version_)
     {
       node_["open"] % open;
       node_["number"] % number;
@@ -82,7 +82,7 @@ namespace protobuftools {
     }
 
     void foo::bar::protobufize(protobuftools::message_node & node_,
-                               unsigned long int version_)
+                               const unsigned long int version_)
     {
       node_["name"] % name;
       node_["value"] % value;
@@ -256,7 +256,7 @@ namespace protobuftools {
     }
 
     void foo::protobufize(protobuftools::message_node & node_,
-                          unsigned long int version_)
+                          const unsigned long int version_)
     {
       if (node_.is_debug()) {
         node_.print(std::cerr, "foo::protobufize: message node: ", "[debug] " );

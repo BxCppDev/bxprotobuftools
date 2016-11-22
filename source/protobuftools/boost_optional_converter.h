@@ -19,6 +19,7 @@
 #include <protobuftools/exception.h>
 #include <protobuftools/protobuf_utils.h>
 #include <protobuftools/protobuf_factory.h>
+#include <protobuftools/std_string_converter.h>
 
 namespace protobuftools {
 
@@ -41,7 +42,7 @@ namespace protobuftools {
       BX_LOG_DEBUG(node_.get_logging(),
                    "Message node of type '"
                    << node_.get_message().GetDescriptor()->full_name() << "'");
-      static const std::string DESC_NAME("protobuftools.boost.Optional");
+      static const std::string DESC_NAME("protobuftools.SimpleOptional");
       static const std::string TYPE_ID("type_id");
       BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != DESC_NAME,
                                    message_exception,
@@ -139,7 +140,7 @@ namespace protobuftools {
       BX_LOG_DEBUG(node_.get_logging(),
                    "Message node of type '"
                    << node_.get_message().GetDescriptor()->full_name() << "'");
-      static const std::string DESC_NAME("protobuftools.boost.Optional");
+      static const std::string DESC_NAME("protobuftools.SimpleOptional");
       static const std::string TYPE_ID("type_id");
       BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != DESC_NAME,
                                    message_exception,

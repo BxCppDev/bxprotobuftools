@@ -75,7 +75,8 @@ switch to a brew shell before:
 $ brew sh
 ```
 
-Then:
+We assume here that you want to install ``bxprotobuftools`` from
+your home directory:
 ```sh
 $ mkdir -p /tmp/${USER}/bxprotobuftools/_build.d/
 $ cd  /tmp/${USER}/bxprotobuftools/_build.d/

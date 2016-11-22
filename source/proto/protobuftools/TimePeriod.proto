@@ -3,9 +3,10 @@ package protobuftools;
 
 import "google/protobuf/timestamp.proto";
 
+// Nanosecond precision time p
 message TimePeriod {
 
-  google.protobuf.Timestamp begin = 100;
-  google.protobuf.Timestamp end   = 101;
+  google.protobuf.Timestamp begin = 100; // First time of period.
+  google.protobuf.Timestamp end   = 101; // One past the last in period.
 
 }

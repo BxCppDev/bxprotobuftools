@@ -48,7 +48,7 @@ namespace protobuftools {
                  const std::string & indent_ = "") const;
 
       virtual void protobufize(protobuftools::message_node & node_,
-                               unsigned long int version_ = 0);
+                               const unsigned long int version_ = 0);
 
       bool operator==(const zoo &) const;
 
@@ -79,7 +79,7 @@ namespace protobuftools {
                    const std::string & indent_ = "") const;
 
         virtual void protobufize(protobuftools::message_node & node_,
-                                 unsigned long int version_ = 0);
+                                 const unsigned long int version_ = 0);
 
         std::string name = "World!";
         int32_t     value = 12;
@@ -92,7 +92,7 @@ namespace protobuftools {
                  const std::string & indent_ = "") const;
 
       virtual void protobufize(protobuftools::message_node & node_,
-                               unsigned long int version_ = 0);
+                               const unsigned long int version_ = 0);
 
       bool        flag = true;
       uint16_t    u16 = 12;

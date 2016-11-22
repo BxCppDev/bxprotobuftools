@@ -18,6 +18,7 @@
 #include <protobuftools/core.h>
 #include <protobuftools/node.h>
 #include <protobuftools/exception.h>
+#include <protobuftools/TimePeriod.pb.h>
 
 namespace protobuftools {
 
@@ -102,7 +103,6 @@ namespace protobuftools {
 
   };
 
-  /*
   template<>
   class converter<boost::posix_time::time_period>
   {
@@ -113,15 +113,14 @@ namespace protobuftools {
       BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != "protobuftools.TimePeriod",
                                    message_exception,
                                    node_.get_message(), "Not a 'protobuftools.TimePeriod' descriptor!");
-      protobuftools::TimePeriod & tp = dynamic_cast<protobuftools::TimePeriod&>(node_.grab_message());
+      protobuftools::TimePeriod & tp =
+        dynamic_cast<protobuftools::TimePeriod&>(node_.grab_message());
       tp.clear_begin();
       tp.clear_end();
-      if (!p_.is_null()) {
-        boost::posix_time::ptime tp_begin = p_.begin();
-        boost::posix_time::ptime tp_end = p_.end();
-        node_["begin"] % tp_begin;
-        node_["end"]   % tp_end;
-      }
+      boost::posix_time::ptime tp_begin = p_.begin();
+      boost::posix_time::ptime tp_end = p_.end();
+      node_["begin"] % tp_begin;
+      node_["end"]   % tp_end;
       return;
     }
 
@@ -130,13 +129,17 @@ namespace protobuftools {
       BX_PROTOBUF_MESSAGE_THROW_IF(node_.get_message().GetDescriptor()->full_name() != "protobuftools.TimePeriod",
                                    message_exception,
                                    node_.get_message(), "Not a 'protobuftools.TimePeriod' descriptor!");
-      const protobuftools::TimePeriod & tp = dynamic_cast<protobuftools::TimePeriod&>(node_.get_message());
-
+      const protobuftools::TimePeriod & tp =
+        dynamic_cast<const protobuftools::TimePeriod&>(node_.get_message());
+      boost::posix_time::ptime tp_begin;
+      boost::posix_time::ptime tp_end;
+      node_["begin"] % tp_begin;
+      node_["end"]   % tp_end;
+      p_ = boost::posix_time::time_period(tp_begin, tp_end);
       return;
     }
 
   };
-  */
 
 }
 

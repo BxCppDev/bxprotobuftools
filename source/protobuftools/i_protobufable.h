@@ -20,7 +20,7 @@ namespace protobuftools {
 
     /// Main Protobuf (de-)serialization method
     virtual void protobufize(protobuftools::message_node & node_,
-                             unsigned long int version_ = 0) = 0;
+                             const unsigned long int version_ = 0) = 0;
 
   };
 
@@ -40,7 +40,7 @@ namespace protobuftools {
 
     /// Special Protobuf deserialization method
     virtual void deprotobufize(protobuftools::message_node & node_,
-                               unsigned long int version_ = 0) = 0;
+                               const unsigned long int version_ = 0) = 0;
 
   };
 

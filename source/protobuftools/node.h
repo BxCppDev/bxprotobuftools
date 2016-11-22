@@ -108,7 +108,7 @@ namespace protobuftools {
     virtual void print(std::ostream & out_ = std::clog,
                        const std::string & title_ = "",
                        const std::string & indent_ = "",
-                       bool inherit_ = false) const;
+                       const bool inherit_ = false) const;
 
   protected:
 

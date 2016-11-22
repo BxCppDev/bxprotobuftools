@@ -3,6 +3,71 @@ package protobuftools;
 
 import "google/protobuf/any.proto";
 
+// Optional variant value of a single type among basic types and
+// registered message types.
+//
+// The `type_id` field is the empty string if the value is not set.
+// This means that the instance has even no default value, conforming
+// the behaviour of the `boost::optional<T>` template class.
+//
+// If the value is a basic type, the `type_id` field can take one
+// of the following values:
+// - "bool"
+// - "int8"
+// - "uint8"
+// - "int16"
+// - "uint16"
+// - "int32"
+// - "uint32"
+// - "int64"
+// - "uint64"
+// - "float"
+// - "double"
+// - "string"
+// In that case, the `xxx_value` is used to encode/decode the correponding C++ basic type.
+// Note that the `sint32_value` is used for values of type `int8`, `int16` or `int32` and
+// the `uint32_value` is used for values of type `uint8`, `uint16` or `uint32`. Other C++
+// types are mapped as usual with the types supproted by the protobuf API.
+//
+// It `type_id` is not empty and not from the above list of basic type identifiers,
+// it thus corresponds to the type identifier of a protocol buffer message. In that
+// special case, the `any_value` is used to pack the message object.
+//
+// This message can be used to (de)serialize instances of type `boost::optional<Type>`
+// where `Type` is one of the built-in integral of floating types of the C++ langage
+// or a class inherited from the `protobuftools::i_protobufable` interface and registered
+//
+// The `protobuftools.SimpleOptional` message does not support enumeration value, nor repeated
+// value fields of any types because it is believed not to be valuable usecases.
+//
+// Example 1:
+//
+// #include <boost/optional.hpp>
+// #include <protobuftools/i_protobufable.hpp>
+// #include <protobuftools/base_type_converters.hpp>
+// #include <protobuftools/boost_optional_converter.hpp>
+//
+// class Foo : public protobuftools::i_protobufable {
+// public:
+//   Foo(const int16_t ival_) : _ival_(ival_) {}
+//   Foo(const int16_t ival_, const double dval_) : _ival_(ival_), _dopt_(dval_) {}
+//   virtual ~Foo() {}
+//   virtual void protobufize(protobuftools::message_node & node_,
+//                            				   unsigned long int version_ = 0) {
+//     node_["ival"] % _ival_;
+//     node_["dopt"] % _dopt_;
+//   }
+// private:
+//   int16_t _ival_;
+//   boost::optional<double> _dopt_;
+// };
+//
+// int main() {
+//   Foo f1(42);
+//   Foo f2(42, 3.14);
+//   return 0;
+// }
+
 message SimpleOptional {
 
   string type_id    = 100;

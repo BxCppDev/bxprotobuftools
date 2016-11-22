@@ -159,6 +159,7 @@ if(BXPROTOBUFTOOLS_WITH_BOOST)
   find_package(Boost 1.60.0
     REQUIRED
     date_time
+    CONFIG
     )
   message( STATUS "Boost found at '${Boost_INCLUDE_DIRS}'")
   message( STATUS "Boost version = '${Boost_VERSION}'")
@@ -205,6 +206,10 @@ foreach(_protofile ${_BxProtobuftools_PROTOSTUB_HEADERS})
     ${_pb_stub_source}
     )
 endforeach()
+list(APPEND
+  BxProtobuftools_HEADERS
+  source/protobuftools/protobuftools_stubs.h
+  )
 
 # - Utilities
 configure_file(source/utilities/bxprotobuftools-query.in
