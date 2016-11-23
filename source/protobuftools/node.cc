@@ -215,6 +215,20 @@ namespace protobuftools {
 
   /* Message node value */
 
+  bool message_node::has_field(const std::string & s_) const
+  {
+    const google::protobuf::Descriptor * descriptor = _message.GetDescriptor();
+    bool found_attribute = false;
+    const google::protobuf::FieldDescriptor * field_desc = nullptr;
+    if (!found_attribute) {
+      // First we try to find a field attribute with name s_:
+      if (::protobuftools::has_field(*descriptor, s_)) {
+        found_attribute = true;
+      }
+    }
+    return found_attribute;
+  }
+
   message_node_value message_node::operator[](const std::string & s_)
   {
     const google::protobuf::Descriptor * descriptor = _message.GetDescriptor();
@@ -226,7 +240,7 @@ namespace protobuftools {
     const google::protobuf::FieldDescriptor * field_desc = nullptr;
     if (!found_attribute) {
       // First we try to find a field attribute with name s_:
-      if (has_field(*descriptor, s_)) {
+      if (::protobuftools::has_field(*descriptor, s_)) {
         found_attribute = true;
         BX_LOG_DEBUG(_logging, "Message '" << descriptor->full_name() << "' "
                      << "has field named : '" << s_ << "'");

@@ -89,6 +89,9 @@ namespace protobuftools {
     /// Access to a node message item with given name
     message_node_value operator[](const std::string & s_);
 
+    /// Check if a node has a field with given name
+    bool has_field(const std::string & s_) const;
+
     /// Check if node is a message field
     bool is_field() const;
 
