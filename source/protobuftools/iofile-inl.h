@@ -10,7 +10,7 @@
 namespace protobuftools {
 
   template<typename T>
-  void load(const std::string & file_, T & data_, uint32_t flags_ = 0)
+  void load(const std::string & file_, T & data_, uint32_t flags_)
   {
     std::ifstream ifs(file_);
     if (ifs.fail()) {
@@ -21,7 +21,7 @@ namespace protobuftools {
   }
 
   template<typename T>
-  void store(const std::string & file_, const T & data_, uint32_t flags_ = 0)
+  void store(const std::string & file_, const T & data_, uint32_t flags_)
   {
     std::ofstream ofs(file_);
     if (ofs.fail()) {
