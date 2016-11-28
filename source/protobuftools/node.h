@@ -162,7 +162,7 @@ namespace protobuftools {
 
   protected:
 
-    T &  _t; ///< Reference to a default value
+    T &  _t;                  ///< Reference to a default value
     bool _need_default_value; ///< Flag set if a default value is needed
 
   };
