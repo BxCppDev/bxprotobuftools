@@ -29,11 +29,8 @@ namespace protobuftools {
     static void protobufize(::protobuftools::message_node & node_,
                             T & x_)
     {
-      if (node_.is_debug()) {
-        std::cerr << "DEBUG: protobuftools::converter<T as i_protobufable>::protobufize(node, T&): "
-                  << "Protobufize a field node..."
-                  << std::endl;
-      }
+      BX_LOG_DEBUG(node_.get_logging(),
+                   "Protobufize a field node with message inherited from 'protobuftools::i_protobufable'...");
       x_.protobufize(node_, 0);
       return;
     }

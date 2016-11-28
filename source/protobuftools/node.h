@@ -20,7 +20,7 @@ namespace protobuftools {
   public:
 
     /// Constructor
-    base_node(const bool serializing_, const logger::priority logging_);
+    base_node(const bool serializing_, const logger::priority logging_ = logger::PRIO_FATAL);
 
     /// Destructor
     virtual ~base_node();
@@ -34,6 +34,9 @@ namespace protobuftools {
     /// Check debug flag
     bool is_trace() const;
 
+    /// Set the logging priority threshold
+    void set_logging(const logger::priority);
+
     /// Return the logging priority threshold
     logger::priority get_logging() const;
 
@@ -43,13 +46,10 @@ namespace protobuftools {
                        const std::string & indent_ = "",
                        bool inherit_ = false) const;
 
-  protected:
-
-    logger::priority _logging = logger::priority::PRIO_FATAL; ///< Logging threshold level
-
   private:
 
-    bool _serializing_; ///< Serialize flag
+    logger::priority _logging_;     ///< Logging threshold level
+    bool             _serializing_; ///< Serializing flag
 
   };
 

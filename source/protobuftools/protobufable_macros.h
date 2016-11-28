@@ -30,5 +30,4 @@ namespace protobuftools {
 } // end of namespace protobuftools
 
 
-
 #endif // BXPROTOBUFTOOLS_PROTOBUFABLE_MACROS_H

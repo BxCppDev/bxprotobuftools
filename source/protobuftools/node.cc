@@ -20,9 +20,9 @@ namespace protobuftools {
 
   base_node::base_node(const bool serializing_, const logger::priority logging_)
     : _serializing_(serializing_)
-    , _logging(logging_)
+    , _logging_(logging_)
   {
-    BX_LOG_DEBUG(logging_, "Construct a " << (serializing_ ? "serializing" : "deserializing") << " base node.");
+    BX_LOG_DEBUG(get_logging(), "Construct a " << (serializing_ ? "serializing" : "deserializing") << " base node.");
     return;
   }
 
@@ -38,17 +38,23 @@ namespace protobuftools {
 
   bool base_node::is_debug() const
   {
-    return logger::is_debug(_logging);
+    return logger::is_debug(_logging_);
   }
 
   bool base_node::is_trace() const
   {
-    return logger::is_trace(_logging);
+    return logger::is_trace(_logging_);
+  }
+
+  void base_node::set_logging(const logger::priority l_)
+  {
+    _logging_ = l_;
+    return;
   }
 
   logger::priority base_node::get_logging() const
   {
-    return _logging;
+    return _logging_;
   }
 
   // virtual
@@ -65,7 +71,7 @@ namespace protobuftools {
          << "Serializing : " << (_serializing_ ? "<yes>": "<no>") << std::endl;
 
     out_ << indent_ << (inherit_ ? "|-- " : "`--")
-         << "Logging : " << _logging << " [debug=" << (is_debug() ? "<yes>": "<no>") << "]" << std::endl;
+         << "Logging : " << _logging_ << " [debug=" << (is_debug() ? "<yes>": "<no>") << "]" << std::endl;
 
     return;
   }
@@ -89,7 +95,7 @@ namespace protobuftools {
     , _field_descriptor(field_descriptor_)
     , _repeated_index_(-1)
   {
-    BX_LOG_DEBUG(logging_, "Construct a " << (serializing_ ? "serializing" : "deserializing")
+    BX_LOG_DEBUG(get_logging(), "Construct a " << (serializing_ ? "serializing" : "deserializing")
                  << " message node of type '" << message_.GetDescriptor()->full_name()
                  << "'" << (field_descriptor_ != nullptr? " with field descriptor named '" : "")
                  << (field_descriptor_ != nullptr? field_descriptor_->name() + "'" : "")
@@ -232,17 +238,17 @@ namespace protobuftools {
   message_node_value message_node::operator[](const std::string & s_)
   {
     const google::protobuf::Descriptor * descriptor = _message.GetDescriptor();
-    BX_LOG_DEBUG(_logging, "Accessing field '" << s_ << "' from message node of type '"
+    BX_LOG_DEBUG(get_logging(), "Accessing field '" << s_ << "' from message node of type '"
                  << descriptor->full_name()
                  << "'");
-    BX_LOG_DEBUG(_logging, "Message type full name : '" << descriptor->full_name() << "'");
+    BX_LOG_DEBUG(get_logging(), "Message type full name : '" << descriptor->full_name() << "'");
     bool found_attribute = false;
     const google::protobuf::FieldDescriptor * field_desc = nullptr;
     if (!found_attribute) {
       // First we try to find a field attribute with name s_:
       if (::protobuftools::has_field(*descriptor, s_)) {
         found_attribute = true;
-        BX_LOG_DEBUG(_logging, "Message '" << descriptor->full_name() << "' "
+        BX_LOG_DEBUG(get_logging(), "Message '" << descriptor->full_name() << "' "
                      << "has field named : '" << s_ << "'");
         field_desc = descriptor->FindFieldByName(s_);
         BX_PROTOBUF_MESSAGE_THROW_IF(field_desc == nullptr,
@@ -254,7 +260,7 @@ namespace protobuftools {
         if (field_desc->message_type() != nullptr && ! field_desc->is_repeated()) {
           // We found a singular field member of type MESSAGE:
           const google::protobuf::Descriptor * msg_desc = field_desc->message_type();
-          BX_LOG_DEBUG(_logging, "Message '" << descriptor->full_name() << "' "
+          BX_LOG_DEBUG(get_logging(), "Message '" << descriptor->full_name() << "' "
                        << "has singular sub message field named : '" << s_ << "' of type '"
                        << msg_desc->full_name() << "'");
           const google::protobuf::Reflection * reflection = _message.GetReflection();
@@ -276,7 +282,7 @@ namespace protobuftools {
         //   return message_node_value(*submsg, submsg_field_desc, is_serializing(), defaultValueNeeded, get_logging());
         } else {
           // Any other case is handled here:
-          BX_LOG_DEBUG(_logging, "Message '" << descriptor->full_name() << "' "
+          BX_LOG_DEBUG(get_logging(), "Message '" << descriptor->full_name() << "' "
                        << "has field named : '" << s_ << "' of type '"
                        << field_desc->full_name() << "'");
           return message_node_value(_message, field_desc, is_serializing(), defaultValueNeeded, get_logging());
