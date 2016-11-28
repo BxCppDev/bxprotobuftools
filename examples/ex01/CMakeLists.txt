@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(bxprotobuftools_ex01 LANGUAGES CXX)
 
+message( STATUS "=======================================")
+message( STATUS "=                                     =")
+message( STATUS "=     BxProtobuftools Example ex01    =")
+message( STATUS "=                                     =")
+message( STATUS "=======================================")
+
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(STATUS "${PROJECT_NAME} requires an out-of-source build.")
   message(STATUS "Please remove these files from ${CMAKE_BINARY_DIR} first:")

@@ -2,10 +2,14 @@
 # FindProtobuf
 # ------------
 #
-# Locate and configure the Google Protocol Buffers library, executable
-# and components.
+# Locate and configure the Google Protocol Buffers includes, libraries, executable
+# and library components.
 #
-# Defines the following variables:
+#
+# Result Variables
+# ^^^^^^^^^^^^^^^^
+#
+# This module will set the following variables in your project::
 #
 # ``PROTOBUF_FOUND``
 #   Found the Google Protocol Buffers library
@@ -25,6 +29,19 @@
 # ``PROTOBUF_LITE_JAR``
 #   The protobuf lite jar file
 # ``PROTOBUF_VERSION_STRING``
+#   The protobuf version string
+# ``PROTOBUF_PROTOC_EXECUTABLE``
+#   The protoc compiler
+#
+# Hints
+# ^^^^^
+#
+# Set ``PROTOBUF_ROOT`` to a directory that contains a Protobuf installation.
+#
+#
+#
+# Cache Variables
+# ^^^^^^^^^^^^^^^
 #
 # The following cache variables are also available to set or use:
 #
@@ -36,13 +53,12 @@
 #   The protobuf lite library
 # ``PROTOBUF_INCLUDE_DIR``
 #   The include directory for protocol buffers
-# ``PROTOBUF_PROTOC_EXECUTABLE``
-#   The protoc compiler
 #
 # Accepts the following variables as input:
 #
 #   PROTOBUF_ROOT - (as a CMake or environment variable)
 #        The root directory of the protobuf install prefix
+#   Protobuf_FIND_COMPONENTS - list of components
 #
 # Possible Components:
 #
@@ -50,31 +66,38 @@
 # ``JavaUtilJar``
 #
 
-### message( STATUS "=====> Entering FindProtobuf.cmake...")
-
-if (PROTOBUF_INCLUDE_DIR)
-  if (NOT PROTOBUF_ROOT)
-    get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
+message( STATUS "=====================================")
+message( STATUS "=                                   =")
+message( STATUS "=    Entering FindProtobuf.cmake    =")
+message( STATUS "=                                   =")
+message( STATUS "=====================================")
+if (NOT PROTOBUF_ROOT)
+  if (PROTOBUF_INCLUDE_DIR)
+     get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
   endif()
-  get_filename_component(PROTOBUF_ROOT_HINT "${PROTOBUF_INCLUDE_DIR}" PATH)
 endif()
-# mark_as_advanced(PROTOBUF_ROOT)
+# if (PROTOBUF_INCLUDE_DIR)
+#   if (NOT PROTOBUF_ROOT)
+#     get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
+#   endif()
+#   get_filename_component(PROTOBUF_ROOT_HINT "${PROTOBUF_INCLUDE_DIR}" PATH)
+# endif()
 
+#message(STATUS "=== DEBUG: PROTOBUF_ROOT='${PROTOBUF_ROOT}'")
 # Find the include directory
 find_path(PROTOBUF_INCLUDE_DIR google/protobuf/message.h
   PATH_SUFFIXES include
-  HINTS ${PROTOBUF_ROOT} ${PROTOBUF_ROOT_HINT}
+  HINTS ${PROTOBUF_ROOT} #${PROTOBUF_ROOT_HINT}
   ENV PROTOBUF_ROOT
   DOC "The Google Protocol Buffers include directory"
-  #NO_DEFAULT_PATH
+  NO_DEFAULT_PATH
   )
-# mark_as_advanced(PROTOBUF_INCLUDE_DIR)
-set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
-
-if(PROTOBUF_INCLUDE_DIR STREQUAL "")
-  message(STATUS "Could not find google/protobuf/message.h in provided pathes, please set either PROTOBUF_ROOT or PROTOBUF_INCLUDE_DIR")
-  set(PROTOBUF_LIBRARIES NOTFOUND)
+#message(STATUS "=== DEBUG: PROTOBUF_INCLUDE_DIR='${PROTOBUF_INCLUDE_DIR}'")
+if (PROTOBUF_INCLUDE_DIR STREQUAL "PROTOBUF_INCLUDE_DIR-NOTFOUND")
+  message(FATAL "Could not find PROTOBUF_INCLUDE_DIR!")
 else()
+  mark_as_advanced(PROTOBUF_INCLUDE_DIR)
+  set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
 
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(_PROTOBUF_ARCH_DIR 64/)
@@ -82,7 +105,7 @@ else()
 
   # Internal function: search for normal library
   function(_protobuf_find_libraries name filename)
-    message( STATUS "FindProtobuf: _protobuf_find_libraries: name='${name}' filename='${filename}'")
+    #message( STATUS "FindProtobuf: _protobuf_find_libraries: name='${name}' filename='${filename}'")
     find_library(${name}_LIBRARY
       NAMES ${filename}
       PATH_SUFFIXES lib lib${_PROTOBUF_ARCH_DIR}
@@ -90,19 +113,21 @@ else()
       ENV PROTOBUF_ROOT
       NO_DEFAULT_PATH
       )
-    # mark_as_advanced(${name}_LIBRARY)
     set(${name}_LIBRARIES     ${${name}_LIBRARY} PARENT_SCOPE)
-    message( STATUS "FindProtobuf: _protobuf_find_libraries: name='${name}_LIBRARIES'")
+    #message( STATUS "FindProtobuf: _protobuf_find_libraries: name='${name}_LIBRARIES'")
   endfunction()
 
   # The Protobuf library
   _protobuf_find_libraries(PROTOBUF protobuf)
+  mark_as_advanced(PROTOBUF_LIBRARY)
 
   # The Protobuf lite library
   _protobuf_find_libraries(PROTOBUF_LITE protobuf-lite)
+  mark_as_advanced(PROTOBUF_LITE_LIBRARY)
 
   # The Protobuf protoc Library
   _protobuf_find_libraries(PROTOBUF_PROTOC protoc)
+  mark_as_advanced(PROTOBUF_PROTOC_LIBRARY)
 
   # Find the protoc Executable
   find_program(PROTOBUF_PROTOC_EXECUTABLE
@@ -113,11 +138,10 @@ else()
     DOC "The Google Protocol Buffers Compiler"
     NO_DEFAULT_PATH
     )
-  # mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
+  mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
-  if(PROTOBUF_FOUND)
-    set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
-  endif()
+  set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
+
   execute_process(
     COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} --version
     COMMAND sed -e "s/libprotoc //g"
@@ -126,19 +150,18 @@ else()
     )
   # message( STATUS "_protobuf_version_string='${_protobuf_version_string}'")
   set(PROTOBUF_VERSION_STRING ${_protobuf_version_string})
-  message( STATUS "FindProtobuf: PROTOBUF_VERSION_STRING='${PROTOBUF_VERSION_STRING}'")
-  # mark_as_advanced(PROTOBUF_VERSION_STRING)
+  mark_as_advanced(PROTOBUF_VERSION_STRING)
+  #message( STATUS "FindProtobuf: PROTOBUF_VERSION_STRING='${PROTOBUF_VERSION_STRING}'")
 endif()
 
-
-message( STATUS "FindProtobuf: Protobuf components='${Protobuf_FIND_COMPONENTS}'")
+# message( STATUS "FindProtobuf: Protobuf components='${Protobuf_FIND_COMPONENTS}'")
 
 if( Protobuf_FIND_COMPONENTS )
   set(PROTOBUF_HAVE_JAVA_JAR 0)
   set(PROTOBUF_HAVE_JAVA_UTIL_JAR 0)
   set(PROTOBUF_HAVE_LITE_JAR 0)
   foreach( component ${Protobuf_FIND_COMPONENTS} )
-    message( STATUS "FindProtobuf: Protobuf component='${component}'")
+    message( STATUS "FindProtobuf: Searching Protobuf component='${component}'...")
     if (component STREQUAL "JavaJar")
       # Find the Java JAR file
       find_file(PROTOBUF_JAVA_JAR
@@ -188,23 +211,38 @@ if( Protobuf_FIND_COMPONENTS )
   endforeach( component )
 endif( Protobuf_FIND_COMPONENTS )
 
+set(PROTOBUF_FOUND 1)
+
+message( STATUS "Summary:")
+message( STATUS "  PROTOBUF_FOUND              = '${PROTOBUF_FOUND}'")
+message( STATUS "  PROTOBUF_INCLUDE_DIR        = '${PROTOBUF_INCLUDE_DIR}'")
+message( STATUS "  PROTOBUF_INCLUDE_DIRS       = '${PROTOBUF_INCLUDE_DIRS}'")
+message( STATUS "  PROTOBUF_LIBRARY            = '${PROTOBUF_LIBRARY}'")
+message( STATUS "  PROTOBUF_PROTOC_LIBRARY     = '${PROTOBUF_PROTOC_LIBRARY}'")
+message( STATUS "  PROTOBUF_LITE_LIBRARY       = '${PROTOBUF_LITE_LIBRARY}'")
+message( STATUS "  PROTOBUF_PROTOC_EXECUTABLE  = '${PROTOBUF_PROTOC_EXECUTABLE}'")
+message( STATUS "  PROTOBUF_ROOT               = '${PROTOBUF_ROOT}'")
+message( STATUS "  PROTOBUF_VERSION_STRING     = '${PROTOBUF_VERSION_STRING}'")
+message( STATUS "  PROTOBUF_JAVA_JAR           = '${PROTOBUF_JAVA_JAR}'")
+message( STATUS "  PROTOBUF_HAVE_JAVA_UTIL_JAR = '${PROTOBUF_HAVE_JAVA_UTIL_JAR}'")
+
+# Include these modules to handle the QUIETLY and REQUIRED arguments.
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Protobuf
+  FOUND_VAR PROTOBUF_FOUND
   REQUIRED_VARS
-  PROTOBUF_LIBRARY
-  PROTOBUF_PROTOC_LIBRARY
-  PROTOBUF_LITE_LIBRARY
+  PROTOBUF_INCLUDE_DIRS
+  PROTOBUF_LIBRARIES
+  PROTOBUF_PROTOC_LIBRARIES
+  PROTOBUF_LITE_LIBRARIES
   PROTOBUF_PROTOC_EXECUTABLE
-  PROTOBUF_INCLUDE_DIR
   VERSION_VAR PROTOBUF_VERSION_STRING)
-
-mark_as_advanced(
-  PROTOBUF_INCLUDE_DIR
-  PROTOBUF_LIBRARY
-  PROTOBUF_PROTOC_LIBRARY
-  PROTOBUF_LITE_LIBRARY
-  PROTOBUF_PROTOC_EXECUTABLE
-  PROTOBUF_ROOT
-)
+set(PROTOBUF_FOUND 1)
+mark_as_advanced(PROTOBUF_ROOT)
+message( STATUS "=====================================")
+message( STATUS "=                                   =")
+message( STATUS "=    Exiting FindProtobuf.cmake     =")
+message( STATUS "=                                   =")
+message( STATUS "=====================================")
 
 # - end

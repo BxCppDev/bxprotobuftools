@@ -14,8 +14,10 @@ types within a buffer.
 
 ```sh
 $ mkdir -p _build.d
+$ cd _build.d
 $ cmake \
-  -DBxProtobuftools_DIR="/path/to/BxProtobuftools/installation/dir" \
+  -DProtobuf_DIR="$(dirname `which protoc`)/../lib" \
+  -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" \
    ..
 $ make
 ```
