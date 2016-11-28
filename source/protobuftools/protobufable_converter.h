@@ -31,7 +31,7 @@ namespace protobuftools {
     {
       BX_LOG_DEBUG(node_.get_logging(),
                    "Protobufize a field node with message inherited from 'protobuftools::i_protobufable'...");
-      x_.protobufize(node_, 0);
+      x_.T::protobufize(node_, 0);
       return;
     }
 
@@ -49,7 +49,7 @@ namespace protobuftools {
   auto _deprotobufize(message_node & node_, T & x_, int)
     -> decltype(x_.deprotobufize(node_, 0))
   {
-    x_.deprotobufize(node_, 0);
+    x_.T::deprotobufize(node_, 0);
     return;
   }
 
@@ -58,7 +58,7 @@ namespace protobuftools {
   auto _deprotobufize(message_node & node_, T & x_, long)
     -> decltype(x_.protobufize(node_, 0))
   {
-    x_.protobufize(node_, 0);
+    x_.T::protobufize(node_, 0);
     return;
   }
 
