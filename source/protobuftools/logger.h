@@ -32,6 +32,8 @@
 //!          prio_ variable supplied to the logging macro could come
 //!          from any relevant source (global, function argument, class
 //!          variable, instance variable and so on).
+//!
+//!          Adapted from the Bayeux/datatools library.
 //
 // Copyright (c) 2016 by Ben Morgan <bmorgan.warwick@gmail.com>
 // Copyright (c) 2016 by The University of Warwick

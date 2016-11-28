@@ -1,4 +1,4 @@
-//! \file    datatools/exception.h
+//! \file    protobuftools/exception.h
 //! \brief   Utility macros for exception handling
 //! \details Exceptions are often thrown based on the value of a boolean
 //!          expression. The exception, if it holds a string based
@@ -8,11 +8,13 @@
 //!          To help developers throwing exceptions in this fashion,
 //!          datatools supplies some macros to assist in simplifying this
 //!          work, and making the intent clearer in code.
+//!
+//!          Adapted from the Bayeux/datatools library.
 //
 // Copyright (c) 2016 by Ben Morgan <bmorgan.warwick@gmail.com>
 // Copyright (c) 2016 by The University of Warwick
 // Copyright (c) 2016 by François Mauger <mauger@lpccaen.in2p3.fr>
-// Copyright (c) 2016 by Univesité de Caen Normandie
+// Copyright (c) 2016 by Université de Caen Normandie
 //
 // This file is part of protobuftools.
 //
@@ -294,6 +296,11 @@ namespace protobuftools {
       sBX_THROW_IF_ONLY << "[" << BOOST_CURRENT_FUNCTION << ":" << __LINE__ << ": " << What << "]"; \
       throw ProtobufMsgFieldExceptionType(ProtobufMsg, ProtobufMsgFieldDesc, sBX_THROW_IF_ONLY.str()); \
     }                                                                   \
+  }
+
+#define BX_PROTOBUF_MESSAGE_FIELD_THROW(ProtobufMsgFieldExceptionType, ProtobufMsg, ProtobufMsgFieldDesc, What) \
+  {                                                                     \
+    BX_PROTOBUF_MESSAGE_FIELD_THROW_IF(true, ProtobufMsgFieldExceptionType, ProtobufMsg, ProtobufMsgFieldDesc, What) \
   }
 
 #endif // BXPROTOBUFTOOLS_EXCEPTION_H
