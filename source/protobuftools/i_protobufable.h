@@ -18,6 +18,9 @@ namespace protobuftools {
     /// Destructor
     virtual ~i_protobufable();
 
+    // /// Return the serialization string identifier of the class
+    // virtual const std::string& get_protobuf_guid() const = 0;
+
     /// Main Protobuf (de-)serialization method
     virtual void protobufize(protobuftools::message_node & node_,
                              const unsigned long int version_ = 0) = 0;

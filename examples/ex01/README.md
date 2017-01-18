@@ -16,11 +16,12 @@ types within a buffer.
 $ mkdir -p _build.d
 $ cd _build.d
 $ cmake \
-  -DProtobuf_DIR="$(dirname `which protoc`)/../lib" \
   -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" \
    ..
 $ make
 ```
+
+# Not needed : -DProtobuf_DIR="$(dirname `which protoc`)/../lib"
 
 ## Run the example:
 

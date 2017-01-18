@@ -88,6 +88,7 @@ namespace protobuftools {
     };
   }
 
+  /// Default implementation of the GUID fetch function
   template<class T>
   inline const char * binded_protobuf_guid() {
     return ext::binded_protobuf_guid_impl<T>::call();
@@ -155,13 +156,21 @@ namespace protobuftools {
 
 } // end of namespace protobuftools
 
-#define BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(T, K) \
+#define BXPROTOBUFTOOLS_TYPE_BIND_TO_REGISTERED_PROTOBUF(T, K)  \
   namespace protobuftools {                                     \
     template<>                                                  \
     inline const char * binded_protobuf_guid< T >(){            \
       return K;                                                 \
     }                                                           \
   } /* protobuftools */                                         \
+  /**/
+
+#define BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(T, K) \
+  BXPROTOBUFTOOLS_TYPE_BIND_TO_REGISTERED_PROTOBUF(T,K)         \
+  /**/
+
+#define BXPROTOBUFTOOLS_ENUM_BIND_TO_REGISTERED_PROTOBUF(T, K) \
+  BXPROTOBUFTOOLS_TYPE_BIND_TO_REGISTERED_PROTOBUF(T,K)        \
   /**/
 
 #endif // BXPROTOBUFTOOLS_PROTOBUF_UTILS_H

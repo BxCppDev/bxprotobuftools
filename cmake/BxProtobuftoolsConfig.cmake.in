@@ -63,7 +63,7 @@ set(BxProtobuftools_DEFINITIONS -std=c++11)
 # - Load Custom Modules
 list(INSERT CMAKE_MODULE_PATH 0 "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR@/cmake/Modules")
 set(PROTOBUF_ROOT @PROTOBUF_ROOT@)
-#message(STATUS "BxProtobuftoolsConfig === DEBUG: PROTOBUF_ROOT='${PROTOBUF_ROOT}'")
+# message(STATUS "BxProtobuftoolsConfig === DEBUG: PROTOBUF_ROOT='${PROTOBUF_ROOT}'")
 find_package(Protobuf 3.0 REQUIRED MODULE)
 
 list(APPEND BxProtobuftools_INCLUDE_DIRS
@@ -72,15 +72,21 @@ list(APPEND BxProtobuftools_INCLUDE_DIRS
 
 # - Boost
 if (BxProtobuftools_WITH_BOOST)
-  set(Boost_NO_BOOST_CMAKE ON)
-  find_package(Boost 1.60
-    REQUIRED
-    date_time
-    CONFIG
-    # NO_MODULE
-    PATHS @Boost_DIR@
-    # NO_DEFAULT_PATH
-    )
+  if (NOT Boost_FOUND)
+    # Only if Boost has not been found yet:
+    set(Boost_NO_BOOST_CMAKE ON)
+    find_package(Boost 1.60
+      REQUIRED
+      date_time
+      CONFIG
+      PATHS @Boost_DIR@
+      )
+  else()
+    message(STATUS "BxProtobuftools: Boost_LIB_VERSION='${Boost_LIB_VERSION}'")
+    if ("${Boost_LIB_VERSION}" VERSION_LESS "1.60")
+      message(FATAL "BxProtobuftools: Incompatible Boost version!")
+    endif()
+  endif()
 endif()
 
 #-----------------------------------------------------------------------
