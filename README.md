@@ -24,8 +24,13 @@ server) for the SuperNEMO experiment.
 ## Dependencies and inspiration
 
 bxprotobuftools depends on the Google Protocol Buffers library:
-* the Google Protocol Buffers library (https://developers.google.com/protocol-buffers/)
-* the Boost C++ library (http://www.boost.org/) (optional)
+* the Google Protocol Buffers library version 3.0.0 (https://developers.google.com/protocol-buffers/)
+
+  Note: bxprotobuftools provides its own ``FindProtobuf.cmake`` CMake script because
+  the one provided by CMake 3.5 (``/usr/share/cmake-3.5/Modules/FindProtobuf.cmake``) does
+  not suit our needs.
+
+* the Boost C++ library (http://www.boost.org/) (optional, activated by default and mandatory for SuperNEMO software)
 
 It is inspired by a former related work:
 * ``Bayeux/Jsontools`` (https://github.com/fmauger/bxjsontools)

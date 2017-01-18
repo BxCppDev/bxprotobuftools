@@ -21,8 +21,6 @@ $ cmake \
 $ make
 ```
 
-# Not needed : -DProtobuf_DIR="$(dirname `which protoc`)/../lib"
-
 ## Run the example:
 
 ```sh
