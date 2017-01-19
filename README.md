@@ -13,7 +13,7 @@ software).
 This is a very preliminary work, not ready for production yet...
 Some documentation and examples are still needed too.
 
-bxjsontools  has been  initiated  in the  framework  of the  SuperNEMO
+bxprotobuftools  has been  initiated  in the  framework  of the  SuperNEMO
 physics experiment software.
 
 **Note for SuperNEMO users**:
