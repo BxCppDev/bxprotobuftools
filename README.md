@@ -70,19 +70,21 @@ Make sure you have a proper installation of the Google Protocol Buffer
 (C++)  library version  3.0.0 and  companion tools  (``protoc``).  You
 must also have an installation of the Boost library.
 
-For  SuperNEMO users  only:
+**Note for SuperNEMO users:**
 
 The SuperNEMO experiment data  processing and simulation software uses
 Cadfaelbrew    (https://github.com/SuperNEMO-DBD/cadfaelbrew)    which
-provides some core software tools  and libraries (C++ compiler, Boost, GSL,
-ROOT libraries...).  Before to build and install BxProtobuftools, you must
-switch to a brew shell before:
+provides some core software tools  and libraries (C++ compiler, Boost,
+GSL, ROOT libraries...).  Before to build and install BxProtobuftools,
+you must switch to a brew shell before:
+
 ```sh
 $ brew sh
 ```
 
-We assume here that you want to install ``bxprotobuftools`` from
-your home directory:
+We assume  here that you  want to install ``bxprotobuftools``  in your
+home directory:
+
 ```sh
 $ mkdir -p /tmp/${USER}/bxprotobuftools/_build.d/
 $ cd  /tmp/${USER}/bxprotobuftools/_build.d/
@@ -95,7 +97,8 @@ $ make
 $ make test
 $ make install
 ```
-Note the use of the ``PROTOBUF_ROOT`` and ``Boost_DIR`` variables to
+
+Note the use  of the ``PROTOBUF_ROOT`` and  ``Boost_DIR`` variables to
 help CMake to find the Protobuf and Boost dependee libraries.
 
 
@@ -202,9 +205,10 @@ $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 
 
 
-## TODO:
+## To do:
 
-* Add support for ``boost::variant`` template class mapped to some *oneof* fields (is it possible?).
 * Add ``converter`` template class for ``std::map`` container with simple layout.
-* Add ``converter`` template class for a few useful ``boost::date_time`` classes mapped using the
-   ``google.protobuf.Timestamp`` message.
+* Add  ``converter`` template  class  for a  few  useful classes  from
+   ``boost::date_time`` mapped using the ``google.protobuf.Timestamp``
+   message.
+* Add support for ``boost::variant`` template class mapped to some *oneof* fields (is it possible?).
