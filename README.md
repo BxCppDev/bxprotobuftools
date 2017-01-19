@@ -13,12 +13,14 @@ software).
 This is a very preliminary work, not ready for production yet...
 Some documentation and examples are still needed too.
 
-For SuperNEMO users only:
+bxjsontools  has been  initiated  in the  framework  of the  SuperNEMO
+physics experiment software.
 
-Protobuf based serialization will be used  by the Vire C++ library for
-communication between C++ implemented services, Java based Control and
-Monitoring  System  (CMS)  servers  and  external  services  (RabbitMQ
-server) for the SuperNEMO experiment.
+**Note for SuperNEMO users**:
+
+Protobuf  based serialization  is used  by  the Vire  C++ library  for
+communication between C++ and Java implemented services related to the
+Control and Monitoring  System  (CMS)  of the SuperNEMO experiment.
 
 
 ## Dependencies and inspiration
@@ -26,14 +28,14 @@ server) for the SuperNEMO experiment.
 bxprotobuftools depends on the Google Protocol Buffers library:
 * the Google Protocol Buffers library version 3.0.0 (https://developers.google.com/protocol-buffers/)
 
-  Note: bxprotobuftools provides its own ``FindProtobuf.cmake`` CMake script because
+  **Note:** bxprotobuftools provides its own ``FindProtobuf.cmake`` CMake script because
   the one provided by CMake 3.5 (``/usr/share/cmake-3.5/Modules/FindProtobuf.cmake``) does
   not suit our needs.
 
 * the Boost C++ library 1.60 (http://www.boost.org/) (optional, activated by default and mandatory for SuperNEMO software)
 
 It is inspired by a former related work:
-* ``Bayeux/Jsontools`` (https://github.com/fmauger/bxjsontools)
+* ``Bayeux/Jsontools`` (https://github.com/BxCppDev/bxjsontools)
 
 Needed tools and software (tested on Ubuntu 16.04 LTS):
 * You need CMake version >= 2.8 (former version may work)
@@ -48,16 +50,13 @@ See the ``LICENSE.txt`` file.
 ## Build and install:
 
 The  following  instructions  illustrate  how  to  build  and  install
-bxprotobuftools on a Linux system (Ubuntu  16.04 LTS). It should be easy
-to adapt for a MacOS X system.
+bxprotobuftools on  a Linux  system (Ubuntu 16.04  LTS). It  should be
+easy to adapt for a MacOS X system.
 
 CMake options:
-
 * ``BXPROTOBUFTOOLS_WITH_BOOST`` (default: ``ON``) : interface with some part(s)
   of the Boost C++ library.
 * ``BXPROTOBUFTOOLS_ENABLE_TESTING`` (default: ``ON``) : builds the test program(s).
-
-
 
 ### Download the source code from GitHub:
 ```sh
