@@ -40,7 +40,7 @@ It is inspired by a former related work:
 Needed tools and software (tested on Ubuntu 16.04 LTS):
 * You need CMake version >= 2.8 (former version may work)
 * You need gcc version >= 4.8.4 (former version may work)
-* By default, some bxprotobuftools' parts depends on Boost 1.60 (former version may work).
+* Some parts of bxprotobuftools may depend on Boost 1.60 (former version may work). This can be inhibited at configuration (see 'CMake options' below).
 
 ## License:
 
