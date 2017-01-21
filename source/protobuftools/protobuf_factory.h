@@ -16,6 +16,9 @@
 // - Protocol Buffers:
 #include <google/protobuf/message.h>
 
+// This project:
+#include <protobuftools/logger.h>
+
 namespace protobuftools {
 
   //! \brief Factory of protobuf message instances
@@ -33,6 +36,12 @@ namespace protobuftools {
 
     //! Destructor
     ~protobuf_factory();
+
+    //! Set logging priority
+    void set_logging(const logger::priority);
+
+    //! Return logging priority
+    logger::priority get_logging() const;
 
     //! Check if a factory function exists in the registry
     bool has_factory_function(const std::string & name_) const;
@@ -55,6 +64,7 @@ namespace protobuftools {
 
   private:
 
+    logger::priority _logging_; ///< Logging priority
     std::map<std::string, message_factory_type> _factory_function_registry_; ///< The registry of factory function
 
   };
@@ -74,13 +84,9 @@ namespace protobuftools {
     //! Return the registered class name
     const std::string & get_classname() const;
 
-    // const std::map<std::string, base_protobuf_factory_registrar *> & registrars();
-
    private:
 
     std::string _classname_; //!< The registration type unique identifier of the auto-registered class
-
-    // static std::map<std::string, base_protobuf_factory_registrar *> _registrars_;
 
   };
 

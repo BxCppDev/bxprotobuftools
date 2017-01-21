@@ -1,16 +1,31 @@
 // Ourselves:
 #include <protobuftools/protobuf_factory.h>
 
+// This project:
+#include <protobuftools/logger_macros.h>
+
 namespace protobuftools {
 
   protobuf_factory::protobuf_factory()
   {
+    _logging_ = logger::PRIO_FATAL;
     return;
   }
 
   protobuf_factory::~protobuf_factory()
   {
     return;
+  }
+
+  void protobuf_factory::set_logging(const logger::priority p_)
+  {
+    _logging_ = p_;
+    return;
+  }
+
+  logger::priority protobuf_factory::get_logging() const
+  {
+    return _logging_;
   }
 
   bool protobuf_factory::has_factory_function(const std::string & name_) const
@@ -34,15 +49,25 @@ namespace protobuftools {
   std::shared_ptr<protobuf_factory::message_type>
   protobuf_factory::create_message_instance(const std::string & name_)
   {
+    std::shared_ptr<message_type> sh;
     google::protobuf::Message * instance = nullptr;
     auto it = _factory_function_registry_.find(name_);
     if (it != _factory_function_registry_.end()) {
+      BX_LOG_DEBUG(_logging_, "Found factory named '" << name_ << "'");
       instance = it->second();
+      BX_LOG_DEBUG(_logging_, "Instance = [@" << std::hex << instance << "]");
+    } else {
+      BX_LOG_ERROR(_logging_, "Cannot found factory named '" << name_ << "'!");
     }
     if (instance != nullptr) {
-      return std::shared_ptr<message_type>(instance);
+      sh.reset(instance);
     }
-    return nullptr;
+    if (sh.get() == nullptr) {
+      BX_LOG_DEBUG(_logging_, "Null ptr...");
+    } else {
+      BX_LOG_DEBUG(_logging_, "Ptr @ " << sh.get());
+    }
+    return sh;
   }
 
   // static
@@ -57,6 +82,7 @@ namespace protobuftools {
     if (!title_.empty()) {
       out_ << title_ << ' ' << std::endl;
     }
+    out_ << "|-- Logging priority: '" << logger::get_priority_label(_logging_) << "'" << std::endl;
     out_ << "|-- Number of registered message factories: "
          << _factory_function_registry_.size() << std::endl;
     std::size_t count = 0;
