@@ -62,22 +62,25 @@ CMake options:
 
 ### Note on Boost:
 
-bxprotobuftools implements some specific  Protobuf serialization support for a
-few Boost classes of interest (implies Boost 1.58 dependency):
+bxprotobuftools  implements   some  specific   Protobuf  serialization
+support  for a  few  Boost  classes of  interest  (implies Boost  1.58
+dependency):
 
-In  principle  bxprotobuftools   can  build  both  with   a  system  Boost
+In  principle  bxprotobuftools can  build  both  with a  system  Boost
 installation (version  1.58 on Ubuntu  16.04 resolved by  the standard
 ``FindBoost.cmake`` script  using the ``find_package``  *MODULE* mode)
-or with  a Boost  installation provided  by Cadfaelbrew  (version 1.60
+or with a  Boost installation provided by  Cadfaelbrew (version >=1.60
 resolved  from  a  dedicated ``BoostConfig.cmake``  script  using  the
 ``find_package`` *CONFIG* mode).
 
 ### Download the source code from GitHub:
+
 ```sh
 $ mkdir -p /tmp/${USER}/bxprotobuftools/_source.d/
 $ cd /tmp/${USER}/bxprotobuftools/_source.d/
 $ git clone https://github.com/BxCppDev/bxprotobuftools.git
 ```
+
 ### Build the library from a dedicated directory:
 
 Make sure you have a proper installation of the Google Protocol Buffer
@@ -110,39 +113,45 @@ $ make test
 $ make install
 ```
 
-Note the use  of the ``PROTOBUF_ROOT`` variable to
-help CMake to find the Protobuf dependee libraries.
+Note the use  of the ``PROTOBUF_ROOT`` variable to help  CMake to find
+the Protobuf dependee libraries.
 
 ## Using bxprotobuftools:
 
-* The ``bxprotobuftools-query`` utility allows you to fetch informations about your
-  BxProtobuftools installation. You may add the following typical line in your
-  ``~/.bashrc`` profile:
+* The   ``bxprotobuftools-query``   utility   allows  you   to   fetch
+  informations about  your BxProtobuftools  installation. You  may add
+  the following typical line in your ``~/.bashrc`` profile:
 
 ```sh
 export PATH="/tmp/${USER}/bxprotobuftools/_install.d/bin:${PATH}"
 ```
 
-This will give you access to the ``bxprotobuftools-query`` command-line utility:
+This   will  give   you   access   to  the   ``bxprotobuftools-query``
+command-line utility:
 
 ```sh
 $ bxprotobuftools-query --help
 ```
 
-* CMake  configuration  scripts (i.e. ``BxProtobuftoolsConfig.cmake`` and ``BxProtobuftoolsConfigVersion.cmake``) are provided for client
-  software. The CMake ``find_package(BxProtobuftools REQUIRED CONFIG)`` command can be given
-  the following variable to find the BxProtobuftools installation on your system:
+* CMake  configuration  scripts (i.e.  ``BxProtobuftoolsConfig.cmake``
+  and ``BxProtobuftoolsConfigVersion.cmake``) are  provided for client
+  software.   The    CMake   ``find_package(BxProtobuftools   REQUIRED
+  CONFIG)`` command  can be given  the following variable to  find the
+  BxProtobuftools installation on your system:
 
 ```sh
 $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 ```
-* There is  a simple example  ``ex01`` that illustrates a  very simple usecase.
 
+* There is  a simple example  ``ex01`` that illustrates a  very simple
+  usecase.
 
 ## To do:
 
-* Add ``converter`` template class for ``std::map`` container with simple types (ints, strings...).
+* Add  ``converter`` template  class for  ``std::map`` container  with
+  simple types (ints, strings...).
 * Add  ``converter`` template  class  for a  few  useful classes  from
    ``boost::date_time`` mapped using the ``google.protobuf.Timestamp``
    message.
-* Add support for ``boost::variant`` template class mapped to some *oneof* fields (is it possible?).
+* Add  support for  ``boost::variant`` template  class mapped  to some
+  *oneof* fields (is it possible?).
