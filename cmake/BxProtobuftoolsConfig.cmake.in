@@ -1,9 +1,11 @@
 # - Config file for the Protobuftools package
 # It defines the following variables
-#  BxProtobuftools_INCLUDE_DIRS - include directories for Bayeux/Protobuftools
-#  BxProtobuftools_DEFINITIONS  - compile definitions needed to use Bayeux/Protobuftools
-#  BxProtobuftools_LIBRARIES    - libraries to link against
-#  BxProtobuftools_WITH_BOOST   - implements support for some Boost classes
+#  BxProtobuftools_DEFINITIONS   - compile definitions needed to use Bayeux/Protobuftools
+#  BxProtobuftools_INCLUDE_DIRS  - include directories for Bayeux/Protobuftools
+#  BxProtobuftools_LIBRARIES     - libraries to link against
+#  BxProtobuftools_BOOST_VERSION - Boost version
+#  BxProtobuftools_PROTOBUF_VERSION - Protobuf version
+#  BxProtobuftools_PROTOBUF_ROOT    - Protobuf installation root directory
 #
 
 #----------------------------------------------------------------------
@@ -21,83 +23,77 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
+message( STATUS "[info] BxProtobuftoolsConfig: Entering")
+
 #-----------------------------------------------------------------------
 # Locate ourselves, since all our config files should have been installed
 # alongside us...
 #
-message( STATUS "========================================")
-message( STATUS "=                                      =")
-message( STATUS "= Entering BxProtobuftoolsConfig.cmake =")
-message( STATUS "=                                      =")
-message( STATUS "========================================")
 get_filename_component(__bxprotobuftools_config_dir "${CMAKE_CURRENT_LIST_FILE}" PATH)
-message(STATUS "BxProtobuftools CMake config in '${__bxprotobuftools_config_dir}'")
+message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools CMake config in '${__bxprotobuftools_config_dir}'")
+
+# - Boost
+set(BxProtobuftools_BOOST_VERSION    @BxProtobuftools_BOOST_VERSION@)
+set(BxProtobuftools_BOOST_COMPONENTS @BXPROTOBUFTOOLS_BOOST_COMPONENTS@)
+set(BxProtobuftools_BOOST_CONFIG     @Boost_USE_CONFIG@)
+if (BxProtobuftools_BOOST_CONFIG)
+  # CONFIG: from Cadfaelbrew
+  message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'CONFIG' mode...")
+  # set(Boost_DIR ${BxProtobuftools_BOOST_DIR})
+  find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
+    REQUIRED
+    ${BxProtobuftools_BOOST_COMPONENTS}
+    CONFIG
+    )
+else()
+  # MODULE: from CMake
+  message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
+  find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
+    REQUIRED
+    ${BxProtobuftools_BOOST_COMPONENTS}
+    )
+endif()
+message(STATUS "[info] BxProtobuftoolsConfig: Found Boost version ${Boost_VERSION}")
+
+# - Protobuf
+set(BxProtobuftools_PROTOBUF_VERSION @PROTOBUF_VERSION_STRING@)
+set(BxProtobuftools_PROTOBUF_ROOT    @PROTOBUF_ROOT@)
+# - Load Custom Modules
+list(INSERT CMAKE_MODULE_PATH 0 "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR@/cmake/Modules")
+set(PROTOBUF_ROOT ${BxProtobuftools_PROTOBUF_ROOT})
+message(STATUS "[debug] BxProtobuftoolsConfig: PROTOBUF_ROOT = '${PROTOBUF_ROOT}'")
+message(STATUS "[debug] BxProtobuftoolsConfig: Searching Protobuf version ${BxProtobuftools_PROTOBUF_VERSION} from '${PROTOBUF_ROOT}'...")
+set(Protobuf_FIND_COMPONENTS "JavaJar;JavaUtilJar")
+find_package(Protobuf ${BxProtobuftools_PROTOBUF_VERSION} REQUIRED
+  MODULE
+  COMPONENTS @Protobuf_FIND_COMPONENTS@
+  )
 
 #-----------------------------------------------------------------------
 # Build option
-set(BxProtobuftools_WITH_BOOST @BXPROTOBUFTOOLS_WITH_BOOST@)
-message(STATUS "BxProtobuftools_WITH_BOOST = '${BxProtobuftools_WITH_BOOST}'")
+set(BxProtobuftools_DEFINITIONS @BXPROTOBUFTOOLS_DEFINITIONS@)
+message(STATUS "[info] BxProtobuftoolsConfig: BxJsontools_DEFINITIONS = '${BxProtobuftools_DEFINITIONS}'")
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS ${BxProtobuftools_DEFINITIONS})
+endif()
 
 #-----------------------------------------------------------------------
 # Hard code paths to headers
 #
 
 set(BxProtobuftools_INCLUDE_DIR "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR@")
-
 mark_as_advanced(BxProtobuftools_INCLUDE_DIR)
+
 set(BxProtobuftools_INCLUDE_DIRS
   "${BxProtobuftools_INCLUDE_DIR}"
   "${BxProtobuftools_INCLUDE_DIR}/bayeux"
-  "${BxProtobuftools_INCLUDE_DIR}/bayeux/proto")
-
-#-----------------------------------------------------------------------
-if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS -std=c++11)
-endif()
-set(BxProtobuftools_DEFINITIONS -std=c++11)
+  "${BxProtobuftools_INCLUDE_DIR}/bayeux/proto"
+  ${PROTOBUF_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+)
 
 #-----------------------------------------------------------------------
 # Handle paths/targets for third party deps here...
-
-# - Protobuf
-# - Load Custom Modules
-list(INSERT CMAKE_MODULE_PATH 0 "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR@/cmake/Modules")
-set(PROTOBUF_ROOT @PROTOBUF_ROOT@)
-# message(STATUS "BxProtobuftoolsConfig === DEBUG: PROTOBUF_ROOT='${PROTOBUF_ROOT}'")
-find_package(Protobuf 3.0 REQUIRED MODULE)
-
-list(APPEND BxProtobuftools_INCLUDE_DIRS
-  ${PROTOBUF_INCLUDE_DIRS}
-  )
-
-# - Boost
-if (BxProtobuftools_WITH_BOOST)
-  if (NOT Boost_FOUND)
-    # Only if Boost has not been found yet:
-    set(Boost_NO_BOOST_CMAKE ON)
-    find_package(Boost 1.60
-      REQUIRED
-      date_time
-      CONFIG
-      PATHS @Boost_DIR@
-      )
-  else()
-    message(STATUS "BxProtobuftools: Boost_LIB_VERSION='${Boost_LIB_VERSION}'")
-    if ("${Boost_LIB_VERSION}" VERSION_LESS "1.60")
-      message(FATAL "BxProtobuftools: Incompatible Boost version!")
-    endif()
-  endif()
-endif()
-
-#-----------------------------------------------------------------------
-# Append third party include directories to Protobuftools's so exposed
-# headers are visible
-#
-if (BxProtobuftools_WITH_BOOST)
-  list(APPEND BxProtobuftools_INCLUDE_DIRS
-    ${Boost_INCLUDE_DIRS}
-    )
-endif()
 
 #-----------------------------------------------------------------------
 # Include the file listing all the imported targets.
@@ -108,27 +104,20 @@ if(NOT BxProtobuftools_TARGETS_LOADED)
   set(BxProtobuftools_TARGETS_LOADED 1)
 endif()
 
-# - Protobuftools itself
+# - BxProtobuftools itself
 set(BxProtobuftools_LIBRARY Bayeux_protobuftools CACHE FILE "BxProtobuftools library (imported)")
+mark_as_advanced(BxProtobuftools_LIBRARY)
+
 set(BxProtobuftools_LIBRARIES
   ${BxProtobuftools_LIBRARY}
   ${PROTOBUF_LIBRARIES}
+  ${Boost_DATE_TIME_LIBRARY}
   )
-if (BxProtobuftools_WITH_BOOST)
-  list(APPEND BxProtobuftools_LIBRARIES
-    ${Boost_DATE_TIME_LIBRARY}
-    )
-endif()
-mark_as_advanced(BxProtobuftools_LIBRARY)
 
-message(STATUS "BxProtobuftools_INCLUDE_DIRS = '${BxProtobuftools_INCLUDE_DIRS}'")
-message(STATUS "BxProtobuftools_DEFINITIONS  = '${BxProtobuftools_DEFINITIONS}'")
-message(STATUS "BxProtobuftools_LIBRARIES    = '${BxProtobuftools_LIBRARIES}'")
+message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_DEFINITIONS  = '${BxProtobuftools_DEFINITIONS}'")
+message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_INCLUDE_DIRS = '${BxProtobuftools_INCLUDE_DIRS}'")
+message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_LIBRARIES    = '${BxProtobuftools_LIBRARIES}'")
 
-message( STATUS "=======================================")
-message( STATUS "=                                     =")
-message( STATUS "= Exiting BxProtobuftoolsConfig.cmake =")
-message( STATUS "=                                     =")
-message( STATUS "=======================================")
+message(STATUS "[info] BxProtobuftoolsConfig: Exiting.")
 
 # - end

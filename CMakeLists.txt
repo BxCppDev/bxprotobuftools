@@ -1,6 +1,6 @@
 # - Top level CMakeLists.txt for Bayeux/Protobuftools C++ library
 
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 project(bxprotobuftools LANGUAGES CXX)
 
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -37,23 +37,26 @@ foreach(_dir BINDIR LIBDIR INCLUDEDIR DATAROOTDIR)
 endforeach()
 
 # Add a path for CMake config files
-set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR}/cmake)
+set(CMAKE_INSTALL_CMAKEDIR      ${CMAKE_INSTALL_LIBDIR}/cmake)
 set(CMAKE_INSTALL_FULL_CMAKEDIR ${CMAKE_INSTALL_FULL_LIBDIR}/cmake)
 
 # Resources directories based on name-version subdirs
-set(BXPROTOBUFTOOLS_TAG "BxProtobuftools-${BxProtobuftools_VERSION}")
-file(RELATIVE_PATH BXPROTOBUFTOOLS_BINDIR_TO_RESOURCEDIR "${CMAKE_INSTALL_FULL_BINDIR}" "${CMAKE_INSTALL_FULL_DATAROOTDIR}/${BXPROTOBUFTOOLS_TAG}")
-file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR "${CMAKE_INSTALL_FULL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}"  "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
-file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR "${CMAKE_INSTALL_FULL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}"  "${CMAKE_INSTALL_FULL_DATAROOTDIR}/${BXPROTOBUFTOOLS_TAG}")
-# message( STATUS "BXPROTOBUFTOOLS_TAG='${BXPROTOBUFTOOLS_TAG}'")
-# message( STATUS "CMAKE_INSTALL_INCLUDEDIR='${CMAKE_INSTALL_INCLUDEDIR}'")
-# message( STATUS "CMAKE_INSTALL_BINDIR='${CMAKE_INSTALL_BINDIR}'")
-# message( STATUS "CMAKE_INSTALL_LIBDIR='${CMAKE_INSTALL_LIBDIR}'")
-# message( STATUS "CMAKE_INSTALL_CMAKEDIR='${CMAKE_INSTALL_CMAKEDIR}'")
-# message( STATUS "CMAKE_INSTALL_DATAROOTDIR='${CMAKE_INSTALL_DATAROOTDIR}'")
-
-option(BXPROTOBUFTOOLS_WITH_BOOST "Build Bayeux/protobuftools with Boost support" ON)
-mark_as_advanced(BXPROTOBUFTOOLS_WITH_BOOST)
+set(BxProtobuftools_TAG "BxProtobuftools-${BxProtobuftools_VERSION}")
+file(RELATIVE_PATH BXPROTOBUFTOOLS_BINDIR_TO_RESOURCEDIR
+  "${CMAKE_INSTALL_FULL_BINDIR}"
+  "${CMAKE_INSTALL_FULL_DATAROOTDIR}/${BxProtobuftools_TAG}"
+  )
+file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR
+  "${CMAKE_INSTALL_FULL_CMAKEDIR}/${BxProtobuftools_TAG}"
+  "${CMAKE_INSTALL_FULL_INCLUDEDIR}"
+  )
+file(RELATIVE_PATH BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR
+  "${CMAKE_INSTALL_FULL_CMAKEDIR}/${BxProtobuftools_TAG}"
+  "${CMAKE_INSTALL_FULL_DATAROOTDIR}/${BxProtobuftools_TAG}"
+  )
+message(STATUS "[info] BXPROTOBUFTOOLS_BINDIR_TO_RESOURCEDIR   = '${BXPROTOBUFTOOLS_BINDIR_TO_RESOURCEDIR}'")
+message(STATUS "[info] BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR  = '${BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR}'")
+message(STATUS "[info] BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR = '${BXPROTOBUFTOOLS_CMAKEDIR_TO_RESOURCEDIR}'")
 
 # - Publish headers
 configure_file(source/protobuftools/version.h.in ${PROJECT_BINARY_DIR}/source/protobuftools/version.h @ONLY)
@@ -68,7 +71,7 @@ function(make_base_numeric_converter cpptype_ GUARDTAG_ pbtype_ PBTYPE_ Pbtype_ 
   set(_pbtype   ${pbtype_})
   set(_PBTYPE   ${PBTYPE_})
   set(_Pbtype   ${Pbtype_})
-  message( STATUS "Generating converter header for C++ type ${cpptype_}...")
+  message( STATUS "[info] Generating converter header for C++ type ${cpptype_}...")
   configure_file(source/protobuftools/_base_numeric_converter.h.in
     ${PROJECT_BINARY_DIR}/source/protobuftools/${outfile_} @ONLY)
 endfunction()
@@ -132,51 +135,73 @@ set(BxProtobuftools_SOURCES
   source/protobuftools/protobuf_factory.cc
   )
 
-find_package(Protobuf 3.0 REQUIRED)
+set(BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION 3.0)
+message( STATUS "[info] Searching for Protobuf library version >= ${BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION}...")
+set(Protobuf_FIND_COMPONENTS "JavaJar" "JavaUtilJar")
+message( STATUS "[info]   with components = ${Protobuf_FIND_COMPONENTS}")
+find_package(Protobuf ${BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION} REQUIRED COMPONENTS "${Protobuf_FIND_COMPONENTS}")
 if (PROTOBUF_FOUND)
-  message( STATUS "Found the Protobuf library:")
-  message( STATUS "  PROTOBUF_FOUND            ='${PROTOBUF_FOUND}'")
-  message( STATUS "  PROTOBUF_ROOT             ='${PROTOBUF_ROOT}'")
-  message( STATUS "  PROTOBUF_VERSION_STRING   ='${PROTOBUF_VERSION_STRING}'")
-  message( STATUS "  PROTOBUF_INCLUDE_DIRS     ='${PROTOBUF_INCLUDE_DIRS}'")
-  message( STATUS "  PROTOBUF_LIBRARIES        ='${PROTOBUF_LIBRARIES}'")
-  message( STATUS "  PROTOBUF_PROTOC_LIBRARIES ='${PROTOBUF_PROTOC_LIBRARIES}'")
-  message( STATUS "  PROTOBUF_LITE_LIBRARIES   ='${PROTOBUF_LITE_LIBRARIES}'")
-  message( STATUS "  PROTOBUF_LIBRARY          ='${PROTOBUF_LIBRARY}'")
-  message( STATUS "  PROTOBUF_PROTOC_LIBRARY   ='${PROTOBUF_PROTOC_LIBRARY}'")
-  message( STATUS "  PROTOBUF_INCLUDE_DIR      ='${PROTOBUF_INCLUDE_DIR}'")
-  message( STATUS "  PROTOBUF_PROTOC_EXECUTABLE='${PROTOBUF_PROTOC_EXECUTABLE}'")
+  message( STATUS "[info] Found the Protobuf library:")
+  message( STATUS "[info]   PROTOBUF_FOUND             ='${PROTOBUF_FOUND}'")
+  message( STATUS "[info]   PROTOBUF_ROOT              ='${PROTOBUF_ROOT}'")
+  message( STATUS "[info]   PROTOBUF_VERSION_STRING    ='${PROTOBUF_VERSION_STRING}'")
+  message( STATUS "[info]   PROTOBUF_INCLUDE_DIRS      ='${PROTOBUF_INCLUDE_DIRS}'")
+  message( STATUS "[info]   PROTOBUF_LIBRARIES         ='${PROTOBUF_LIBRARIES}'")
+  message( STATUS "[info]   PROTOBUF_PROTOC_LIBRARIES  ='${PROTOBUF_PROTOC_LIBRARIES}'")
+  message( STATUS "[info]   PROTOBUF_LITE_LIBRARIES    ='${PROTOBUF_LITE_LIBRARIES}'")
+  message( STATUS "[info]   PROTOBUF_LIBRARY           ='${PROTOBUF_LIBRARY}'")
+  message( STATUS "[info]   PROTOBUF_PROTOC_LIBRARY    ='${PROTOBUF_PROTOC_LIBRARY}'")
+  message( STATUS "[info]   PROTOBUF_INCLUDE_DIR       ='${PROTOBUF_INCLUDE_DIR}'")
+  message( STATUS "[info]   PROTOBUF_PROTOC_EXECUTABLE ='${PROTOBUF_PROTOC_EXECUTABLE}'")
+  message( STATUS "[info]   PROTOBUF_JAVA_JAR          ='${PROTOBUF_JAVA_JAR}'")
+  message( STATUS "[info]   PROTOBUF_JAVA_UTIL_JAR     ='${PROTOBUF_JAVA_UTIL_JAR}'")
 endif()
 
+# return()
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 
-if(BXPROTOBUFTOOLS_WITH_BOOST)
-  set(Boost_NO_BOOST_CMAKE ON)
-  find_package(Boost 1.60.0
-    REQUIRED
-    date_time
-    CONFIG
-    )
-  message( STATUS "Found the Boost_FOUND library:")
-  message( STATUS "  Boost_FOUND     = '${Boost_FOUND}'")
-  message( STATUS "  Boost_DIR       = '${Boost_DIR}'")
-  message( STATUS "  Boost inckudes  = '${Boost_INCLUDE_DIRS}'")
-  message( STATUS "  Boost version   = '${Boost_VERSION_STRING}'")
-  message( STATUS "  Boost libraries = '${Boost_LIBRARIES}'")
-  include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
-  list(APPEND
-    BxProtobuftools_HEADERS
-    source/protobuftools/boost_datetime_converters.h
-    source/protobuftools/boost_optional_converter.h
-    source/protobuftools/boost_converters.h
-    )
-  message( STATUS "Boost_LIBRARIES='${Boost_LIBRARIES}'")
-  list(APPEND BxProtobuftools_OTHER_LIBS
-    ${Boost_DATE_TIME_LIBRARY}
-    )
-  message( STATUS "Boost_DIR='${Boost_DIR}'")
-  message( STATUS "BxProtobuftools_OTHER_LIBS='${BxProtobuftools_OTHER_LIBS}'")
+set(BXPROTOBUFTOOLS_BOOST_MIN_VERSION 1.58.0)
+set(BXPROTOBUFTOOLS_BOOST_COMPONENTS date_time)
+message( STATUS "[info] Finding Boost version > ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION} and components '${BXPROTOBUFTOOLS_BOOST_COMPONENTS}'")
+find_package(Boost ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION}
+  REQUIRED
+  ${BXPROTOBUFTOOLS_BOOST_COMPONENTS}
+  )
+message( STATUS "[info] Boost_VERSION      = '${Boost_VERSION}'")
+message( STATUS "[info] Boost_INCLUDE_DIRS = '${Boost_INCLUDE_DIRS}'")
+message( STATUS "[info] Boost_LIBRARIES    = '${Boost_LIBRARIES}'")
+set(Boost_USE_CONFIG 0)
+if (Boost_MAJOR_VERSION)
+  # MODULE:  Example: /usr/share/cmake-X.Y/Modules/FindBoost.cmake:
+  message( STATUS "[info] Found Boost through 'MODULE' mode.")
+  message( STATUS "[info] Found Boost_LIB_VERSION  = '${Boost_LIB_VERSION}'")
+  message( STATUS "[info] Found Boost_MAJOR_VERSION    = '${Boost_MAJOR_VERSION}'")
+  message( STATUS "[info] Found Boost_MINOR_VERSION    = '${Boost_MINOR_VERSION}'")
+  message( STATUS "[info] Found Boost_SUBMINOR_VERSION = '${Boost_SUBMINOR_VERSION}'")
+  set(BxProtobuftools_BOOST_VERSION
+    "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+  get_filename_component(Boost_DIR ${Boost_INCLUDE_DIRS} DIRECTORY)
+else()
+  # CONFIG:  Example: [Cadfaelbrew/install/dir]/lib/cmake/Boost-1.XX.Y/BoostConfig.cmake:
+  message( STATUS "[info] Found Boost through 'CONFIG' mode.")
+  set(Boost_USE_CONFIG 1)
+  string(REPLACE "_" "." BxProtobuftools_BOOST_VERSION ${Boost_VERSION})
 endif()
+message( STATUS "[info] BxProtobuftools_BOOST_VERSION    = '${BxProtobuftools_BOOST_VERSION}'")
+set(BxProtobuftools_BOOST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+include_directories(SYSTEM ${BxProtobuftools_BOOST_INCLUDE_DIRS})
+message( STATUS "Boost_LIBRARIES='${Boost_LIBRARIES}'")
+list(APPEND
+  BxProtobuftools_HEADERS
+  source/protobuftools/boost_datetime_converters.h
+  source/protobuftools/boost_optional_converter.h
+  source/protobuftools/boost_converters.h
+  )
+list(APPEND
+  BxProtobuftools_OTHER_LIBS
+  ${Boost_DATE_TIME_LIBRARY}
+  )
+message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '$BxProtobuftools_OTHER_LIBS}'")
 
 # - Add specific protobuf support
 add_subdirectory(source/proto)
@@ -186,10 +211,10 @@ get_directory_property(_BxProtobuftools_PROTOSTUB_HEADERS
 get_directory_property(_BxProtobuftools_PROTOSTUB_SOURCES
   DIRECTORY source/proto
   DEFINITION BxProtobuftools_PROTOSTUB_SOURCES)
-message(STATUS "_BxProtobuftools_PROTOSTUB_HEADERS='${_BxProtobuftools_PROTOSTUB_HEADERS}'")
-message(STATUS "_BxProtobuftools_PROTOSTUB_SOURCES='${_BxProtobuftools_PROTOSTUB_SOURCES}'")
-message(STATUS "CMAKE_BINARY_DIR='${CMAKE_BINARY_DIR}'")
-message(STATUS "Listing protobuf stub files...")
+message(STATUS "[debug] _BxProtobuftools_PROTOSTUB_HEADERS='${_BxProtobuftools_PROTOSTUB_HEADERS}'")
+message(STATUS "[debug] _BxProtobuftools_PROTOSTUB_SOURCES='${_BxProtobuftools_PROTOSTUB_SOURCES}'")
+message(STATUS "[debug] CMAKE_BINARY_DIR='${CMAKE_BINARY_DIR}'")
+message(STATUS "[info] Listing protobuf stub files...")
 set(BxProtobuftools_PROTOSTUB_HEADERS)
 set(BxProtobuftools_PROTOSTUB_SOURCES)
 foreach(_protofile ${_BxProtobuftools_PROTOSTUB_HEADERS})
@@ -219,8 +244,12 @@ configure_file(source/utilities/bxprotobuftools-query.in
 set(BxProtobuftools_PRIVATE_HEADERS
   )
 
+set(BXPROTOBUFTOOLS_DEFINITIONS
+  -std=c++11
+  )
+
 if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS -std=c++11)
+  set(CMAKE_CXX_FLAGS ${BXPROTOBUFTOOLS_DEFINITIONS})
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/source)
@@ -229,10 +258,10 @@ include_directories(${PROJECT_BINARY_DIR}/source/proto/cpp_stubs)
 include_directories(${PROTOBUF_INCLUDE_DIRS})
 
 foreach(_header ${BxProtobuftools_HEADERS})
-  message(STATUS " Header = '${_header}'")
+  message(STATUS "[info] Header = '${_header}'")
 endforeach()
 foreach(_source ${BxProtobuftools_SOURCES})
-  message(STATUS " Source = '${_source}'")
+  message(STATUS "[info] Source = '${_source}'")
 endforeach()
 
 add_library(Bayeux_protobuftools SHARED
@@ -243,7 +272,30 @@ add_library(Bayeux_protobuftools SHARED
   ${BxProtobuftools_PROTOSTUB_SOURCES}
   )
 
+# -- RPATH settings --
+# From: https://cmake.org/Wiki/CMake_RPATH_handling
+# use, i.e. don't skip the full RPATH for the build tree
+set(CMAKE_SKIP_BUILD_RPATH  FALSE)
+# when building, don't use the install RPATH already
+# (but later on when installing)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+# add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+# the RPATH to be used when installing, but only if it's not a system directory
+list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_FULL_LIBDIR}" isSystemDir)
+if("${isSystemDir}" STREQUAL "-1")
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+endif()
+
 target_link_libraries(Bayeux_protobuftools ${BxProtobuftools_OTHER_LIBS})
+
+# - Set RPATH as needed
+set_target_properties(Bayeux_protobuftools PROPERTIES INSTALL_RPATH_USE_LINK_PATH 1)
+
+# - Use BinReloc
+set_target_properties(Bayeux_protobuftools PROPERTIES COMPILE_DEFINITIONS ENABLE_BINRELOC)
 
 install( FILES
   ${BxProtobuftools_HEADERS}
@@ -304,7 +356,7 @@ install( FILES
 
 install( DIRECTORY
   ${PROJECT_SOURCE_DIR}/examples
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BXPROTOBUFTOOLS_TAG}
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BxProtobuftools_TAG}
   FILE_PERMISSIONS OWNER_READ
   GROUP_READ
   WORLD_READ
@@ -315,7 +367,7 @@ install( DIRECTORY
 
 install( FILES
   ${PROJECT_SOURCE_DIR}/LICENSE.txt
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BXPROTOBUFTOOLS_TAG}
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BxProtobuftools_TAG}
   PERMISSIONS OWNER_READ OWNER_WRITE
   GROUP_READ
   WORLD_READ
@@ -328,12 +380,11 @@ endif()
 
 set(BxProtobuftools_TESTS
   source/protobuftools/testing/test_protobuf_factory.cxx
-  #source/protobuftools/testing/test_protobuftools_0.cxx
   )
 
 if(PROTOBUFTOOLS_ENABLE_TESTING)
 
-  message( STATUS "Generating C++ testing source stub from protobuf files...")
+  message( STATUS "[info] Generating C++ testing source stub from protobuf files...")
   execute_process(COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
     --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/source
     --proto_path=${CMAKE_CURRENT_SOURCE_DIR}/source/proto
@@ -344,10 +395,10 @@ if(PROTOBUFTOOLS_ENABLE_TESTING)
     OUTPUT_VARIABLE _gen_pb_out
     ERROR_VARIABLE  _gen_pb_err
     )
-  message( STATUS "Protobuf generation error code ='${_gen_pb_code}'")
-  message( STATUS "Protobuf generation error msg  ='${_gen_pb_err}'")
-  message( STATUS "Protobuf generation error out  ='${_gen_pb_out}'")
-  message( STATUS "Done.")
+  message( STATUS "[info] Protobuf generation error code ='${_gen_pb_code}'")
+  message( STATUS "[info] Protobuf generation error msg  ='${_gen_pb_err}'")
+  message( STATUS "[info] Protobuf generation error out  ='${_gen_pb_out}'")
+  message( STATUS "[info] Done.")
 
   set(BxProtobuftools_TESTING_HEADERS
     source/protobuftools/testing/foo.h
@@ -419,33 +470,33 @@ install(TARGETS Bayeux_protobuftools
 #
 # - Targets
 export(TARGETS Bayeux_protobuftools
-  FILE ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}/BxProtobuftoolsTargets.cmake
+  FILE ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}/BxProtobuftoolsTargets.cmake
   )
 install(EXPORT BxProtobuftoolsTargets
-  DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}
+  DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}
   )
 
 # - Versioning (build and install trees)
 configure_file(${PROJECT_SOURCE_DIR}/cmake/BxProtobuftoolsConfigVersion.cmake.in
-  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}/BxProtobuftoolsConfigVersion.cmake
+  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}/BxProtobuftoolsConfigVersion.cmake
   @ONLY
   )
 
 # - Config (build and install trees *at present*)
 configure_file(${PROJECT_SOURCE_DIR}/cmake/BxProtobuftoolsConfig.cmake.in
-  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}/BxProtobuftoolsConfig.cmake
+  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}/BxProtobuftoolsConfig.cmake
   @ONLY
   )
 
 install(FILES
-  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}/BxProtobuftoolsConfigVersion.cmake
-  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}/BxProtobuftoolsConfig.cmake
-  DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/${BXPROTOBUFTOOLS_TAG}
+  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}/BxProtobuftoolsConfigVersion.cmake
+  ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}/BxProtobuftoolsConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/${BxProtobuftools_TAG}
   )
 
 install(FILES
   ${PROJECT_SOURCE_DIR}/cmake/FindProtobuf.cmake
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BXPROTOBUFTOOLS_TAG}/cmake/Modules
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${BxProtobuftools_TAG}/cmake/Modules
   )
 
 # - end of CMakeLists.txt

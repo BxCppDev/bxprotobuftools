@@ -29,27 +29,25 @@
 # Note: this assumes that the library and associated tools are not
 # relocatable.
 
-APPNAME="bxprotobuftools-query"
+APPNAME="bxjsontools-query"
 prefix_dir="@CMAKE_INSTALL_PREFIX@"
 version_str="@BxProtobuftools_VERSION@"
 lib_dir="${prefix_dir}/@CMAKE_INSTALL_LIBDIR@"
 bin_dir="${prefix_dir}/@CMAKE_INSTALL_BINDIR@"
 inc_dir="${prefix_dir}/@CMAKE_INSTALL_INCLUDEDIR@"
-data_dir="${prefix_dir}/@CMAKE_INSTALL_DATADIR@/BxProtobuftools-@BxProtobuftools_VERSION@"
-cmake_dir="${prefix_dir}/@CMAKE_INSTALL_CMAKEDIR@/BxProtobuftools-@BxProtobuftools_VERSION@"
-#resource_dir="${data_dir}/resources"
-#doc_dir="${data_dir}/Documentation"
-#plugin_dir="${lib_dir}/@BxProtobuftools_PLUGINLIBDIR@"
-
-# List of plugins (experimental):
-# plugins="$(find ${plugin_dir} -name lib*.* -exec basename \{\} \; | cut -d. -f1 | sed -e 's/^lib//g')"
+data_dir="${prefix_dir}/@CMAKE_INSTALL_DATADIR@/@BxProtobuftools_TAG@"
+example_dir="${data_dir}/examples"
+cmake_dir="${prefix_dir}/@CMAKE_INSTALL_CMAKEDIR@/@BxProtobuftools_TAG@"
+boost_version="@BxProtobuftools_BOOST_VERSION@"
+protobuf_root="@PROTOBUF_ROOT@"
+protobuf_version="@PROTOBUF_VERSION_STRING@"
 
 function print_usage()
 {
 
-cat<<EOF
+    cat<<EOF
 
-bxprotobuftools-query - Utility script to fetch informations about BxProtobuftools installation.
+bxjsontools-query - Utility script to fetch informations about BxProtobuftools installation.
 
 Options:
   -h [ --help ]          Print help.
@@ -68,14 +66,15 @@ Options:
 
   --cmakedir             Print CMake config directory.
 
+  --exampledir           Print examples directory.
+
+  --boost-version        Print the version of Boost BxProtobuftools is linked to.
+
+  --protobuf-root        Print the Protobuf installation prefix used by BxProtobuftools.
+
+  --protobuf-version     Print the version of Protobuf BxProtobuftools is linked to.
+
 EOF
-
-#   --docdir               Print documentation base directory.
-
-#   --resourcedir          Print resource base directory.
-
-# EOF
-
     return
 }
 
@@ -104,23 +103,21 @@ while [ -n "$?" ]; do
 	  elif [ "${option}" = "--datadir" ]; then
 	      echo ${data_dir}
 	      exit 0
+	  elif [ "${option}" = "--exampledir" ]; then
+	      echo ${example_dir}
+	      exit 0
 	  elif [ "${option}" = "--cmakedir" ]; then
 	      echo ${cmake_dir}
 	      exit 0
-	  # elif [ "${option}" = "--docdir" ]; then
-	  #     echo ${doc_dir}
-	  #     exit 0
-	  # elif [ "${option}" = "--plugindir" ]; then
-	  #     echo ${plugin_dir}
-	  #     exit 0
-	  # elif [ "${option}" = "--resourcedir" ]; then
-	  #     echo ${resource_dir}
-	  #     exit 0
-	  # elif [ "${option}" = "--plugins" ]; then
-	  #     for plugin in ${plugins} ; do
-	  # 	  echo ${plugin}
-	  #     done
-	  #     exit 0
+	  elif [ "${option}" = "--boost-version" ]; then
+	      echo ${boost_version}
+	      exit 0
+	  elif [ "${option}" = "--protobuf-version" ]; then
+	      echo ${protobuf_version}
+	      exit 0
+	  elif [ "${option}" = "--protobuf-root" ]; then
+	      echo ${protobuf_root}
+	      exit 0
 	  else
 	      echo "error: ${APPNAME}: Invalid option '${option}' !" >&2
 	      print_usage
@@ -135,3 +132,5 @@ while [ -n "$?" ]; do
 done
 
 exit 0
+
+# end

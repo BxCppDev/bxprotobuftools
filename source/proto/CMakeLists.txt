@@ -1,5 +1,5 @@
 
-message( STATUS "Generating protobuf stubs...")
+message( STATUS "[info] Generating protobuf stubs...")
 set(BxProtobuftools_PROTOSTUB_HEADERS)
 set(BxProtobuftools_PROTOSTUB_SOURCES)
 
@@ -11,9 +11,8 @@ list(APPEND protofiles
   protobuftools/TimePeriod.proto
   )
 
-
 foreach(protofile ${protofiles})
-  message( STATUS "Protobuf stub generation for = '${protofile}'")
+  message( STATUS "[info] Protobuf stub generation for = '${protofile}'")
   get_filename_component(pb_dir ${protofile} DIRECTORY)
   get_filename_component(pb_basename ${protofile} NAME_WE)
   execute_process(COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/cpp_stubs)
@@ -25,11 +24,11 @@ foreach(protofile ${protofiles})
     OUTPUT_VARIABLE _gen_pb_out
     ERROR_VARIABLE  _gen_pb_err
     )
-  message( STATUS "Protobuf generation error code ='${_gen_pb_code}'")
-  message( STATUS "Protobuf generation error msg  ='${_gen_pb_err}'")
-  message( STATUS "Protobuf generation error out  ='${_gen_pb_out}'")
-  message( STATUS "Adding stub header ='${pb_dir}/${pb_basename}.pb.h'")
-  message( STATUS "Adding stub source ='${pb_dir}/${pb_basename}.pb.cc'")
+  message( STATUS "[info] Protobuf generation error code ='${_gen_pb_code}'")
+  message( STATUS "[info] Protobuf generation error msg  ='${_gen_pb_err}'")
+  message( STATUS "[info] Protobuf generation error out  ='${_gen_pb_out}'")
+  message( STATUS "[info] Adding stub header ='${pb_dir}/${pb_basename}.pb.h'")
+  message( STATUS "[info] Adding stub source ='${pb_dir}/${pb_basename}.pb.cc'")
   list(APPEND
     BxProtobuftools_PROTOSTUB_HEADERS
     ${pb_dir}/${pb_basename}.pb.h
@@ -38,5 +37,5 @@ foreach(protofile ${protofiles})
     BxProtobuftools_PROTOSTUB_SOURCES
     ${pb_dir}/${pb_basename}.pb.cc
     )
-  message( STATUS "Done.")
+  message( STATUS "[info] Done.")
 endforeach()

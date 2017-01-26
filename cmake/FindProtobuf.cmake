@@ -38,8 +38,6 @@
 #
 # Set ``PROTOBUF_ROOT`` to a directory that contains a Protobuf installation.
 #
-#
-#
 # Cache Variables
 # ^^^^^^^^^^^^^^^
 #
@@ -66,16 +64,17 @@
 # ``JavaUtilJar``
 #
 
-message( STATUS "=====================================")
-message( STATUS "=                                   =")
-message( STATUS "=    Entering FindProtobuf.cmake    =")
-message( STATUS "=                                   =")
-message( STATUS "=====================================")
+message( STATUS "[info] FindProtobuf: Entering...")
+
 if (NOT PROTOBUF_ROOT)
   if (PROTOBUF_INCLUDE_DIR)
-     get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
+    get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
   endif()
+else()
+  message( STATUS "[info] FindProtobuf: PROTOBUF_ROOT = '${PROTOBUF_ROOT}' is provided.")
 endif()
+message( STATUS "[info] FindProtobuf: PROTOBUF_ROOT = '${PROTOBUF_ROOT}'.")
+
 # if (PROTOBUF_INCLUDE_DIR)
 #   if (NOT PROTOBUF_ROOT)
 #     get_filename_component(PROTOBUF_ROOT "${PROTOBUF_INCLUDE_DIR}" PATH)
@@ -94,7 +93,7 @@ find_path(PROTOBUF_INCLUDE_DIR google/protobuf/message.h
   )
 #message(STATUS "=== DEBUG: PROTOBUF_INCLUDE_DIR='${PROTOBUF_INCLUDE_DIR}'")
 if (PROTOBUF_INCLUDE_DIR STREQUAL "PROTOBUF_INCLUDE_DIR-NOTFOUND")
-  message(FATAL "Could not find PROTOBUF_INCLUDE_DIR!")
+  message(FATAL "[fatal] FindProtobuf: Could not find PROTOBUF_INCLUDE_DIR!")
 else()
   mark_as_advanced(PROTOBUF_INCLUDE_DIR)
   set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
@@ -151,18 +150,18 @@ else()
   # message( STATUS "_protobuf_version_string='${_protobuf_version_string}'")
   set(PROTOBUF_VERSION_STRING ${_protobuf_version_string})
   mark_as_advanced(PROTOBUF_VERSION_STRING)
-  #message( STATUS "FindProtobuf: PROTOBUF_VERSION_STRING='${PROTOBUF_VERSION_STRING}'")
+  #message( STATUS "[info] FindProtobuf: PROTOBUF_VERSION_STRING='${PROTOBUF_VERSION_STRING}'")
 endif()
 
-# message( STATUS "FindProtobuf: Protobuf components='${Protobuf_FIND_COMPONENTS}'")
+message( STATUS "[info] FindProtobuf: Protobuf components = '${Protobuf_FIND_COMPONENTS}'")
 
 if( Protobuf_FIND_COMPONENTS )
-  set(PROTOBUF_HAVE_JAVA_JAR 0)
-  set(PROTOBUF_HAVE_JAVA_UTIL_JAR 0)
-  set(PROTOBUF_HAVE_LITE_JAR 0)
-  foreach( component ${Protobuf_FIND_COMPONENTS} )
-    message( STATUS "FindProtobuf: Searching Protobuf component='${component}'...")
-    if (component STREQUAL "JavaJar")
+  # set(PROTOBUF_HAVE_JAVA_JAR 0)
+  # set(PROTOBUF_HAVE_JAVA_UTIL_JAR 0)
+  # set(PROTOBUF_HAVE_LITE_JAR 0)
+  foreach( _pb_component ${Protobuf_FIND_COMPONENTS} )
+    message( STATUS "[info] FindProtobuf: Searching Protobuf component='${_pb_component}'...")
+    if (_pb_component STREQUAL "JavaJar")
       # Find the Java JAR file
       find_file(PROTOBUF_JAVA_JAR
 	protobuf-java-${PROTOBUF_VERSION_STRING}.jar
@@ -173,10 +172,11 @@ if( Protobuf_FIND_COMPONENTS )
 	NO_DEFAULT_PATH
 	)
       if (PROTOBUF_JAVA_JAR)
-	set(PROTOBUF_HAVE_JAVA_JAR 1)
+	# set(PROTOBUF_HAVE_JAVA_JAR 1)
+	set(PROTOBUF_JAVA_JAR_FOUND 1)
       endif()
       mark_as_advanced(PROTOBUF_JAVA_JAR)
-    elseif (component STREQUAL "JavaUtilJar")
+    elseif (_pb_component STREQUAL "JavaUtilJar")
       # Find the Java util JAR file
       find_file(PROTOBUF_JAVA_UTIL_JAR
 	protobuf-java-util-${PROTOBUF_VERSION_STRING}.jar
@@ -187,10 +187,11 @@ if( Protobuf_FIND_COMPONENTS )
 	NO_DEFAULT_PATH
 	)
       if (PROTOBUF_JAVA_UTIL_JAR)
-	set(PROTOBUF_HAVE_JAVA_UTIL_JAR 1)
+	# set(PROTOBUF_HAVE_JAVA_UTIL_JAR 1)
+	set(PROTOBUF_JAVA_UTIL_JAR_FOUND 1)
       endif()
       mark_as_advanced(PROTOBUF_JAVA_UTIL_JAR)
-    # elseif (component STREQUAL "JavaLiteJar")
+    # elseif (_pb_component STREQUAL "JavaLiteJar")
     #   # Find the Java lite JAR file
     #   find_file(PROTOBUF_JAVA_LITE_JAR
     # 	protobuf-lite-3.0.0-beta-3.jar
@@ -201,48 +202,50 @@ if( Protobuf_FIND_COMPONENTS )
     # 	NO_DEFAULT_PATH
     # 	)
     #   if (PROTOBUF_JAVA_LITE_JAR)
-    # 	set(PROTOBUF_HAVE_JAVA_LITE_JAR 1)
+    # 	# set(PROTOBUF_HAVE_JAVA_LITE_JAR 1)
     #   endif()
     #   mark_as_advanced(PROTOBUF_JAVA_LITE_JAR)
     else ()
-      message(FATAL_ERROR "FindProtobuf: Unknown Protobuf Component: ${component}")
+      message(FATAL_ERROR "[fatal] FindProtobuf: Unknown Protobuf Component: ${_pb_component}")
     endif()
 
-  endforeach( component )
+  endforeach( _pb_component )
 endif( Protobuf_FIND_COMPONENTS )
 
 set(PROTOBUF_FOUND 1)
 
-message( STATUS "Summary:")
-message( STATUS "  PROTOBUF_FOUND              = '${PROTOBUF_FOUND}'")
-message( STATUS "  PROTOBUF_INCLUDE_DIR        = '${PROTOBUF_INCLUDE_DIR}'")
-message( STATUS "  PROTOBUF_INCLUDE_DIRS       = '${PROTOBUF_INCLUDE_DIRS}'")
-message( STATUS "  PROTOBUF_LIBRARY            = '${PROTOBUF_LIBRARY}'")
-message( STATUS "  PROTOBUF_PROTOC_LIBRARY     = '${PROTOBUF_PROTOC_LIBRARY}'")
-message( STATUS "  PROTOBUF_LITE_LIBRARY       = '${PROTOBUF_LITE_LIBRARY}'")
-message( STATUS "  PROTOBUF_PROTOC_EXECUTABLE  = '${PROTOBUF_PROTOC_EXECUTABLE}'")
-message( STATUS "  PROTOBUF_ROOT               = '${PROTOBUF_ROOT}'")
-message( STATUS "  PROTOBUF_VERSION_STRING     = '${PROTOBUF_VERSION_STRING}'")
-message( STATUS "  PROTOBUF_JAVA_JAR           = '${PROTOBUF_JAVA_JAR}'")
-message( STATUS "  PROTOBUF_HAVE_JAVA_UTIL_JAR = '${PROTOBUF_HAVE_JAVA_UTIL_JAR}'")
+message( STATUS "[info] FindProtobuf: Summary:")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_FOUND               = '${PROTOBUF_FOUND}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_ROOT                = '${PROTOBUF_ROOT}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_VERSION_STRING      = '${PROTOBUF_VERSION_STRING}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_INCLUDE_DIR         = '${PROTOBUF_INCLUDE_DIR}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_LIBRARY             = '${PROTOBUF_LIBRARY}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_PROTOC_LIBRARY      = '${PROTOBUF_PROTOC_LIBRARY}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_LITE_LIBRARY        = '${PROTOBUF_LITE_LIBRARY}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_PROTOC_EXECUTABLE   = '${PROTOBUF_PROTOC_EXECUTABLE}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_INCLUDE_DIRS        = '${PROTOBUF_INCLUDE_DIRS}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_JAVA_JAR_FOUND      = '${PROTOBUF_JAVA_JAR_FOUND}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_JAVA_JAR            = '${PROTOBUF_JAVA_JAR}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_JAVA_UTIL_JAR_FOUND = '${PROTOBUF_JAVA_UTIL_JAR_FOUND}'")
+message( STATUS "[info] FindProtobuf:   PROTOBUF_JAVA_UTIL_JAR       = '${PROTOBUF_JAVA_UTIL_JAR}'")
 
 # Include these modules to handle the QUIETLY and REQUIRED arguments.
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Protobuf
-  FOUND_VAR PROTOBUF_FOUND
-  REQUIRED_VARS
+  FOUND_VAR #
+  PROTOBUF_FOUND
+  REQUIRED_VARS #
   PROTOBUF_INCLUDE_DIRS
   PROTOBUF_LIBRARIES
   PROTOBUF_PROTOC_LIBRARIES
   PROTOBUF_LITE_LIBRARIES
   PROTOBUF_PROTOC_EXECUTABLE
-  VERSION_VAR PROTOBUF_VERSION_STRING)
+  VERSION_VAR #
+  PROTOBUF_VERSION_STRING
+  )
 set(PROTOBUF_FOUND 1)
 mark_as_advanced(PROTOBUF_ROOT)
-message( STATUS "=====================================")
-message( STATUS "=                                   =")
-message( STATUS "=    Exiting FindProtobuf.cmake     =")
-message( STATUS "=                                   =")
-message( STATUS "=====================================")
+
+message( STATUS "[info] FindProtobuf: Exiting.")
 
 # - end
