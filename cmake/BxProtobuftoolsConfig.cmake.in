@@ -36,23 +36,12 @@ message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools CMake config in '$
 set(BxProtobuftools_BOOST_VERSION    @BxProtobuftools_BOOST_VERSION@)
 set(BxProtobuftools_BOOST_COMPONENTS @BXPROTOBUFTOOLS_BOOST_COMPONENTS@)
 set(BxProtobuftools_BOOST_CONFIG     @Boost_USE_CONFIG@)
-if (BxProtobuftools_BOOST_CONFIG)
-  # CONFIG: from Cadfaelbrew
-  message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'CONFIG' mode...")
-  # set(Boost_DIR ${BxProtobuftools_BOOST_DIR})
-  find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
-    REQUIRED
-    ${BxProtobuftools_BOOST_COMPONENTS}
-    CONFIG
-    )
-else()
-  # MODULE: from CMake
-  message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
-  find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
-    REQUIRED
-    ${BxProtobuftools_BOOST_COMPONENTS}
-    )
-endif()
+message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
+set(Boost_NO_BOOST_CMAKE ON)
+find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
+  REQUIRED
+  ${BxProtobuftools_BOOST_COMPONENTS}
+  )
 message(STATUS "[info] BxProtobuftoolsConfig: Found Boost version ${Boost_VERSION}")
 
 # - Protobuf
@@ -111,7 +100,7 @@ mark_as_advanced(BxProtobuftools_LIBRARY)
 set(BxProtobuftools_LIBRARIES
   ${BxProtobuftools_LIBRARY}
   ${PROTOBUF_LIBRARIES}
-  ${Boost_DATE_TIME_LIBRARY}
+  ${BxProtobuftools_BOOST_LIBRARIES}
   )
 
 message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_DEFINITIONS  = '${BxProtobuftools_DEFINITIONS}'")

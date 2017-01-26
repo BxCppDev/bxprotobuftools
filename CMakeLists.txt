@@ -163,6 +163,7 @@ set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 set(BXPROTOBUFTOOLS_BOOST_MIN_VERSION 1.58.0)
 set(BXPROTOBUFTOOLS_BOOST_COMPONENTS date_time)
 message( STATUS "[info] Finding Boost version > ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION} and components '${BXPROTOBUFTOOLS_BOOST_COMPONENTS}'")
+set(Boost_NO_BOOST_CMAKE ON)
 find_package(Boost ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION}
   REQUIRED
   ${BXPROTOBUFTOOLS_BOOST_COMPONENTS}
@@ -170,23 +171,14 @@ find_package(Boost ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION}
 message( STATUS "[info] Boost_VERSION      = '${Boost_VERSION}'")
 message( STATUS "[info] Boost_INCLUDE_DIRS = '${Boost_INCLUDE_DIRS}'")
 message( STATUS "[info] Boost_LIBRARIES    = '${Boost_LIBRARIES}'")
-set(Boost_USE_CONFIG 0)
-if (Boost_MAJOR_VERSION)
-  # MODULE:  Example: /usr/share/cmake-X.Y/Modules/FindBoost.cmake:
-  message( STATUS "[info] Found Boost through 'MODULE' mode.")
-  message( STATUS "[info] Found Boost_LIB_VERSION  = '${Boost_LIB_VERSION}'")
-  message( STATUS "[info] Found Boost_MAJOR_VERSION    = '${Boost_MAJOR_VERSION}'")
-  message( STATUS "[info] Found Boost_MINOR_VERSION    = '${Boost_MINOR_VERSION}'")
-  message( STATUS "[info] Found Boost_SUBMINOR_VERSION = '${Boost_SUBMINOR_VERSION}'")
-  set(BxProtobuftools_BOOST_VERSION
-    "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
-  get_filename_component(Boost_DIR ${Boost_INCLUDE_DIRS} DIRECTORY)
-else()
-  # CONFIG:  Example: [Cadfaelbrew/install/dir]/lib/cmake/Boost-1.XX.Y/BoostConfig.cmake:
-  message( STATUS "[info] Found Boost through 'CONFIG' mode.")
-  set(Boost_USE_CONFIG 1)
-  string(REPLACE "_" "." BxProtobuftools_BOOST_VERSION ${Boost_VERSION})
-endif()
+message( STATUS "[info] Found Boost through 'MODULE' mode.")
+message( STATUS "[info] Found Boost_LIB_VERSION  = '${Boost_LIB_VERSION}'")
+message( STATUS "[info] Found Boost_MAJOR_VERSION    = '${Boost_MAJOR_VERSION}'")
+message( STATUS "[info] Found Boost_MINOR_VERSION    = '${Boost_MINOR_VERSION}'")
+message( STATUS "[info] Found Boost_SUBMINOR_VERSION = '${Boost_SUBMINOR_VERSION}'")
+set(BxProtobuftools_BOOST_VERSION
+  "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+get_filename_component(Boost_DIR ${Boost_INCLUDE_DIRS} DIRECTORY)
 message( STATUS "[info] BxProtobuftools_BOOST_VERSION    = '${BxProtobuftools_BOOST_VERSION}'")
 set(BxProtobuftools_BOOST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
 include_directories(SYSTEM ${BxProtobuftools_BOOST_INCLUDE_DIRS})
@@ -197,10 +189,9 @@ list(APPEND
   source/protobuftools/boost_optional_converter.h
   source/protobuftools/boost_converters.h
   )
-list(APPEND
-  BxProtobuftools_OTHER_LIBS
-  ${Boost_DATE_TIME_LIBRARY}
-  )
+set(BxProtobuftools_BOOST_LIBRARIES Boost::date_time)
+message( STATUS "[info] BxProtobuftools_BOOST_LIBRARIES = '${BxProtobuftools_BOOST_LIBRARIES}'")
+list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
 message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '$BxProtobuftools_OTHER_LIBS}'")
 
 # - Add specific protobuf support

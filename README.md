@@ -69,9 +69,7 @@ dependency):
 In  principle  bxprotobuftools can  build  both  with a  system  Boost
 installation (version  1.58 on Ubuntu  16.04 resolved by  the standard
 ``FindBoost.cmake`` script  using the ``find_package``  *MODULE* mode)
-or with a  Boost installation provided by  Cadfaelbrew (version >=1.60
-resolved  from  a  dedicated ``BoostConfig.cmake``  script  using  the
-``find_package`` *CONFIG* mode).
+or with a  Boost installation provided by  Cadfaelbrew (version >=1.60).
 
 ### Download the source code from GitHub:
 
