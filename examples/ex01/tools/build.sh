@@ -6,6 +6,9 @@ src_dir=$(pwd)
 install_dir=$(pwd)/_install.d
 build_dir=$(pwd)/_build.d
 
+devel=false
+bxprotobuftools_install_dir=
+
 opwd=$(pwd)
 function my_exit()
 {
@@ -15,7 +18,26 @@ function my_exit()
     exit ${error_code}
 }
 
-bxprotobuftools_install_dir="../../_install.d"
+while [ -n "$1" ]; do
+    opt="$1"
+    if [ "${opt}" = "--bxprotobufinstall-prefix" ]; then
+	shift 1
+	bxprotobuftools_install_dir="$1"
+    elif [ "${opt}" = "--devel" ]; then
+	devel=true
+    fi
+    shift 1
+done
+
+if [ "x${bxprotobuftools_install_dir}" = "x" ]; then
+    if [ ${devel} = true ]; then
+	bxprotobuftools_install_dir="../../_install.d"
+    else
+	echo >&2 "[error] Missing BxProtobuftools installation path! Abort!"
+	my_exit 1
+    fi
+fi
+
 if [ ! -d ${bxprotobuftools_install_dir} ]; then
     echo >&2 "[error] No BxProtobuftools installation! Abort!"
     my_exit 1

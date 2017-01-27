@@ -32,6 +32,9 @@ message( STATUS "[info] BxProtobuftoolsConfig: Entering")
 get_filename_component(__bxprotobuftools_config_dir "${CMAKE_CURRENT_LIST_FILE}" PATH)
 message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools CMake config in '${__bxprotobuftools_config_dir}'")
 
+set(BxProtobuftools_VERSION @BxProtobuftools_VERSION@)
+message( STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_VERSION = '${BxProtobuftools_VERSION}'")
+
 # - Boost
 set(BxProtobuftools_BOOST_VERSION    @BxProtobuftools_BOOST_VERSION@)
 set(BxProtobuftools_BOOST_COMPONENTS @BXPROTOBUFTOOLS_BOOST_COMPONENTS@)
@@ -100,7 +103,7 @@ mark_as_advanced(BxProtobuftools_LIBRARY)
 set(BxProtobuftools_LIBRARIES
   ${BxProtobuftools_LIBRARY}
   ${PROTOBUF_LIBRARIES}
-  ${BxProtobuftools_BOOST_LIBRARIES}
+  @BxProtobuftools_BOOST_LIBRARIES@
   )
 
 message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_DEFINITIONS  = '${BxProtobuftools_DEFINITIONS}'")

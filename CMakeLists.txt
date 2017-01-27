@@ -157,7 +157,6 @@ if (PROTOBUF_FOUND)
   message( STATUS "[info]   PROTOBUF_JAVA_UTIL_JAR     ='${PROTOBUF_JAVA_UTIL_JAR}'")
 endif()
 
-# return()
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 
 set(BXPROTOBUFTOOLS_BOOST_MIN_VERSION 1.58.0)
