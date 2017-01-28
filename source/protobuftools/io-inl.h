@@ -13,6 +13,7 @@
 #include <protobuftools/protobuf_factory.h>
 #include <protobuftools/node.h>
 #include <protobuftools/protobufable_converter.h>
+#include <protobuftools/protobuf_utils.h>
 
 namespace protobuftools {
 
