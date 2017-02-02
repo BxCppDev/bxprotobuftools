@@ -38,7 +38,7 @@ inc_dir="${prefix_dir}/@CMAKE_INSTALL_INCLUDEDIR@"
 data_dir="${prefix_dir}/@CMAKE_INSTALL_DATADIR@/@BxProtobuftools_TAG@"
 example_dir="${data_dir}/examples"
 cmake_dir="${prefix_dir}/@CMAKE_INSTALL_CMAKEDIR@/@BxProtobuftools_TAG@"
-boost_version="@BxProtobuftools_BOOST_VERSION@"
+#boost_version="@BxProtobuftools_BOOST_VERSION@"
 protobuf_root="@PROTOBUF_ROOT@"
 protobuf_version="@PROTOBUF_VERSION_STRING@"
 
@@ -68,13 +68,13 @@ Options:
 
   --exampledir           Print examples directory.
 
-  --boost-version        Print the version of Boost BxProtobuftools is linked to.
-
   --protobuf-root        Print the Protobuf installation prefix used by BxProtobuftools.
 
   --protobuf-version     Print the version of Protobuf BxProtobuftools is linked to.
 
 EOF
+
+#  --boost-version        Print the version of Boost BxProtobuftools is linked to.
     return
 }
 
@@ -109,9 +109,9 @@ while [ -n "$?" ]; do
 	  elif [ "${option}" = "--cmakedir" ]; then
 	      echo ${cmake_dir}
 	      exit 0
-	  elif [ "${option}" = "--boost-version" ]; then
-	      echo ${boost_version}
-	      exit 0
+	  # elif [ "${option}" = "--boost-version" ]; then
+	  #     echo ${boost_version}
+	  #     exit 0
 	  elif [ "${option}" = "--protobuf-version" ]; then
 	      echo ${protobuf_version}
 	      exit 0

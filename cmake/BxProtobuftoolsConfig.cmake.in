@@ -3,7 +3,12 @@
 #  BxProtobuftools_DEFINITIONS   - compile definitions needed to use Bayeux/Protobuftools
 #  BxProtobuftools_INCLUDE_DIRS  - include directories for Bayeux/Protobuftools
 #  BxProtobuftools_LIBRARIES     - libraries to link against
-#  BxProtobuftools_BOOST_VERSION - Boost version
+
+# There is no explicit Boost dependency but here are recommandations for
+# client projects that would need Boost:
+#  BxProtobuftools_BOOST_VERSION
+#  BxProtobuftools_BOOST_COMPONENTS
+
 #  BxProtobuftools_PROTOBUF_VERSION - Protobuf version
 #  BxProtobuftools_PROTOBUF_ROOT    - Protobuf installation root directory
 #
@@ -23,7 +28,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #----------------------------------------------------------------------
 
-message( STATUS "[info] BxProtobuftoolsConfig: Entering")
+message( STATUS "[info] BxProtobuftoolsConfig: Entering...")
 
 #-----------------------------------------------------------------------
 # Locate ourselves, since all our config files should have been installed
@@ -38,14 +43,13 @@ message( STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_VERSION = '${BxPr
 # - Boost
 set(BxProtobuftools_BOOST_VERSION    @BxProtobuftools_BOOST_VERSION@)
 set(BxProtobuftools_BOOST_COMPONENTS @BXPROTOBUFTOOLS_BOOST_COMPONENTS@)
-set(BxProtobuftools_BOOST_CONFIG     @Boost_USE_CONFIG@)
-message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
-set(Boost_NO_BOOST_CMAKE ON)
-find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
-  REQUIRED
-  ${BxProtobuftools_BOOST_COMPONENTS}
-  )
-message(STATUS "[info] BxProtobuftoolsConfig: Found Boost version ${Boost_VERSION}")
+# message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
+# set(Boost_NO_BOOST_CMAKE ON)
+# find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
+#   REQUIRED
+#   ${BxProtobuftools_BOOST_COMPONENTS}
+#   )
+# message(STATUS "[info] BxProtobuftoolsConfig: Found Boost version ${Boost_VERSION}")
 
 # - Protobuf
 set(BxProtobuftools_PROTOBUF_VERSION @PROTOBUF_VERSION_STRING@)
@@ -81,7 +85,7 @@ set(BxProtobuftools_INCLUDE_DIRS
   "${BxProtobuftools_INCLUDE_DIR}/bayeux"
   "${BxProtobuftools_INCLUDE_DIR}/bayeux/proto"
   ${PROTOBUF_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
+  # ${Boost_INCLUDE_DIRS}
 )
 
 #-----------------------------------------------------------------------
@@ -103,7 +107,7 @@ mark_as_advanced(BxProtobuftools_LIBRARY)
 set(BxProtobuftools_LIBRARIES
   ${BxProtobuftools_LIBRARY}
   ${PROTOBUF_LIBRARIES}
-  @BxProtobuftools_BOOST_LIBRARIES@
+  # @BxProtobuftools_BOOST_LIBRARIES@
   )
 
 message(STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_DEFINITIONS  = '${BxProtobuftools_DEFINITIONS}'")

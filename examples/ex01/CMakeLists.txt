@@ -58,8 +58,22 @@ message(STATUS "[info] ${PROJECT_NAME}: BxProtobuftools_DEFINITIONS  = '${BxProt
 message(STATUS "[info] ${PROJECT_NAME}: BxProtobuftools_INCLUDE_DIRS = '${BxProtobuftools_INCLUDE_DIRS}'")
 message(STATUS "[info] ${PROJECT_NAME}: BxProtobuftools_LIBRARIES    = '${BxProtobuftools_LIBRARIES}'")
 
+# - Find Boost:
+message(STATUS "[info] Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
+set(Boost_NO_BOOST_CMAKE ON)
+find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
+  REQUIRED
+  ${BxProtobuftools_BOOST_COMPONENTS}
+  )
+message(STATUS "[info] Boost_VERSION      = '${Boost_VERSION}'")
+message(STATUS "[info] Boost_INCLUDE_DIRS = '${Boost_INCLUDE_DIRS}'")
+message(STATUS "[info] Boost_LIBRARIES    = '${Boost_LIBRARIES}'")
+
 add_definitions(${BxProtobuftools_DEFINITIONS})
-include_directories(${PROJECT_SOURCE_DIR} ${BxProtobuftools_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}
+  ${BxProtobuftools_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  )
 
 message(STATUS "[info] ${PROJECT_NAME}: Generating C++ stub files...")
 message(STATUS "[info] ${PROJECT_NAME}: CMAKE_CURRENT_SOURCE_DIR='${CMAKE_CURRENT_SOURCE_DIR}'")
@@ -106,7 +120,10 @@ add_executable(ex01
   ${CMAKE_CURRENT_BINARY_DIR}/cpp_stubs/FooMsg.pb.cc
   )
 
-target_link_libraries(ex01 Bayeux_protobuftools)
+target_link_libraries(ex01
+  Bayeux_protobuftools
+  ${Boost_LIBRARIES}
+  )
 install(TARGETS ex01
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
   )

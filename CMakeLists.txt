@@ -188,9 +188,12 @@ list(APPEND
   source/protobuftools/boost_optional_converter.h
   source/protobuftools/boost_converters.h
   )
-set(BxProtobuftools_BOOST_LIBRARIES Boost::date_time)
-message( STATUS "[info] BxProtobuftools_BOOST_LIBRARIES = '${BxProtobuftools_BOOST_LIBRARIES}'")
-list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
+# set(BxProtobuftools_BOOST_LIBRARIES
+#   # ${Boost_LIBRARIES}
+#   # Boost::date_time
+#   )
+# message( STATUS "[info] BxProtobuftools_BOOST_LIBRARIES = '${BxProtobuftools_BOOST_LIBRARIES}'")
+# list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
 message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '$BxProtobuftools_OTHER_LIBS}'")
 
 # - Add specific protobuf support
