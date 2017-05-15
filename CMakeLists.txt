@@ -19,7 +19,7 @@ list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/cmake)
 
 # - Versioning
 set(BxProtobuftools_VERSION_MAJOR 0)
-set(BxProtobuftools_VERSION_MINOR 1)
+set(BxProtobuftools_VERSION_MINOR 2)
 set(BxProtobuftools_VERSION_PATCH 0)
 set(BxProtobuftools_VERSION
   "${BxProtobuftools_VERSION_MAJOR}.${BxProtobuftools_VERSION_MINOR}.${BxProtobuftools_VERSION_PATCH}")
