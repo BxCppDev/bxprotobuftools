@@ -6,9 +6,7 @@ The   ``bxprotobuftools``   library   (also   ``BxProtobuftools``   or
 ``Bayeux/Protobuftools``)  consists  in  a  set  of  C++  classes  and
 utilities for serialization  based on the Google  Protocol Buffers API
 (*protobuf*).  It aims  to be integrated as a companion  module of the
-Bayeux C++  library (the foundation  library of the  SuperNEMO physics
-experiment's software).
-
+Bayeux and Vire C++  libraries..
 
 This is a very preliminary work, not ready for production yet...  Some
 documentation and examples are still needed too.
@@ -149,7 +147,5 @@ $ cmake ... -DBxProtobuftools_DIR="$(bxprotobuftools-query --cmakedir)" ...
 * Add  ``converter`` template  class for  ``std::map`` container  with
   simple types (ints, strings...).
 * Add  ``converter`` template  class  for a  few  useful classes  from
-   ``boost::date_time`` mapped using the ``google.protobuf.Timestamp``
+   ``boost::date_time`` and mapped using the ``google.protobuf.Timestamp``
    message.
-* Add  support for  ``boost::variant`` template  class mapped  to some
-  *oneof* fields (is it possible?).
