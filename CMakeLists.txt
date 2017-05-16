@@ -366,8 +366,8 @@ install( FILES
   WORLD_READ
 )
 
-option(PROTOBUFTOOLS_ENABLE_TESTING "Build unit testing system for Bayeux/protobuftools" ON)
-if(PROTOBUFTOOLS_ENABLE_TESTING)
+option(BXPROTOBUFTOOLS_ENABLE_TESTING "Build unit testing system for Bayeux/protobuftools" ON)
+if(BXPROTOBUFTOOLS_ENABLE_TESTING)
   enable_testing()
 endif()
 
@@ -375,7 +375,7 @@ set(BxProtobuftools_TESTS
   source/protobuftools/testing/test_protobuf_factory.cxx
   )
 
-if(PROTOBUFTOOLS_ENABLE_TESTING)
+if(BXPROTOBUFTOOLS_ENABLE_TESTING)
 
   message( STATUS "[info] Generating C++ testing source stub from protobuf files...")
   execute_process(COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
