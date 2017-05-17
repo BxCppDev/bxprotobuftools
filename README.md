@@ -32,7 +32,7 @@ bxprotobuftools depends on the Google Protocol Buffers library:
   CMake 3.5 (``/usr/share/cmake-3.5/Modules/FindProtobuf.cmake``) does
   not suit our needs.
 
-* the Boost C++ library (version > 1.58) (http://www.boost.org/)
+* the Boost C++ library (version >= 1.58) (http://www.boost.org/)
 
 It is inspired by a former related work:
 * ``Bayeux/Jsontools`` (https://github.com/BxCppDev/bxjsontools)
