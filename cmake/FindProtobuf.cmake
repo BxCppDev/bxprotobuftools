@@ -99,7 +99,7 @@ else()
   set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
 
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(_PROTOBUF_ARCH_DIR 64/)
+    set(_PROTOBUF_ARCH_DIR 64)
   endif()
 
   # Internal function: search for normal library
@@ -166,6 +166,7 @@ if( Protobuf_FIND_COMPONENTS )
       find_file(PROTOBUF_JAVA_JAR
 	protobuf-java-${PROTOBUF_VERSION_STRING}.jar
 	PATHS
+	${PROTOBUF_ROOT}/bin
 	${PROTOBUF_ROOT}/lib/java
 	${PROTOBUF_ROOT}/lib${_PROTOBUF_ARCH_DIR}/java
 	DOC "The Google Protocol Buffers JAR file"
@@ -181,6 +182,7 @@ if( Protobuf_FIND_COMPONENTS )
       find_file(PROTOBUF_JAVA_UTIL_JAR
 	protobuf-java-util-${PROTOBUF_VERSION_STRING}.jar
 	PATHS
+	${PROTOBUF_ROOT}/bin
 	${PROTOBUF_ROOT}/lib/java
 	${PROTOBUF_ROOT}/lib${_PROTOBUF_ARCH_DIR}/java
 	DOC "The Google Protocol Buffers JAR util file"
@@ -196,6 +198,7 @@ if( Protobuf_FIND_COMPONENTS )
     #   find_file(PROTOBUF_JAVA_LITE_JAR
     # 	protobuf-lite-3.0.0-beta-3.jar
     # 	PATHS
+    # 	${PROTOBUF_ROOT}/bin
     # 	${PROTOBUF_ROOT}/lib/java
     # 	${PROTOBUF_ROOT}/lib${_PROTOBUF_ARCH_DIR}/java
     # 	DOC "The Google Protocol Buffers JAR lite file"
