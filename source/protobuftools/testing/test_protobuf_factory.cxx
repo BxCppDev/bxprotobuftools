@@ -75,6 +75,8 @@ void test0()
   std::clog << std::endl;
 
   std::string buffer;
+  uint32_t io_flags = 0;
+  // io_flags |= protobuftools::IO_DEBUG;
 
   {
     protobuftools::testing::foo f0;
@@ -187,13 +189,10 @@ void test0()
     f0.print(std::clog, "Modified object 'f0' : ");
     std::clog << std::endl;
     {
-      // Protobufization:
-      std::clog << "Protobufization...\n";
+      // Protobuf-ization:
+      std::clog << "Protobuf-ization...\n";
       std::ostringstream obuffer;
-      // protobuftools::store(obuffer, f0);
-      protobuftools::store(obuffer, f0, protobuftools::IO_DEBUG);
-      // std::clog << "Output buffer: " << obuffer.str().length() << "\n";
-      // std::clog << obuffer.str();
+      protobuftools::store(obuffer, f0, io_flags);
       buffer = obuffer.str();
     }
   }
@@ -205,10 +204,10 @@ void test0()
   if (load) {
     protobuftools::testing::foo f0;
     {
-      // Deprotobufization:
-      std::clog << "Deprotobufization...\n";
+      // Deprotobuf-ization:
+      std::clog << "Deprotobuf-ization...\n";
       std::istringstream ibuffer(buffer);
-      protobuftools::load(ibuffer, f0, protobuftools::IO_DEBUG);
+      protobuftools::load(ibuffer, f0, io_flags);
     }
     f0.print(std::clog, "Loaded object 'f0' : ");
     std::clog << std::endl;
