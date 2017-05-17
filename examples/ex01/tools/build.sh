@@ -37,23 +37,22 @@ if [ "x${bxprotobuftools_install_dir}" = "x" ]; then
 	my_exit 1
     fi
 fi
-
 if [ ! -d ${bxprotobuftools_install_dir} ]; then
     echo >&2 "[error] No BxProtobuftools installation! Abort!"
     my_exit 1
+else
+    cd ${bxprotobuftools_install_dir}
+    bxprotobuftools_install_dir=$(pwd)
+    echo >&2 "[info] BxProtobuftools install dir = '${bxprotobuftools_install_dir}'"
+    cd ${opwd}
+    export PATH="${bxprotobuftools_install_dir}/bin:${PATH}"
 fi
-cd ${bxprotobuftools_install_dir}
-bxprotobuftools_install_dir=$(pwd)
-echo >&2 "[info] BxProtobuftools install dir = '${bxprotobuftools_install_dir}'"
-cd ${opwd}
-export PATH="${bxprotobuftools_install_dir}/bin:${PATH}"
 
 which bxprotobuftools-query > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo >&2 "[error] BxProtobuftools is not installed! Abort!"
     my_exit 1
 fi
-
 
 if [ -d ${install_dir} ]; then
     rm -fr ${install_dir}
