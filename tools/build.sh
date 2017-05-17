@@ -16,27 +16,40 @@ install_dir=$(pwd)/_install.d
 build_dir=$(pwd)/_build.d
 
 devel=false
-pb_prefix=
+protobuf_prefix=
 
 while [ -n "$1" ]; do
     opt="$1"
-    # echo >&2 "[debug] opt='${opt}'"
     if [ "${opt}" = "--protobuf-prefix" ]; then
 	shift 1
-	pb_prefix="$1"
-    elif [ "${opt}" = "--devel" ]; then
-	devel=true
+	protobuf_prefix="$1"
     fi
     shift 1
 done
 
-if [ "x${pb_prefix}" = "x" ]; then
-    if [ ${devel} = true ]; then
-	pb_prefix="/opt/sw/GoogleProtocolBuffers/install-3.0.0"
-    else
-	echo >&2 "[error] Missing Protobuf installation path! Abort!"
-	my_exit 1
-    fi
+which protoc
+if [ $? -ne 0 ]; then
+    echo >&2 "[error] Protocol Buffers compiler is not installed! Abort!"
+    my_exit 1
+fi
+pkg-config --exists protobuf
+if [ $? -ne 0 ]; then
+    echo >&2 "[error] No pkg-config support for Protocol Buffers! Abort!"
+    my_exit 1
+fi
+
+pkg-config --atleast-version=3.0.0 protobuf
+if [ $? -ne 0 ]; then
+    echo >&2 "[error] Invalid version of Protocol Buffers! Abort!"
+    my_exit 1
+fi
+protobuf_version=$(pkg-config --modversion protobuf)
+protobuf_prefix=$(pkg-config --variable=prefix protobuf)
+if [ "x${protobuf_prefix}" = "x" ]; then
+    echo >&2 "[error] Missing Protocol Buffers installation path! Abort!"
+    my_exit 1
+else
+    echo >&2 "[info] Found Protocol Buffer version ${protobuf_version} at ${protobuf_prefix}."
 fi
 
 if [ -d ${install_dir} ]; then
@@ -54,7 +67,7 @@ echo >&2 ""
 echo >&2 "[info] Configuring..."
 cmake \
     -DCMAKE_INSTALL_PREFIX="${install_dir}" \
-    -DPROTOBUF_ROOT:PATH="${pb_prefix}" \
+    -DPROTOBUF_ROOT:PATH="${protobuf_prefix}" \
     ${src_dir}
 if [ $? -ne 0 ]; then
     echo >&2 "[error] CMake failed! Abort!"
@@ -66,6 +79,14 @@ echo >&2 "[info] Building..."
 make -j4
 if [ $? -ne 0 ]; then
     echo >&2 "[error] Build failed! Abort!"
+    my_exit 1
+fi
+
+echo >&2 ""
+echo >&2 "[info] Testing..."
+make test
+if [ $? -ne 0 ]; then
+    echo >&2 "[error] Some tests failed! Abort!"
     my_exit 1
 fi
 
