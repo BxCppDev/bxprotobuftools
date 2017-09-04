@@ -14,7 +14,6 @@
 
 namespace protobuftools {
 
-
   /// \brief Generic converter from object of class T
   ///        to a protobuf message wrapper node.
   ///
@@ -35,7 +34,7 @@ namespace protobuftools {
       return;
     }
 
-    // Generic deserialization method using _deprotobufize wrapper function
+    // Generic deserialization method using deprotobufize wrapper function
     static void deprotobufize(message_node & node_, T & x_)
     {
        _deprotobufize(node_, x_, 0);
@@ -47,7 +46,7 @@ namespace protobuftools {
   // Deserialization method uses explicit T::deprotobufize method if provided
   template<typename T>
   auto _deprotobufize(message_node & node_, T & x_, int)
-    -> decltype(x_.deprotobufize(node_, 0))
+    -> decltype(x_.T::deprotobufize(node_, 0))
   {
     x_.T::deprotobufize(node_, 0);
     return;
@@ -56,7 +55,7 @@ namespace protobuftools {
   // Deserialization method uses explicit T::protobufize method
   template<typename T>
   auto _deprotobufize(message_node & node_, T & x_, long)
-    -> decltype(x_.protobufize(node_, 0))
+    -> decltype(x_.T::protobufize(node_, 0))
   {
     x_.T::protobufize(node_, 0);
     return;
