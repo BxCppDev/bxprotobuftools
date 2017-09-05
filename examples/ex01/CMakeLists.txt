@@ -61,6 +61,9 @@ message(STATUS "[info] ${PROJECT_NAME}: BxProtobuftools_LIBRARIES    = '${BxProt
 # - Find Boost:
 message(STATUS "[info] Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")
 set(Boost_NO_BOOST_CMAKE ON)
+if (BxProtobuftools_BOOST_ROOT AND NOT BOOST_ROOT)
+  set(BOOST_ROOT ${BxProtobuftools_BOOST_ROOT})
+endif()
 find_package(Boost ${BxProtobuftools_BOOST_VERSION} EXACT
   REQUIRED
   ${BxProtobuftools_BOOST_COMPONENTS}

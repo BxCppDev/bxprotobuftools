@@ -3,6 +3,12 @@
 #ifndef BXPROTOBUFTOOLS_I_PROTOBUFABLE_H
 #define BXPROTOBUFTOOLS_I_PROTOBUFABLE_H
 
+// Standard library:
+#include <type_traits>
+
+// This project:
+#include <protobuftools/core.h>
+
 namespace protobuftools {
 
   class message_node;
@@ -18,9 +24,6 @@ namespace protobuftools {
     /// Destructor
     virtual ~i_protobufable();
 
-    // /// Return the serialization string identifier of the class
-    // virtual const std::string& get_protobuf_guid() const = 0;
-
     /// Main Protobuf (de-)serialization method
     virtual void protobufize(protobuftools::message_node & node_,
                              const unsigned long int version_ = 0) = 0;
@@ -31,7 +34,8 @@ namespace protobuftools {
   ///        with explicit implementation of a deserialization
   ///        method distinct from the i_protobufable::protobufize
   ///        method.
-  class i_deprotobufable : public i_protobufable
+  class i_deprotobufable
+    : public i_protobufable
   {
   public:
 
@@ -44,6 +48,46 @@ namespace protobuftools {
     /// Special Protobuf deserialization method
     virtual void deprotobufize(protobuftools::message_node & node_,
                                const unsigned long int version_ = 0) = 0;
+
+  };
+
+  /// \brief Specialized template converter for JSON-izable objects
+  template<typename T>
+  class converter<T, typename std::enable_if<std::is_base_of<::protobuftools::i_protobufable, T>::value>::type>
+  {
+  public:
+
+    static void protobufize(::protobuftools::message_node & node_, T & x_)
+    {
+      x_.T::protobufize(node_, 0);
+      return;
+    }
+
+    static void deprotobufize(::protobuftools::message_node & node_, T & x_)
+    {
+      x_.T::protobufize(node_, 0);
+      return;
+    }
+
+  };
+
+  /// \brief Specialized template converter for JSON-izable objects
+  template<typename T>
+  class converter<T, typename std::enable_if<std::is_base_of<::protobuftools::i_deprotobufable, T>::value>::type>
+  {
+  public:
+
+    static void protobufize(::protobuftools::message_node & node_, T & x_)
+    {
+      x_.T::protobufize(node_, 0);
+      return;
+    }
+
+    static void deprotobufize(::protobuftools::message_node & node_, T & x_)
+    {
+      x_.T::deprotobufize(node_, 0);
+      return;
+    }
 
   };
 

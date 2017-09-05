@@ -19,7 +19,7 @@ list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/cmake)
 
 # - Versioning
 set(BxProtobuftools_VERSION_MAJOR 0)
-set(BxProtobuftools_VERSION_MINOR 2)
+set(BxProtobuftools_VERSION_MINOR 3)
 set(BxProtobuftools_VERSION_PATCH 0)
 set(BxProtobuftools_VERSION
   "${BxProtobuftools_VERSION_MAJOR}.${BxProtobuftools_VERSION_MINOR}.${BxProtobuftools_VERSION_PATCH}")
@@ -116,7 +116,7 @@ set(BxProtobuftools_HEADERS
   source/protobuftools/std_set_converter.h
   source/protobuftools/std_array_converter.h
   source/protobuftools/std_type_converters.h
-  source/protobuftools/protobufable_converter.h
+  #source/protobuftools/protobufable_converter.h
   source/protobuftools/io.h
   source/protobuftools/io-inl.h
   source/protobuftools/iofile.h
@@ -169,6 +169,7 @@ find_package(Boost ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION}
   )
 message( STATUS "[info] Boost_VERSION      = '${Boost_VERSION}'")
 message( STATUS "[info] Boost_INCLUDE_DIRS = '${Boost_INCLUDE_DIRS}'")
+message( STATUS "[info] Boost_LIBRARY_DIRS = '${Boost_LIBRARY_DIRS}'")
 message( STATUS "[info] Boost_LIBRARIES    = '${Boost_LIBRARIES}'")
 message( STATUS "[info] Found Boost through 'MODULE' mode.")
 message( STATUS "[info] Found Boost_LIB_VERSION  = '${Boost_LIB_VERSION}'")
@@ -188,12 +189,12 @@ list(APPEND
   source/protobuftools/boost_optional_converter.h
   source/protobuftools/boost_converters.h
   )
-# set(BxProtobuftools_BOOST_LIBRARIES
-#   # ${Boost_LIBRARIES}
-#   # Boost::date_time
-#   )
+set(BxProtobuftools_BOOST_LIBRARIES
+  ${Boost_LIBRARIES}
+  # Boost::date_time
+  )
 # message( STATUS "[info] BxProtobuftools_BOOST_LIBRARIES = '${BxProtobuftools_BOOST_LIBRARIES}'")
-# list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
+list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
 message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '$BxProtobuftools_OTHER_LIBS}'")
 
 # - Add specific protobuf support

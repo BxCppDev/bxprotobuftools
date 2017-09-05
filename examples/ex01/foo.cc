@@ -5,7 +5,6 @@
 #include <bayeux/protobuftools/protobuf_factory.h>
 #include <bayeux/protobuftools/base_type_converters.h>
 #include <bayeux/protobuftools/boost_converters.h>
-#include <bayeux/protobuftools/protobufable_converter.h>
 
 foo::foo(const int16_t ival_)
   : _ival_(ival_)

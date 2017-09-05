@@ -10,7 +10,6 @@
 #include "foo.h"
 #include <protobuftools/testing/foo.pb.h>
 #include <protobuftools/io.h>
-#include <protobuftools/protobufable_converter.h>
 
 BXPROTOBUFTOOLS_REGISTER_CLASS_LABELED("protobuftools.testing.Zoo",
                                        protobuftools::testing::Zoo,

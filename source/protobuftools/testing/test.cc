@@ -14,11 +14,13 @@
 #include <protobuftools/io.h>
 #include <protobuftools/iofile.h>
 
+#define BXPROTOBUFTOOLS_WITH_BOOST 1
+
 #if BXPROTOBUFTOOLS_WITH_BOOST == 1
 // Boost:
 #include <boost/optional.hpp>
 #include <boost/lexical_cast.hpp>
-// #include <protobuftools/boost_type_converters.h>
+#include <protobuftools/boost_type_converters.h>
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
 
 namespace bar {
@@ -58,7 +60,7 @@ namespace protobuftools {
   {
   public:
 
-    static void protobufize((message_node & node_, bar::Foreign & f_)
+    static void protobufize(message_node & node_, bar::Foreign & f_)
     {
       node_.grab_value() = Json::objectValue;
       {
@@ -74,7 +76,7 @@ namespace protobuftools {
       return;
     }
 
-    static void deprotobufize((message_node & node_, bar::Foreign & f_)
+    static void deprotobufize(message_node & node_, bar::Foreign & f_)
     {
       if (not node_.get_value().isObject()) {
         throw wrong_type(node_.get_value(), "expected object!");
@@ -164,7 +166,7 @@ namespace protobuftools {
         node_["values"] % _values_;
         // node_["dict"]   % _dict_;
 #if BXPROTOBUFTOOLS_WITH_BOOST == 1
-        // node_["maybe"]  % _maybe_;
+        node_["maybe"]  % _maybe_;
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
         return;
       }

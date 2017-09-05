@@ -9,7 +9,6 @@
 
 // Bayeux/protobuftools:
 #include <bayeux/protobuftools/io.h>
-#include <bayeux/protobuftools/protobufable_converter.h>
 
 // Declare a protobuf registrar instance for the FooMsg message class:
 #include "FooMsg.pb.h"

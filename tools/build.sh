@@ -11,21 +11,50 @@ function my_exit()
     exit ${error_code}
 }
 
+function my_usage()
+{
+    cat<<EOF
+
+Options:
+
+   --help             : print help
+   --boost-root path  : set the Boost installation base directory
+
+EOF
+    return
+}
+
+
 src_dir=$(pwd)
 install_dir=$(pwd)/_install.d
 build_dir=$(pwd)/_build.d
+boost_root=
+protobuf_prefix=
+brew_it=0
 
 devel=false
-protobuf_prefix=
 
 while [ -n "$1" ]; do
     opt="$1"
     if [ "${opt}" = "--protobuf-prefix" ]; then
 	shift 1
 	protobuf_prefix="$1"
+    elif [ "${opt}" = "--boost-root" ]; then
+	shift 1
+	boost_root="$1"
+    elif [ "${opt}" = "--brew" ]; then
+	brew_it=1
+    else
+	echo >&2 "[error] Invalid command line switch '${opt}'!"
+	exit 1
     fi
     shift 1
 done
+
+if [ ${brew_it} -ne 0 ]; then
+    boost_root="$(brew --prefix)"
+    protobuf_prefix="$(brew --prefix)"
+fi
 
 which protoc
 if [ $? -ne 0 ]; then
@@ -65,8 +94,13 @@ mkdir -p ${build_dir}
 cd ${build_dir}
 echo >&2 ""
 echo >&2 "[info] Configuring..."
+boost_option=
+if [ -n "${boost_root}" ]; then
+    boost_option="-DBOOST_ROOT:PATH=${boost_root}"
+fi
 cmake \
     -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+    ${boost_option} \
     -DPROTOBUF_ROOT:PATH="${protobuf_prefix}" \
     ${src_dir}
 if [ $? -ne 0 ]; then

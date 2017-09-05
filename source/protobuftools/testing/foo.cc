@@ -9,7 +9,6 @@
 // This project:
 #include <protobuftools/base_type_converters.h>
 #include <protobuftools/enum_converter.h>
-#include <protobuftools/protobufable_converter.h>
 #include <protobuftools/std_type_converters.h>
 #if BXPROTOBUFTOOLS_WITH_BOOST == 1
 #include <protobuftools/boost_datetime_converters.h>
@@ -218,33 +217,6 @@ namespace protobuftools {
       }
       out_ << std::endl;
 
-      /*
-      out_ << indent_ << "|-- v4     = ";
-      {
-        const bool * value = boost::get<bool>(&v4);
-        if (value) {
-          out_ << "[" << *value << ']';
-        }
-      }
-      {
-        const int32_t * value = boost::get<int32_t>(&v4);
-        if (value) {
-          out_ << "[" << *value << ']';
-        }
-      }
-      {
-        const std::string * value = boost::get<std::string>(&v4);
-        if (value) {
-          out_ << "[" << *value << ']';
-        }
-      }
-      {
-        const zoo * value = boost::get<zoo>(&v4);
-        if (value) {
-          out_ << "[" << *value << ']';
-        }
-      }
-      */
       out_ << std::endl;
 
 
@@ -282,7 +254,6 @@ namespace protobuftools {
       node_["time"]   % time;
       node_["ou16"]   % ou16;
       node_["oz"]     % oz;
-      //node_["v4"]     % v4;
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
       return;
     }

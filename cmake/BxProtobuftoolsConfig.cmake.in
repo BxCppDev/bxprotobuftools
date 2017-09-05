@@ -41,6 +41,7 @@ set(BxProtobuftools_VERSION @BxProtobuftools_VERSION@)
 message( STATUS "[info] BxProtobuftoolsConfig: BxProtobuftools_VERSION = '${BxProtobuftools_VERSION}'")
 
 # - Boost
+set(BxProtobuftools_BOOST_ROOT       @BOOST_ROOT@)
 set(BxProtobuftools_BOOST_VERSION    @BxProtobuftools_BOOST_VERSION@)
 set(BxProtobuftools_BOOST_COMPONENTS @BXPROTOBUFTOOLS_BOOST_COMPONENTS@)
 # message(STATUS "[info] BxProtobuftoolsConfig: Searching for Boost version ${BxProtobuftools_BOOST_VERSION} with 'MODULE' mode...")

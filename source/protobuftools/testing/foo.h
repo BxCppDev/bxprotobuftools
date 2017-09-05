@@ -12,6 +12,8 @@
 #include <array>
 
 // This project
+#define BXPROTOBUFTOOLS_WITH_BOOST 1
+
 #include <protobuftools/config.h>
 #include <protobuftools/protobuf_utils.h>
 
@@ -115,8 +117,6 @@ namespace protobuftools {
       boost::posix_time::ptime time;
       boost::optional<uint16_t> ou16;
       boost::optional<zoo> oz;
-      // typedef boost::variant<bool, int32_t, std::string, zoo> variant_type;
-      // variant_type v4;
 #endif // BXPROTOBUFTOOLS_WITH_BOOST == 1
     };
 
@@ -124,8 +124,6 @@ namespace protobuftools {
 
 } // namespace protobuftools
 
-// BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo,
-//                                                   "protobuftools::testing::foo")
 BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::zoo, "protobuftools.testing.Zoo")
 
 BXPROTOBUFTOOLS_CLASS_BIND_TO_REGISTERED_PROTOBUF(protobuftools::testing::foo, "protobuftools.testing.Foo")
