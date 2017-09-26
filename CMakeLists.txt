@@ -22,7 +22,7 @@ include(BxVersionManager)
 
 # - Versioning only giving major and minor. Patch number is
 #   automatically deduced from an external file.
-bx_version_set(BxProtobuftools 0 2)
+bx_version_set(BxProtobuftools 0 3)
 
 #-----------------------------------------------------------------------
 # - Standard UNIX Tool install paths, including relative paths for use
