@@ -17,12 +17,12 @@ endif()
 # - Load Custom Modules
 list(INSERT CMAKE_MODULE_PATH 0 ${PROJECT_SOURCE_DIR}/cmake)
 
-# - Versioning
-set(BxProtobuftools_VERSION_MAJOR 0)
-set(BxProtobuftools_VERSION_MINOR 3)
-set(BxProtobuftools_VERSION_PATCH 0)
-set(BxProtobuftools_VERSION
-  "${BxProtobuftools_VERSION_MAJOR}.${BxProtobuftools_VERSION_MINOR}.${BxProtobuftools_VERSION_PATCH}")
+# - Version number management utilities:
+include(BxVersionManager)
+
+# - Versioning only giving major and minor. Patch number is
+#   automatically deduced from an external file.
+bx_version_set(BxProtobuftools 0 2)
 
 #-----------------------------------------------------------------------
 # - Standard UNIX Tool install paths, including relative paths for use
