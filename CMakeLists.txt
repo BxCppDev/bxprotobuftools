@@ -159,6 +159,10 @@ endif()
 
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})
 
+# - Boost:
+if (BOOST_ROOT)
+  message( STATUS "[info] BOOST_ROOT = '${BOOST_ROOT}'")
+endif()
 set(BXPROTOBUFTOOLS_BOOST_MIN_VERSION 1.58.0)
 set(BXPROTOBUFTOOLS_BOOST_COMPONENTS date_time)
 message( STATUS "[info] Finding Boost version > ${BXPROTOBUFTOOLS_BOOST_MIN_VERSION} and components '${BXPROTOBUFTOOLS_BOOST_COMPONENTS}'")
