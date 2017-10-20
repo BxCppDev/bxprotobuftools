@@ -80,6 +80,8 @@ endif()
 
 set(BxProtobuftools_INCLUDE_DIR "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_INCLUDEDIR@")
 mark_as_advanced(BxProtobuftools_INCLUDE_DIR)
+set(BxProtobuftools_LIB_DIR     "${__bxprotobuftools_config_dir}/@BXPROTOBUFTOOLS_CMAKEDIR_TO_LIBDIR@")
+mark_as_advanced(BxProtobuftools_LIB_DIR)
 
 set(BxProtobuftools_INCLUDE_DIRS
   "${BxProtobuftools_INCLUDE_DIR}"
