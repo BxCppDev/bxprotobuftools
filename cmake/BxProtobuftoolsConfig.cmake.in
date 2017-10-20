@@ -102,7 +102,9 @@ if(NOT BxProtobuftools_TARGETS_LOADED)
 endif()
 
 # - BxProtobuftools itself
-set(BxProtobuftools_LIBRARY Bayeux_protobuftools CACHE FILE "BxProtobuftools library (imported)")
+set(BxProtobuftools_LIBRARY
+  "${BxProtobuftools_LIB_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}Bayeux_protobuftools${CMAKE_SHARED_LIBRARY_SUFFIX}"
+  CACHE FILE "BxProtobuftools library (imported)")
 mark_as_advanced(BxProtobuftools_LIBRARY)
 
 set(BxProtobuftools_LIBRARIES
