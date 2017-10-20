@@ -24,7 +24,6 @@ EOF
     return
 }
 
-
 src_dir=$(pwd)
 install_dir=$(pwd)/_install.d
 build_dir=$(pwd)/_build.d
