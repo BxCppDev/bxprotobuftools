@@ -22,7 +22,7 @@ include(BxVersionManager)
 
 # - Versioning only giving major and minor. Patch number is
 #   automatically deduced from an external file.
-bx_version_set(BxProtobuftools 0 3)
+bx_version_set(BxProtobuftools 1 0)
 
 #-----------------------------------------------------------------------
 # - Standard UNIX Tool install paths, including relative paths for use
@@ -140,9 +140,16 @@ set(BxProtobuftools_SOURCES
   source/protobuftools/protobuf_factory.cc
   )
 
+option(BXPROTOBUFTOOLS_WITH_JAVA "Support Java" OFF)
+
 set(BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION 3.0)
 message( STATUS "[info] Searching for Protobuf library version >= ${BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION}...")
-set(Protobuf_FIND_COMPONENTS "JavaJar" "JavaUtilJar")
+
+set(Protobuf_FIND_COMPONENTS)
+if (BXPROTOBUFTOOLS_WITH_JAVA)
+  liste(APPEND Protobuf_FIND_COMPONENTS "JavaJar" "JavaUtilJar")
+endif ()
+
 message( STATUS "[info]   with components = ${Protobuf_FIND_COMPONENTS}")
 find_package(Protobuf ${BXPROTOBUFTOOLS_PROTOBUF_MIN_VERSION} REQUIRED COMPONENTS "${Protobuf_FIND_COMPONENTS}")
 if (PROTOBUF_FOUND)
@@ -158,8 +165,10 @@ if (PROTOBUF_FOUND)
   message( STATUS "[info]   PROTOBUF_PROTOC_LIBRARY    ='${PROTOBUF_PROTOC_LIBRARY}'")
   message( STATUS "[info]   PROTOBUF_INCLUDE_DIR       ='${PROTOBUF_INCLUDE_DIR}'")
   message( STATUS "[info]   PROTOBUF_PROTOC_EXECUTABLE ='${PROTOBUF_PROTOC_EXECUTABLE}'")
-  message( STATUS "[info]   PROTOBUF_JAVA_JAR          ='${PROTOBUF_JAVA_JAR}'")
-  message( STATUS "[info]   PROTOBUF_JAVA_UTIL_JAR     ='${PROTOBUF_JAVA_UTIL_JAR}'")
+  if (BXPROTOBUFTOOLS_WITH_JAVA)  
+    message( STATUS "[info]   PROTOBUF_JAVA_JAR          ='${PROTOBUF_JAVA_JAR}'")
+    message( STATUS "[info]   PROTOBUF_JAVA_UTIL_JAR     ='${PROTOBUF_JAVA_UTIL_JAR}'")
+  endif()
 endif()
 
 set(BxProtobuftools_OTHER_LIBS ${PROTOBUF_LIBRARIES})

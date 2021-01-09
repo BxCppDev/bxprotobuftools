@@ -19,6 +19,10 @@ bxprotobuftools  has been  initiated  in the  framework  of the  SuperNEMO
 physics experiment software.
 
 
+## History
+
+* Version 1.0.0 : first production release
+
 ## Dependencies and inspiration
 
 bxprotobuftools depends on the Google Protocol Buffers library:
@@ -31,17 +35,28 @@ bxprotobuftools depends on the Google Protocol Buffers library:
   CMake 3.5 (``/usr/share/cmake-3.5/Modules/FindProtobuf.cmake``) does
   not suit bxprotobuftools' needs.
 
-* the Boost C++ library (version >= 1.58) (http://www.boost.org/)
+  On Ubuntu 18.04/20.04 LTS : 
+  
+  ```
+  $ sudo apt-get install protobuf-compiler libprotobuf-dev libprotobuf-c-dev
+  ```
+
+* the Boost C++ library (version >= 1.58, but former version may work) (http://www.boost.org/)
+
+  - On Ubuntu 18.04LTS : Boost 1.65.1
+  - On Ubuntu 20.04LTS : Boost 1.71
+  
+  ```
+  $ sudo apt-get install libboost-all-dev
+  ```
 
 It is inspired by a former related work:
 * ``Bayeux/Jsontools`` (https://github.com/BxCppDev/bxjsontools)
 
-Needed tools and software (tested on Ubuntu 16.04 LTS):
+Needed tools and software (tested on Ubuntu 16.04/18.04/20.04 LTS):
 * You  need  [CMake](https://cmake.org/)   version  >=  3.5.1  (former
   version may work)
 * You need gcc version >= 5.4.0 (former version may work)
-* bxprotobuftools depends   on  [Boost](http://www.boost.org/)   >=  1.58
-  (former version may work).
 
 ## License:
 
@@ -100,7 +115,7 @@ Also make  sure you have  a proper  installation of the  Boost library
 Suggestion for Ubuntu 16.04:
 ```sh
 $ sudo apt-get install cmake
-$ sudo apt-get install g++-5
+$ sudo apt-get install g++
 $ sudo apt-get install libboost-all-dev
 ```
 
@@ -138,7 +153,7 @@ $ make install
 Note the use  of the ``PROTOBUF_ROOT`` variable to help  CMake to find
 the Protobuf dependee libraries.
 
-On Ubuntu 16.04, system Boost  1.58 is available from ``/usr/include``
+On Ubuntu 20.04, system Boost  1.71 is available from ``/usr/include``
 and ``/usr/lib`` and should be found automatically by CMake.
 If you want to use a specific version of Boost (for
 example one provided  by Linuxbrew), you must specify  the proper path

@@ -107,7 +107,7 @@ else()
     #message( STATUS "FindProtobuf: _protobuf_find_libraries: name='${name}' filename='${filename}'")
     find_library(${name}_LIBRARY
       NAMES ${filename}
-      PATH_SUFFIXES lib lib${_PROTOBUF_ARCH_DIR}
+      PATH_SUFFIXES lib lib${_PROTOBUF_ARCH_DIR} lib/x86_64-linux-gnu
       HINTS ${PROTOBUF_ROOT} ${PROTOBUF_ROOT_HINT}
       ENV PROTOBUF_ROOT
       NO_DEFAULT_PATH
@@ -124,9 +124,9 @@ else()
   _protobuf_find_libraries(PROTOBUF_LITE protobuf-lite)
   mark_as_advanced(PROTOBUF_LITE_LIBRARY)
 
-  # The Protobuf protoc Library
-  _protobuf_find_libraries(PROTOBUF_PROTOC protoc)
-  mark_as_advanced(PROTOBUF_PROTOC_LIBRARY)
+  # # The Protobuf protoc Library
+  # _protobuf_find_libraries(PROTOBUF_PROTOC protoc)
+  # mark_as_advanced(PROTOBUF_PROTOC_LIBRARY)
 
   # Find the protoc Executable
   find_program(PROTOBUF_PROTOC_EXECUTABLE
@@ -223,7 +223,6 @@ message( STATUS "[info] FindProtobuf:   PROTOBUF_ROOT                = '${PROTOB
 message( STATUS "[info] FindProtobuf:   PROTOBUF_VERSION_STRING      = '${PROTOBUF_VERSION_STRING}'")
 message( STATUS "[info] FindProtobuf:   PROTOBUF_INCLUDE_DIR         = '${PROTOBUF_INCLUDE_DIR}'")
 message( STATUS "[info] FindProtobuf:   PROTOBUF_LIBRARY             = '${PROTOBUF_LIBRARY}'")
-message( STATUS "[info] FindProtobuf:   PROTOBUF_PROTOC_LIBRARY      = '${PROTOBUF_PROTOC_LIBRARY}'")
 message( STATUS "[info] FindProtobuf:   PROTOBUF_LITE_LIBRARY        = '${PROTOBUF_LITE_LIBRARY}'")
 message( STATUS "[info] FindProtobuf:   PROTOBUF_PROTOC_EXECUTABLE   = '${PROTOBUF_PROTOC_EXECUTABLE}'")
 message( STATUS "[info] FindProtobuf:   PROTOBUF_INCLUDE_DIRS        = '${PROTOBUF_INCLUDE_DIRS}'")
@@ -235,15 +234,15 @@ message( STATUS "[info] FindProtobuf:   PROTOBUF_JAVA_UTIL_JAR       = '${PROTOB
 # Include these modules to handle the QUIETLY and REQUIRED arguments.
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Protobuf
-  FOUND_VAR #
+  FOUND_VAR 
   PROTOBUF_FOUND
-  REQUIRED_VARS #
+  REQUIRED_VARS 
   PROTOBUF_INCLUDE_DIRS
   PROTOBUF_LIBRARIES
-  PROTOBUF_PROTOC_LIBRARIES
+  # PROTOBUF_PROTOC_LIBRARIES
   PROTOBUF_LITE_LIBRARIES
   PROTOBUF_PROTOC_EXECUTABLE
-  VERSION_VAR #
+  VERSION_VAR 
   PROTOBUF_VERSION_STRING
   )
 set(PROTOBUF_FOUND 1)

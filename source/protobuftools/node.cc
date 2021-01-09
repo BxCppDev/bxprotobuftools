@@ -304,6 +304,7 @@ namespace protobuftools {
     // bool defaultValueNeeded = not reflection->HasField(_value, field_desc);
     // google::protobuf::Message * fieldMsg = reflection->MutableMessage(&_value, field_desc);
     // return message_node_value(*fieldMsg, is_serializing(), defaultValueNeeded);
+    return message_node_value(_message, nullptr, is_serializing(), false, get_logging());
   }
 
   /* Message node value */

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# A Bash script to build and install devel BxPrototools on Ubuntu (16.04).
+# A Bash script to build and install devel BxPrototools on Ubuntu (16.04/18.04/20.04).
 
 opwd=$(pwd)
 function my_exit()
@@ -26,7 +26,8 @@ EOF
 
 src_dir=$(pwd)
 install_dir=$(pwd)/_install.d
-build_dir=$(pwd)/_build.d
+build_base_dir=$(pwd)/_build.d
+build_dir=${build_base_dir}
 boost_root=
 protobuf_prefix=
 brew_it=0
@@ -60,6 +61,7 @@ if [ $? -ne 0 ]; then
     echo >&2 "[error] Protocol Buffers compiler is not installed! Abort!"
     my_exit 1
 fi
+
 pkg-config --exists protobuf
 if [ $? -ne 0 ]; then
     echo >&2 "[error] No pkg-config support for Protocol Buffers! Abort!"
@@ -97,10 +99,14 @@ boost_option=
 if [ -n "${boost_root}" ]; then
     boost_option="-DBOOST_ROOT:PATH=${boost_root}"
 fi
+protobuf_option=
+if [ -n "${protobuf_prefix}" ]; then
+    protobuf_option="-DPROTOBUF_ROOT:PATH=${protobuf_prefix}"
+fi
 cmake \
     -DCMAKE_INSTALL_PREFIX="${install_dir}" \
     ${boost_option} \
-    -DPROTOBUF_ROOT:PATH="${protobuf_prefix}" \
+    ${protobuf_option} \
     ${src_dir}
 if [ $? -ne 0 ]; then
     echo >&2 "[error] CMake failed! Abort!"
