@@ -66,17 +66,18 @@ See the ``LICENSE.txt`` file.
 ## Build and install:
 
 The  following  instructions  illustrate  how  to  build  and  install
-bxprotobuftools on  a Linux  system (Ubuntu 16.04  LTS). It  should be
-easy to adapt for a MacOS X system.
+bxprotobuftools on  a Linux system (Ubuntu  16.04/18.04/20.04 LTS). It
+should be easy to adapt for a MacOS X system.
 
 CMake options:
 
-* ``BXPROTOBUFTOOLS_ENABLE_TESTING`` (default: ``ON``) : builds the test program(s).
+* ``BXPROTOBUFTOOLS_ENABLE_TESTING``  (default: ``ON``)  : builds  the
+  test program(s).
 
 ### Note on Boost:
 
 bxprotobuftools  implements   some  specific   Protobuf  serialization
-support  for a  few  Boost  classes of  interest  (implies Boost  >=1.58
+support  for a  few Boost  classes of  interest (implies  Boost >=1.58
 dependency):
 
 In  principle  bxprotobuftools can  build  both  with a  system  Boost
@@ -98,8 +99,20 @@ $ git clone https://github.com/BxCppDev/bxprotobuftools.git
 
 ### Install dependencies:
 
+* Installation of system packages:
+
+On Ubuntu 20.04 LTS, we suggest to install the following packages:
+```sh
+$ sudo apt-get install cmake
+$ sudo apt-get install g++
+$ sudo apt-get install libboost-all-dev
+$ sudo apt-get install protobuf-compiler libprotobuf-dev libprotobuf-c-dev
+```
+
+* Installation of system packages:
+
 The  Google   Protocol  Buffers  library  can   be  installed  through
-Linuxbrew.   The   ``https://github.com/BxCppDev/homebrew-bxtap``  tap
+Linuxbrew/Homebrew.   The   ``https://github.com/BxCppDev/homebrew-bxtap``  tap
 provides a  formula to install a  recent version of ``protobuf``  in a
 way that makes it usable by bxprotobuftools.
 
@@ -110,21 +123,12 @@ $ brew install bxcppdev/bxtap/protobuf@3.3.0
 ```
 
 Also make  sure you have  a proper  installation of the  Boost library
-(>=1.58) on your system.
-
-Suggestion for Ubuntu 16.04:
-```sh
-$ sudo apt-get install cmake
-$ sudo apt-get install g++
-$ sudo apt-get install libboost-all-dev
-```
-
-Boost may also be installed from brew:
+(>=1.58) on your system. Boost may also be installed from brew:
 ```sh
 $ brew install bxcppdev/bxtap/boost --c++11
 ```
 
-The following command will print the base path of both Linuxbrew's
+The following command will then print the base path of both Linuxbrew's
 protobuf and Boost installation:
 ```sh
 $ brew --prefix
@@ -164,8 +168,8 @@ $ mkdir -p /tmp/${USER}/bxprotobuftools/_build.d/
 $ cd  /tmp/${USER}/bxprotobuftools/_build.d/
 $ cmake \
     -DCMAKE_INSTALL_PREFIX=/tmp/${USER}/bxprotobuftools/_install.d \
-    -DPROTOBUF_ROOT:PATH="path/to/protobuf/version/3.0/installation/base/dir \
-    -DBOOST_ROOT=path/to/linuxbrew/installation/base/dir \
+    -DPROTOBUF_ROOT:PATH="/path/to/protobuf/version/3.0/installation/base/dir \
+    -DBOOST_ROOT=/path/to/linuxbrew/installation/base/dir \
     /tmp/${USER}/bxprotobuftools/_source.d/bxprotobuftools
 $ make
 $ make test
