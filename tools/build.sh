@@ -30,7 +30,6 @@ build_base_dir=$(pwd)/_build.d
 build_dir=${build_base_dir}
 boost_root=
 protobuf_prefix=
-brew_it=0
 
 devel=false
 
@@ -42,8 +41,6 @@ while [ -n "$1" ]; do
     elif [ "${opt}" = "--boost-root" ]; then
 	shift 1
 	boost_root="$1"
-    elif [ "${opt}" = "--brew" ]; then
-	brew_it=1
     else
 	echo >&2 "[error] Invalid command line switch '${opt}'!"
 	exit 1
@@ -51,10 +48,10 @@ while [ -n "$1" ]; do
     shift 1
 done
 
-if [ ${brew_it} -ne 0 ]; then
-    boost_root="$(brew --prefix)"
-    protobuf_prefix="$(brew --prefix)"
-fi
+# if [ ${brew_it} -ne 0 ]; then
+#     boost_root="$(brew --prefix)"
+#     protobuf_prefix="$(brew --prefix)"
+# fi
 
 which protoc
 if [ $? -ne 0 ]; then

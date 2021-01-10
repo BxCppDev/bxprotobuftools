@@ -213,7 +213,7 @@ set(BxProtobuftools_BOOST_LIBRARIES
   )
 # message( STATUS "[info] BxProtobuftools_BOOST_LIBRARIES = '${BxProtobuftools_BOOST_LIBRARIES}'")
 list(APPEND BxProtobuftools_OTHER_LIBS ${BxProtobuftools_BOOST_LIBRARIES})
-message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '$BxProtobuftools_OTHER_LIBS}'")
+message( STATUS "[info] BxProtobuftools_OTHER_LIBS = '${BxProtobuftools_OTHER_LIBS}'")
 
 # - Add specific protobuf support
 add_subdirectory(source/proto)
